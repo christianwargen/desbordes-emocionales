@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mercado Casa — Manual de Comunicación para Vendedores</title>
+<meta name="description" content="Manual de comunicación oficial de Mercado Casa para quienes salen a vender las casas de la Línea VIVE. Breve, concreto y listo para usar." />
+<link rel="icon" href="/assets/mercado-casa-isotipo.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Tokens · Manual de Marca Mercado Casa v1.5 ===== */
+  :root{
+    --verde:#2A8B4E;        /* Verde Vivo 600 — institucional */
+    --verde-800:#1A5733;    /* Verde Vivo 800 — hover/oscuro */
+    --verde-100:#E6F4EC;    /* Verde Vivo 100 — fondos suaves */
+    --crema:#F7F2EA;        /* Crema Hogar — fondo principal */
+    --carbon:#1A1F1C;       /* Carbón — texto cuerpo */
+    --terra:#C2563A;        /* Terracota Llave — CTAs / cifras */
+    --gris-300:#D8D5CE;
+    --radio-card:12px; --radio-btn:8px; --radio-chip:4px;
+    --sombra:0 8px 24px rgba(26,31,28,.08);
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--crema); color:var(--carbon);
+    font-family:'Manrope',system-ui,sans-serif; font-weight:400;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--verde); text-decoration:none}
+  h1,h2,h3,h4{font-weight:800; line-height:1.1; letter-spacing:-.02em; margin:0}
+  h2{font-size:clamp(1.5rem,3.2vw,2.2rem); margin-bottom:.4em}
+  h3{font-size:1.15rem; margin-bottom:.5em}
+  p{margin:.4em 0 .9em}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+  section{padding:clamp(40px,7vw,80px) 0}
+  .eyebrow{font-weight:700; font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--verde)}
+  .lead{font-size:1.15rem; max-width:62ch}
+
+  /* ===== Header / Hero ===== */
+  .hero{background:var(--verde); color:var(--crema); position:relative; overflow:hidden}
+  .hero::after{ /* isotipo marca de agua 6% */
+    content:""; position:absolute; right:-6%; bottom:-22%; width:min(560px,60vw); aspect-ratio:1;
+    background:var(--crema);
+    -webkit-mask:url(/assets/mercado-casa-isotipo.png) center/contain no-repeat;
+    mask:url(/assets/mercado-casa-isotipo.png) center/contain no-repeat;
+    opacity:.06; pointer-events:none;
+  }
+  .hero .wrap{position:relative; z-index:1; padding-top:clamp(36px,6vw,64px); padding-bottom:clamp(48px,8vw,90px)}
+  .topbar{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 0; flex-wrap:wrap}
+  .logo-crema{height:38px; width:170px;
+    background:var(--crema);
+    -webkit-mask:url(/assets/mercado-casa-lockup.png) left center/contain no-repeat;
+    mask:url(/assets/mercado-casa-lockup.png) left center/contain no-repeat;}
+  .badge{font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+    border:1px solid rgba(247,242,234,.4); color:var(--crema); padding:6px 12px; border-radius:999px}
+  .hero h1{font-size:clamp(2.1rem,5.6vw,3.6rem); color:var(--crema); max-width:16ch; margin-top:14px}
+  .hero .lead{color:rgba(247,242,234,.92); margin-top:18px}
+  .hero-meta{margin-top:30px; display:flex; gap:10px; flex-wrap:wrap}
+  .chip{font-size:.8rem; font-weight:600; background:rgba(247,242,234,.12);
+    border:1px solid rgba(247,242,234,.22); color:var(--crema); padding:7px 13px; border-radius:var(--radio-chip)}
+
+  /* ===== Index nav ===== */
+  .toc{background:var(--carbon); color:var(--crema); position:sticky; top:0; z-index:20}
+  .toc .wrap{display:flex; gap:6px; overflow-x:auto; padding:10px 24px; scrollbar-width:none}
+  .toc .wrap::-webkit-scrollbar{display:none}
+  .toc a{color:rgba(247,242,234,.72); font-size:.82rem; font-weight:600; white-space:nowrap;
+    padding:7px 12px; border-radius:999px}
+  .toc a:hover{color:var(--crema); background:rgba(247,242,234,.1)}
+
+  /* ===== Cards & grids ===== */
+  .grid{display:grid; gap:18px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+  .card{background:#fff; border:1px solid var(--gris-300); border-radius:var(--radio-card);
+    padding:22px 22px; box-shadow:var(--sombra)}
+  .card.soft{background:var(--verde-100); border-color:transparent}
+  .card.green{background:var(--verde); color:var(--crema); border-color:transparent}
+  .card.green h3{color:var(--crema)}
+  .num{font-weight:800; color:var(--terra); font-size:1.05rem}
+
+  /* ===== Claims ===== */
+  .claim{background:var(--carbon); color:var(--crema); border-radius:var(--radio-card); padding:26px;
+    display:flex; flex-direction:column; gap:8px; min-height:150px; justify-content:space-between}
+  .claim .big{font-size:1.7rem; font-weight:800; letter-spacing:-.02em; color:var(--crema)}
+  .claim .when{font-size:.85rem; color:rgba(247,242,234,.7)}
+  .claim.terra .big{color:#F4C9BC}
+
+  /* ===== Si / No tables ===== */
+  .sino{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .listbox{border-radius:var(--radio-card); padding:22px; border:1px solid var(--gris-300); background:#fff}
+  .listbox h3{display:flex; align-items:center; gap:9px}
+  .tick,.cross{width:22px;height:22px;border-radius:6px;display:inline-grid;place-items:center;font-size:.8rem;font-weight:800;color:#fff;flex:none}
+  .tick{background:var(--verde)} .cross{background:var(--terra)}
+  .listbox ul{list-style:none; margin:0; padding:0}
+  .listbox li{padding:9px 0; border-top:1px dashed var(--gris-300); font-size:.95rem}
+  .listbox li:first-child{border-top:none}
+
+  /* ===== Generic table ===== */
+  table{width:100%; border-collapse:collapse; font-size:.94rem; background:#fff; border-radius:var(--radio-card); overflow:hidden; box-shadow:var(--sombra)}
+  th{background:var(--verde-100); text-align:left; font-weight:700; padding:13px 16px; font-size:.82rem; letter-spacing:.04em; text-transform:uppercase; color:var(--verde-800)}
+  td{padding:13px 16px; border-top:1px solid var(--gris-300); vertical-align:top}
+  td .modelo{font-weight:800; color:var(--verde)}
+  .num-xl{font-weight:800; color:var(--terra)}
+
+  /* ===== Objeciones ===== */
+  .obj{background:#fff; border:1px solid var(--gris-300); border-radius:var(--radio-card); padding:20px 22px; box-shadow:var(--sombra)}
+  .obj .q{font-weight:800; color:var(--carbon); margin-bottom:8px}
+  .obj .q::before{content:"“"} .obj .q::after{content:"”"}
+  .obj .a{font-size:.95rem; color:#41463f}
+  .obj .a strong{color:var(--verde-800)}
+
+  /* ===== Colores ===== */
+  .swatch{border-radius:var(--radio-card); overflow:hidden; border:1px solid var(--gris-300); background:#fff; cursor:pointer}
+  .swatch .chiparea{height:84px} .swatch .meta{padding:12px 14px}
+  .swatch .name{font-weight:800; font-size:.95rem} .swatch .hex{font-size:.82rem; color:#6b6f68; font-family:ui-monospace,monospace}
+  .swatch .use{font-size:.78rem; color:#6b6f68; margin-top:3px}
+  .copyhint{font-size:.7rem; color:var(--verde); font-weight:700; opacity:0; transition:.2s}
+  .swatch:hover .copyhint{opacity:1}
+
+  /* 70/20/10 bar */
+  .ratio{display:flex; height:54px; border-radius:var(--radio-btn); overflow:hidden; font-weight:800; color:#fff; box-shadow:var(--sombra)}
+  .ratio div{display:grid; place-items:center; font-size:.85rem}
+
+  /* ===== Logo zone ===== */
+  .logo-board{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .logo-cell{border-radius:var(--radio-card); padding:30px; display:grid; place-items:center; min-height:150px; border:1px solid var(--gris-300)}
+  .logo-cell img{max-width:80%; height:auto}
+  .lc-crema{background:var(--crema)} .lc-white{background:#fff}
+  .lc-verde{background:var(--verde)}
+  .lc-verde .iso-mask{width:96px;height:96px;background:var(--crema);
+    -webkit-mask:url(/assets/mercado-casa-isotipo.png) center/contain no-repeat;
+    mask:url(/assets/mercado-casa-isotipo.png) center/contain no-repeat}
+  .dl{display:inline-flex; align-items:center; gap:8px; background:var(--terra); color:var(--crema);
+    font-weight:700; font-size:.9rem; padding:11px 18px; border-radius:var(--radio-btn); margin:6px 8px 0 0}
+  .dl:hover{filter:brightness(.94)}
+
+  /* ===== Copy snippets ===== */
+  .snippet{background:#fff; border:1px solid var(--gris-300); border-left:4px solid var(--verde);
+    border-radius:var(--radio-btn); padding:16px 18px; position:relative}
+  .snippet p{margin:0; font-size:.95rem}
+  .snippet .label{font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--verde); margin-bottom:6px}
+  .copybtn{position:absolute; top:12px; right:12px; background:var(--verde-100); border:none; color:var(--verde-800);
+    font-weight:700; font-size:.74rem; padding:6px 10px; border-radius:6px; cursor:pointer; font-family:inherit}
+  .copybtn:hover{background:var(--verde); color:var(--crema)}
+
+  /* ===== Footer ===== */
+  footer{background:var(--carbon); color:rgba(247,242,234,.75); font-size:.85rem}
+  footer .wrap{padding:46px 24px}
+  footer .logo-crema{margin-bottom:18px}
+  footer strong{color:var(--crema)}
+
+  .note{font-size:.82rem; color:#6b6f68}
+  hr.soft{border:none; border-top:1px solid var(--gris-300); margin:34px 0}
+
+  @media print{
+    .toc{display:none} .dl{display:none} .copybtn{display:none}
+    body{background:#fff} section{padding:24px 0} .card,table,.obj,.snippet{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== HERO ========== -->
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="logo-crema" role="img" aria-label="Mercado Casa"></div>
+      <span class="badge">Manual de comunicación · Vendedores</span>
+    </div>
+    <p class="eyebrow" style="color:rgba(247,242,234,.8)">Para quienes salen a vender</p>
+    <h1>Vendé las casas de la Línea VIVE hablando como Mercado Casa.</h1>
+    <p class="lead">Esta es la guía corta y oficial. Lo que tenés que decir, cómo nombrarlo y cómo se ve la marca cuando la mostrás. Si una pieza tuya contradice este manual, la pieza está mal.</p>
+    <div class="hero-meta">
+      <span class="chip">Doc · MC-MM-001</span>
+      <span class="chip">Versión 1.5</span>
+      <span class="chip">Verde Vivo #2A8B4E</span>
+      <span class="chip">Tipografía Manrope</span>
+    </div>
+  </div>
+</header>
+
+<!-- ========== TOC ========== -->
+<nav class="toc" aria-label="Índice">
+  <div class="wrap">
+    <a href="#esencia">Qué vendemos</a>
+    <a href="#nombres">Cómo nombrar</a>
+    <a href="#claims">Frases oficiales</a>
+    <a href="#voz">Cómo hablar</a>
+    <a href="#objeciones">Objeciones</a>
+    <a href="#cierre">Cierre</a>
+    <a href="#linea">Línea VIVE</a>
+    <a href="#identidad">Identidad</a>
+    <a href="#logo">Logo</a>
+    <a href="#listo">Listo para usar</a>
+  </div>
+</nav>
+
+<!-- ========== 1 · ESENCIA ========== -->
+<section id="esencia">
+  <div class="wrap">
+    <p class="eyebrow">01 · Lo que vendemos</p>
+    <h2>Una casa propia que se paga como un alquiler.</h2>
+    <p class="lead">Mercado Casa es acceso real a la primera vivienda: construcción semi-industrializada, precio cerrado en pesos y entrega en menos de 6 meses. No vendemos “lo barato”: vendemos lo inteligente.</p>
+    <div class="grid g3" style="margin-top:26px">
+      <div class="card green">
+        <h3>La promesa central</h3>
+        <p style="margin-bottom:0">Pagás como un alquiler. Pero es tuya. Y cuando tu familia crece, la casa crece.</p>
+      </div>
+      <div class="card soft">
+        <h3>El enemigo</h3>
+        <p style="margin-bottom:0">El alquiler. No el ladrillo, no la competencia. Cada peso de alquiler construye la riqueza de otro; cada cuota de Mercado Casa, la propia.</p>
+      </div>
+      <div class="card">
+        <h3>Las 3 certezas</h3>
+        <p style="margin-bottom:0">Entrega en <strong>menos de 6 meses</strong>. <strong>Precio cerrado</strong> al firmar. Casa <strong>evolutiva</strong>: sumás dormitorios cuando los necesitás.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2 · NOMBRES (reglas duras) ========== -->
+<section id="nombres" style="background:var(--verde-100)">
+  <div class="wrap">
+    <p class="eyebrow">02 · Cómo nombrar todo</p>
+    <h2>Reglas que no se negocian.</h2>
+    <p class="lead">Decir el nombre mal confunde la marca. Memorizá estas seis.</p>
+    <div class="sino" style="margin-top:24px">
+      <div class="listbox">
+        <h3><span class="tick">✓</span> Decí siempre</h3>
+        <ul>
+          <li><strong>Mercado Casa</strong> — dos palabras, mayúscula inicial en cada una.</li>
+          <li><strong>Línea VIVE</strong> — la línea de modelos.</li>
+          <li><strong>VIVE 28 / 38 / 48 / 58 / 63</strong> — el número son los m².</li>
+          <li><strong>Sistema InBuild de EFI</strong> — el sistema constructivo.</li>
+          <li><strong>Construcción semi-industrializada</strong>.</li>
+          <li><strong>Casa evolutiva</strong> — crece con la familia.</li>
+        </ul>
+      </div>
+      <div class="listbox">
+        <h3><span class="cross">✕</span> Nunca digas</h3>
+        <ul>
+          <li>“MercadoCasa”, “MERCADOCASA” ni “mercadocasa”.</li>
+          <li><strong>“MaCasa”</strong> como marca — es solo la razón social (MaCasa Holdings SRL).</li>
+          <li><strong>“Prefabricado”, “modular” ni “container”</strong>.</li>
+          <li>“Industrializado” sin el “semi-”.</li>
+          <li>Prometer entrega en 3 meses.</li>
+          <li>Usar <strong>azul</strong> en una pieza (es de MaCasa Holdings y STREK).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3 · CLAIMS ========== -->
+<section id="claims">
+  <div class="wrap">
+    <p class="eyebrow">03 · Las frases oficiales</p>
+    <h2>Cuatro claims. Cada uno tiene su momento.</h2>
+    <p class="lead">Usalos tal cual. No inventes variantes nuevas.</p>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="claim terra">
+        <div><div class="big">Llegaste.</div></div>
+        <div class="when">Emocional · cierre. Entrega de llaves, firma, post-venta. Le habla al pecho.</div>
+      </div>
+      <div class="claim">
+        <div><div class="big">Tu plata, tu casa.</div></div>
+        <div class="when">Racional · cuando el cliente evalúa y compara. Le habla a la cabeza.</div>
+      </div>
+      <div class="claim">
+        <div><div class="big">Pagás lo mismo. Pero es tuya.</div></div>
+        <div class="when">Campaña · el argumento más letal cuando la cuota ≈ el alquiler.</div>
+      </div>
+      <div class="claim">
+        <div><div class="big">Tu casa crece con vos.</div></div>
+        <div class="when">Producto · explica la Línea VIVE evolutiva frente a una casa terminada.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4 · VOZ Y TONO ========== -->
+<section id="voz" style="background:var(--verde-100)">
+  <div class="wrap">
+    <p class="eyebrow">04 · Cómo hablamos</p>
+    <h2>Cercano, claro, optimista, concreto.</h2>
+    <p class="lead">Hablás como una persona, no como una empresa. Tuteás siempre. Frases cortas, una idea por oración, cifras reales.</p>
+    <div class="sino" style="margin-top:24px">
+      <div class="listbox">
+        <h3><span class="tick">✓</span> Siempre</h3>
+        <ul>
+          <li>Tutear (vos / te / tu).</li>
+          <li>Comparar contra el alquiler.</li>
+          <li>Cifras concretas: “menos de 6 meses”, “28 m²”, “cuota desde $…”.</li>
+          <li>Verbos en presente y en modo activo.</li>
+          <li>Mostrar familias reales en casas terminadas.</li>
+        </ul>
+      </div>
+      <div class="listbox">
+        <h3><span class="cross">✕</span> Nunca</h3>
+        <ul>
+          <li>“Usted” ni lenguaje formal de banco.</li>
+          <li>Diminutivos infantilizantes (“casita”, “metritos”).</li>
+          <li>Promesas vacías (“la casa de tus sueños”).</li>
+          <li>Comparar contra otras constructoras.</li>
+          <li>Emojis decorativos ni emoji en el primer mensaje.</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="soft" />
+    <h3>Glosario rápido</h3>
+    <table style="margin-top:10px">
+      <thead><tr><th>Decí</th><th>En lugar de</th></tr></thead>
+      <tbody>
+        <tr><td><span class="modelo">Casa propia</span></td><td>Unidad habitacional</td></tr>
+        <tr><td><span class="modelo">Cuota mensual accesible</span></td><td>Mensualidad / canon</td></tr>
+        <tr><td><span class="modelo">Construcción semi-industrializada</span></td><td>Prefabricado / modular</td></tr>
+        <tr><td><span class="modelo">Plazo de entrega inferior a 6 meses</span></td><td>Tiempo de obra / aproximadamente</td></tr>
+        <tr><td><span class="modelo">Precio cerrado al firmar</span></td><td>Presupuesto</td></tr>
+        <tr><td><span class="modelo">Financiación accesible (en pesos)</span></td><td>Crédito / hipoteca</td></tr>
+        <tr><td><span class="modelo">Casa evolutiva</span></td><td>Ampliable / extensible</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== 5 · OBJECIONES ========== -->
+<section id="objeciones">
+  <div class="wrap">
+    <p class="eyebrow">05 · Las 4 objeciones</p>
+    <h2>Lo que te van a preguntar — y qué respondés.</h2>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="obj">
+        <p class="q">¿Es una casa de verdad o un container?</p>
+        <p class="a">Es <strong>construcción semi-industrializada</strong>. Estructura de acero galvanizado, paneles aislados con poliuretano de 70 mm, placa OSB con pintura hidrófuga. Una casa fija, en terreno propio.</p>
+      </div>
+      <div class="obj">
+        <p class="q">¿Cómo es la financiación?</p>
+        <p class="a">Tenemos <strong>esquema accesible en pesos</strong>. El detalle exacto depende de tu perfil — pasame ingreso y modelo de interés y te lo arma un asesor.</p>
+      </div>
+      <div class="obj">
+        <p class="q">¿Cuánto pago por mes?</p>
+        <p class="a">Depende del modelo y del plazo. Pasame <strong>ingreso y modelo</strong> y te muestro la cuota estimada hoy.</p>
+      </div>
+      <div class="obj">
+        <p class="q">¿Cuándo me la entregan?</p>
+        <p class="a"><strong>Menos de 6 meses</strong> desde la firma del boleto. Es contractual, no una estimación.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:16px">Mientras el esquema de financiación esté abierto, hablá de “financiación accesible en pesos” y “sujeto a calificación”. No cierres números de financiación públicamente.</p>
+  </div>
+</section>
+
+<!-- ========== 6 · CIERRE ========== -->
+<section id="cierre" style="background:var(--carbon); color:var(--crema)">
+  <div class="wrap">
+    <p class="eyebrow" style="color:#F4C9BC">06 · El cierre</p>
+    <h2 style="color:var(--crema)">Cuatro argumentos, en orden de impacto.</h2>
+    <div class="grid g2" style="margin-top:24px">
+      <div style="display:flex; gap:16px"><span class="num">1.</span><p style="margin:0"><strong style="color:var(--crema)">Plazo contractual.</strong> Menos de 6 meses: sabés cuándo te mudás. Fin de la incertidumbre del ladrillo tradicional.</p></div>
+      <div style="display:flex; gap:16px"><span class="num">2.</span><p style="margin:0"><strong style="color:var(--crema)">Precio cerrado al firmar.</strong> No hay ajuste por obra. Lo que firmás es lo que pagás.</p></div>
+      <div style="display:flex; gap:16px"><span class="num">3.</span><p style="margin:0"><strong style="color:var(--crema)">Cuota accesible en pesos.</strong> Calculada sobre tu ingreso real. Te la mostramos hoy con tu situación.</p></div>
+      <div style="display:flex; gap:16px"><span class="num">4.</span><p style="margin:0"><strong style="color:var(--crema)">Casa evolutiva.</strong> Empezás en VIVE 28 con la cuota más baja y sumás dormitorios cuando la familia crece. La casa te sigue.</p></div>
+    </div>
+    <p class="lead" style="color:rgba(247,242,234,.92); margin-top:30px">Y el cierre de todo: <strong style="color:#F4C9BC">“Tu casa crece con vos. Llegaste.”</strong></p>
+  </div>
+</section>
+
+<!-- ========== 7 · LÍNEA VIVE ========== -->
+<section id="linea">
+  <div class="wrap">
+    <p class="eyebrow">07 · La Línea VIVE</p>
+    <h2>Cinco modelos. El número son los m².</h2>
+    <p class="lead">Todos con sistema InBuild de EFI. El comprador empieza chico y va sumando: VIVE 28 → 38 → 48 → 58 → 63.</p>
+    <table style="margin-top:22px">
+      <thead><tr><th>Modelo</th><th>m²</th><th>Composición</th><th>Apto para</th></tr></thead>
+      <tbody>
+        <tr><td><span class="modelo">VIVE 28</span></td><td>28 m²</td><td>Cocina, living, 1 baño</td><td>Pareja sin hijos / arranque solo</td></tr>
+        <tr><td><span class="modelo">VIVE 38</span></td><td>38 m²</td><td>+ 1 dormitorio</td><td>Pareja, primer hijo</td></tr>
+        <tr><td><span class="modelo">VIVE 48</span></td><td>48 m²</td><td>+ 2 dormitorios</td><td>Familia chica</td></tr>
+        <tr><td><span class="modelo">VIVE 58</span></td><td>58 m²</td><td>+ 3 dormitorios</td><td>Familia con 2–3 hijos</td></tr>
+        <tr><td><span class="modelo">VIVE 63</span></td><td>63 m²</td><td>2 baños, 3 dormitorios</td><td>Familia consolidada</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ========== 8 · IDENTIDAD (colores + tipo) ========== -->
+<section id="identidad" style="background:var(--verde-100)">
+  <div class="wrap">
+    <p class="eyebrow">08 · Identidad mínima</p>
+    <h2>Los colores y la tipografía.</h2>
+    <p class="lead">Tocá un color para copiar el código. Verde manda, crema respira, terracota acentúa.</p>
+
+    <div class="grid g3" style="margin-top:24px">
+      <div class="swatch" data-hex="#2A8B4E"><div class="chiparea" style="background:#2A8B4E"></div><div class="meta"><div class="name">Verde Vivo</div><div class="hex">#2A8B4E</div><div class="use">Color institucional. Logo, fondos, títulos.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+      <div class="swatch" data-hex="#F7F2EA"><div class="chiparea" style="background:#F7F2EA; border-bottom:1px solid var(--gris-300)"></div><div class="meta"><div class="name">Crema Hogar</div><div class="hex">#F7F2EA</div><div class="use">Fondo principal. Reemplaza al blanco.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+      <div class="swatch" data-hex="#C2563A"><div class="chiparea" style="background:#C2563A"></div><div class="meta"><div class="name">Terracota Llave</div><div class="hex">#C2563A</div><div class="use">Solo CTAs y cifras destacadas. Nunca decorativo.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+      <div class="swatch" data-hex="#1A1F1C"><div class="chiparea" style="background:#1A1F1C"></div><div class="meta"><div class="name">Carbón</div><div class="hex">#1A1F1C</div><div class="use">Texto del cuerpo y modo oscuro.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+      <div class="swatch" data-hex="#1A5733"><div class="chiparea" style="background:#1A5733"></div><div class="meta"><div class="name">Verde Vivo 800</div><div class="hex">#1A5733</div><div class="use">Hover, sombras, separadores fuertes.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+      <div class="swatch" data-hex="#E6F4EC"><div class="chiparea" style="background:#E6F4EC; border-bottom:1px solid var(--gris-300)"></div><div class="meta"><div class="name">Verde Vivo 100</div><div class="hex">#E6F4EC</div><div class="use">Fondos suaves, badges, estados.</div><div class="copyhint">Tocá para copiar →</div></div></div>
+    </div>
+
+    <hr class="soft" />
+    <div class="grid g2">
+      <div>
+        <h3>Regla 70 / 20 / 10</h3>
+        <p>Toda pieza respeta esta proporción de superficie.</p>
+        <div class="ratio">
+          <div style="background:var(--verde); flex:70">70% Verde</div>
+          <div style="background:var(--crema); color:var(--carbon); flex:20; box-shadow:inset 0 0 0 1px var(--gris-300)">20% Crema</div>
+          <div style="background:var(--terra); flex:10">10%</div>
+        </div>
+      </div>
+      <div>
+        <h3>Tipografía: Manrope</h3>
+        <p style="margin-bottom:6px">Gratuita (Google Fonts). Es la única familia de la marca.</p>
+        <p style="font-weight:800; font-size:1.5rem; margin:0; letter-spacing:-.02em">Pagás como un alquiler.</p>
+        <p style="font-weight:400; margin:2px 0 0">Títulos en ExtraBold (800), a la izquierda, sin justificar. Cuerpo en Regular (400). Cifras de cuota y plazo en Bold y, si se puede, en Terracota.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 9 · LOGO ========== -->
+<section id="logo">
+  <div class="wrap">
+    <p class="eyebrow">09 · El logo</p>
+    <h2>Usá el archivo oficial. No lo recrees.</h2>
+    <p class="lead">Descargá el logo y pegalo tal cual en tu folleto, firma o cartel. No lo redibujes en Canva ni cambies su color.</p>
+
+    <div class="logo-board" style="margin-top:24px">
+      <div class="logo-cell lc-crema"><img src="/assets/mercado-casa-lockup.png" alt="Logo Mercado Casa sobre crema" /></div>
+      <div class="logo-cell lc-white"><img src="/assets/mercado-casa-lockup.png" alt="Logo Mercado Casa sobre blanco" /></div>
+      <div class="logo-cell lc-verde"><div class="iso-mask" role="img" aria-label="Isotipo en crema sobre verde"></div></div>
+    </div>
+
+    <div style="margin-top:18px">
+      <a class="dl" href="/assets/mercado-casa-lockup.png" download>⬇ Logo completo (PNG)</a>
+      <a class="dl" href="/assets/mercado-casa-isotipo.png" download>⬇ Solo isotipo (PNG)</a>
+    </div>
+
+    <div class="sino" style="margin-top:30px">
+      <div class="listbox">
+        <h3><span class="tick">✓</span> Sí</h3>
+        <ul>
+          <li>Verde Vivo sobre crema o blanco — es la aplicación principal.</li>
+          <li>Crema sobre verde pleno — para campañas y cartelería.</li>
+          <li>Dejá aire alrededor: un margen libre igual a la altura del isotipo.</li>
+          <li>Sobre una foto, aplicá un overlay del 40% o más para que tenga contraste.</li>
+        </ul>
+      </div>
+      <div class="listbox">
+        <h3><span class="cross">✕</span> No</h3>
+        <ul>
+          <li>No lo pongas en azul ni le cambies el color.</li>
+          <li>No lo rotes, inclines, estires ni deformes.</li>
+          <li>No le agregues sombras, brillos ni contornos.</li>
+          <li>No lo recrees en Canva/Figma: usá siempre el archivo oficial.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 10 · LISTO PARA USAR ========== -->
+<section id="listo" style="background:var(--verde-100)">
+  <div class="wrap">
+    <p class="eyebrow">10 · Listo para usar</p>
+    <h2>Copiá y pegá en tus comunicaciones.</h2>
+    <p class="lead">Textos aprobados para tu folleto, tu bio o tu WhatsApp. Tocá “Copiar”.</p>
+
+    <div class="grid g2" style="margin-top:24px">
+      <div class="snippet">
+        <div class="label">Para tu folleto / firma</div>
+        <button class="copybtn">Copiar</button>
+        <p>Comercializo las casas de la Línea VIVE de Mercado Casa: casa propia, precio cerrado en pesos y entrega en menos de 6 meses.</p>
+      </div>
+      <div class="snippet">
+        <div class="label">Bio / presentación</div>
+        <button class="copybtn">Copiar</button>
+        <p>Tu primera casa propia. Entrega en menos de 6 meses. Cuotas en pesos. Línea VIVE desde 28 m².</p>
+      </div>
+      <div class="snippet">
+        <div class="label">Saludo de WhatsApp</div>
+        <button class="copybtn">Copiar</button>
+        <p>Hola, soy [Tu nombre]. Comercializo Mercado Casa. ¿En qué te ayudo?</p>
+      </div>
+      <div class="snippet">
+        <div class="label">Cierre de mensaje</div>
+        <button class="copybtn">Copiar</button>
+        <p>Pasame tu ingreso y el modelo que te interesa y te muestro la cuota estimada hoy. Te acompaño en todo el proceso.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:20px">Firmá siempre como: <strong>[Tu nombre] · Comercializa Mercado Casa</strong> + tu contacto. Nunca uses “MaCasa” como marca ni cierres números de financiación por escrito.</p>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="wrap">
+    <div class="logo-crema" role="img" aria-label="Mercado Casa"></div>
+    <p><strong>Mercado Casa — Manual de comunicación para vendedores.</strong> Síntesis del Manual de Marca oficial (Doc MC-MM-001 · v1.5). Este documento es la fuente de verdad: si una pieza lo contradice, la pieza está mal.</p>
+    <p>MaCasa Holdings SRL comercializa Mercado Casa · Buenos Aires, Argentina. Verde Vivo #2A8B4E · Tipografía Manrope · Regla 70/20/10.</p>
+  </div>
+</footer>
+
+<script>
+  // Copiar HEX de color
+  document.querySelectorAll('.swatch').forEach(s=>{
+    s.addEventListener('click',()=>{
+      const hex=s.dataset.hex;
+      navigator.clipboard?.writeText(hex);
+      const hint=s.querySelector('.copyhint');
+      const prev=hint.textContent; hint.textContent='¡Copiado! '+hex; hint.style.opacity=1;
+      setTimeout(()=>{hint.textContent=prev; hint.style.opacity=''},1400);
+    });
+  });
+  // Copiar snippets
+  document.querySelectorAll('.snippet').forEach(box=>{
+    const btn=box.querySelector('.copybtn'); const txt=box.querySelector('p').textContent.trim();
+    btn.addEventListener('click',()=>{
+      navigator.clipboard?.writeText(txt);
+      const prev=btn.textContent; btn.textContent='¡Copiado!';
+      setTimeout(()=>btn.textContent=prev,1300);
+    });
+  });
+</script>
+</body>
+</html>
