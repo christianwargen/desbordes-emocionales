@@ -21,13 +21,26 @@ las cosas, qué frases usar, cómo responder objeciones, cómo cerrar y cómo se
 ## Estructura
 
 ```
-index.html                       Manual completo (single page, sin build)
+index.html                                Manual completo (single page, sin build)
 assets/
-  mercado-casa-lockup.png        Logo completo (isotipo + wordmark) · Verde Vivo · 3200×1000 RGBA
-  mercado-casa-isotipo.png       Solo isotipo M-casa · Verde Vivo · 2048×2048 RGBA
+  mercado-casa-lockup.png                 Logo completo (isotipo + wordmark) · Verde Vivo · 3200×1000 RGBA
+  mercado-casa-isotipo.png                Solo isotipo M-casa · Verde Vivo · 2048×2048 RGBA
+  Manual-Comunicacion-Mercado-Casa.pdf    Folleto A4 imprimible (6 págs.) — descargable desde la web
+build/
+  pdfgen.py                               Genera el PDF (Python stdlib; decodifica el PNG e incrusta la marca)
 ```
 
 Sitio 100% estático: se sirve tal cual, sin paso de compilación. Compatible con Vercel (zero-config).
+
+### Regenerar el PDF
+
+```bash
+python3 build/pdfgen.py    # reescribe assets/Manual-Comunicacion-Mercado-Casa.pdf
+```
+
+## Contacto
+
+Ante cualquier duda de comunicación o de venta: **ventas@mercadocasa.com.ar**.
 
 ## Notas de marca
 
