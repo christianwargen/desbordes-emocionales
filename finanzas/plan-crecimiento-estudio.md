@@ -115,30 +115,64 @@ necesitás una avalancha de clientes; necesitás los correctos.
 
 ---
 
-## 7) Lo que falta definir (clave para el plan)
+## 7) Tu capacidad y el modelo operativo (RESUELTO — y es buena noticia)
 
-No me dijiste tu **capacidad**, y define cuánto podés crecer sin romper la calidad (y sin
-poner en riesgo al holding, que es lo que te sostiene):
+La duda era si el cuello de botella para duplicar iba a ser tu tiempo. La respuesta: **es
+temporal, no estructural.** Tu negocio puede escalar. Por qué:
 
-- ¿Cuántas **horas/semana** le dedicás hoy al estudio? ¿Cuántas más podrías?
-- ¿Trabajás **solo** o con alguien?
-- Si sumás 1–2 clientes grandes, ¿lo podés ejecutar vos o vas a necesitar **delegar la
-  producción** (editor, redactor) para que vos te enfoques en estrategia + vender?
+- **Lo de alto valor lo hacés vos y bien:** estrategia, posicionamiento y **guiones** para las
+  3 marcas. Eso es tu núcleo y tu ventaja.
+- **Lo comoditizable se delega:** la **edición de video** ya la podés tercerizar —tenés una
+  editora y podés sumar más si hace falta—. Eso es producción, no estrategia.
+- **El 100% de tu tiempo de hoy es engañoso:** estás invirtiendo de más en detalles y en
+  aprender porque es tu primer mes con el holding. **A medida que automatizás, eso se acelera
+  y libera horas.** El techo que sentís es la curva de aprendizaje, no tu capacidad real.
 
-> Probablemente el cuello de botella para duplicar no sea conseguir clientes, sino **tu tiempo.**
-> Si es así, el movimiento es delegar ejecución y que vos quedes para lo que nadie más puede
-> hacer: vender, estrategia y la relación con los clientes grandes.
+### Tu modelo operativo (este es el que escala)
+
+```
+   VOS  →  estrategia + guiones + ventas + relación con clientes grandes   (alto valor, tu edge)
+EDITORES →  producción/edición de video                                    (delegable, escalable)
+```
+
+- **Sumás clientes sumando editores, no sumando tus horas.** Ese es el desbloqueo: cada cliente
+  nuevo no te consume a vos, consume capacidad de producción que se contrata.
+- **Vos te corrés hacia lo que nadie más hace:** vender y la estrategia de los clientes grandes.
+
+### El cuidado con la delegación (que no te coma el margen)
+
+Delegar edición tiene un costo y vas a "perder un poco de ingreso" ahí. Bien manejado, es una
+gran inversión, **pero el precio al cliente tiene que cubrir al editor con margen.** Regla:
+
+> 💡 El costo del editor es un **costo de producción**, no sale de tu bolsillo: se mete dentro
+> del precio del paquete. Vos cobrás estrategia + guion + producción, y la producción ya
+> tiene adentro lo que le pagás al editor. Así crecés en clientes **sin** licuar tu ganancia.
+
+### Oportunidad escondida: upsell dentro del propio holding
+
+Mencionaste que los guiones hoy los estás haciendo a fondo para **1 de las 3 marcas**. A medida
+que estandarizás el proceso para las tres, ese mismo cliente puede ser la base para **más
+servicios o más marcas** en el futuro: crecer dentro de una cuenta que ya te paga es lo más
+barato que existe.
 
 ---
 
 ## 8) Acciones para esta semana
 
-1. **Holding:** definir qué métrica/resultado vas a mostrarles al mes 2–3 para asegurar renovación.
-2. **Veterinaria:** mandar un mensaje cerrando el arranque (está tibia, hay que activarla).
-3. **Precios:** escribir tus 2–3 paquetes con precio fijo. Aplicarlos al próximo cliente nuevo.
-4. **Referidos:** pedir explícitamente 1 presentación a cada cliente contento + al socio gerente.
-5. **Responder lo de capacidad** (punto 7) → con eso afinamos si el plan es solo vender o
-   también armar equipo.
+1. **Liberar tu tiempo:** definir qué de la **edición** delegás ya a tu editora, para empezar a
+   abrir horas para vender. Aunque al principio resigne un poco de margen, ese tiempo lo
+   reinvertís en conseguir el próximo cliente grande (que vale mucho más).
+2. **Precios con editor adentro:** escribir tus 2–3 paquetes con precio fijo, **con el costo de
+   producción/edición ya incluido y con margen.** Aplicarlos al próximo cliente nuevo.
+3. **Holding:** definir qué métrica/resultado vas a mostrarles al mes 2–3 para asegurar
+   renovación, y completar bien las 3 marcas.
+4. **Veterinaria:** mandar un mensaje cerrando el arranque (está tibia, hay que activarla).
+5. **Referidos:** pedir explícitamente 1 presentación a cada cliente contento + al socio gerente
+   (especialmente a otros dueños de empresa/holdings).
 
-*Cuando definamos capacidad y los primeros movimientos, actualizamos este documento y le
-ponemos números/fechas a cada paso.*
+### El movimiento de fondo
+**No es "vender o armar equipo": es las dos, en orden.** Delegás edición → eso te libera horas →
+esas horas las usás para vender a empresas → cada cliente nuevo lo producís sumando editores, no
+tus horas. Así duplicás los ingresos sin duplicar tu carga.
+
+*A medida que arranques estos pasos, actualizamos el documento con números y fechas.*
