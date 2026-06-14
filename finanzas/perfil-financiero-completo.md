@@ -16,9 +16,11 @@
 |---|---|---|
 | País / moneda | Argentina, cobrás en pesos | Hay que dolarizar el ahorro sí o sí |
 | Capital disponible | Menos de USD 10.000 | Es tu **salvavidas**, no capital de inversión |
-| Gastos mensuales | ~6.000.000 ARS ≈ **USD 4.300/mes** (dólar 1.400) | Es tu "número" a cubrir cada mes |
-| Flujo del estudio | No cubre los gastos todavía → **flujo negativo** | 🚨 **Este es el problema #0** |
-| Ahorro mensual | Casi nada | El motor (el estudio) todavía no enciende |
+| Tu parte de los gastos | ~6.000.000 ARS ≈ **USD 4.300/mes** (dólar 1.400) | Es tu "número" a cubrir cada mes |
+| Ingreso del estudio | **USD 2.100/mes** (3 clientes: 1.500 + 400 + 200) | Cubre ~la mitad de tu parte |
+| El hueco | **~USD 2.200/mes** | Hoy lo cubren tu mujer + fondos compartidos; querés dejar de depender de eso |
+| Concentración de clientes | El cliente de 1.500 = **71% de tus ingresos** | ⚠️ Riesgo alto: si se va, caés a 600 |
+| Ahorro mensual | Cero | El motor (el estudio) todavía no llega a cubrirte |
 | Fondo de emergencia | No tenés | Objetivo: USD ~12.900 a 25.700 (3–6 meses) |
 | Deuda con hermanos | USD 34.000 (15k + 19k), **0% interés, sin plazo, respaldada por propiedades** | **No es deuda cara. No es prioridad.** |
 | Propiedades familiares | A nombre de ustedes (ya donadas) | Patrimonio real, pero **ilíquido** |
@@ -29,13 +31,18 @@
 ### La verdad central
 
 Vos venís preguntando **dónde poner plata** (lotes, empresas, bolsa, cripto). Pero tu número
-real es otro: **gastás ~USD 4.300 por mes y todavía no los generás.** Estás quemando tu
-salvavidas de menos de USD 10.000. A ese ritmo, ese colchón dura **pocos meses.**
+real es otro y ahora es medible: **el estudio genera USD 2.100 y tu parte de los gastos es
+~USD 4.300.** El hueco de ~USD 2.200/mes hoy lo tapan tu mujer y fondos compartidos —no estás
+generando deuda nueva, pero **estás dependiendo de otros para algo que querés bancar vos.**
 
-> 🔴 **Tu prioridad #0 no es invertir. Es que el estudio cubra tus USD 4.300/mes.**
-> Mientras el flujo sea negativo, cualquier charla de inversión es secundaria. La buena
-> noticia: vos ya elegiste bien el camino —"arrancar a hacer crecer el estudio"—. Eso es
-> exactamente lo correcto.
+> 🔴 **Tu prioridad #0 no es invertir. Es duplicar el estudio: de USD 2.100 a ~USD 4.300/mes.**
+> Eso cierra el hueco, te saca de depender de tu mujer y recién ahí empieza a sobrar para
+> colchón e inversión. La buena noticia: ya elegiste bien el camino —"hacer crecer el
+> estudio"— y la meta ahora es un número claro, no una sensación.
+
+> ⚠️ **Alerta de concentración:** el 71% de tus ingresos depende de **un solo cliente**. Es el
+> mismo patrón que te hundió la ferretería (depender de algo que no controlás del todo). Aunque
+> crezcas, bajar esa dependencia es parte del trabajo.
 
 ---
 
@@ -121,18 +128,22 @@ Toda tu estrategia se reduce a **diseñar para repetir lo primero y bloquear lo 
 
 ## 4) Tu plan, por etapas (con tus números reales)
 
-### 🔴 Fase 0 — Sobrevivir y encender el motor (AHORA)
+### 🔴 Fase 0 — Encender el motor (AHORA)
 
-> Tu flujo es negativo. No se trata de invertir, se trata de **dejar de quemar.**
+> Meta clara y medible: **estudio de USD 2.100 → USD 4.300/mes.** Duplicarlo. Eso cierra el
+> hueco y te saca de depender de tu mujer.
 
-1. **Foco absoluto: que el estudio cubra tus ~USD 4.300/mes.** Es la inversión de mayor retorno
-   que tenés. Concreto:
-   - Salir a pelear el mercado (hoy todavía no lo hacés).
-   - Buscar **ingresos recurrentes** (igualas/retainers de branding mensuales), no solo
-     proyectos sueltos → eso te da previsibilidad.
-   - Vos ponés el precio (a diferencia de la ferretería): **usá ese poder, revisá tarifas.**
-   - En paralelo, mirar si hay gastos personales que se puedan bajar para achicar el número
-     a cubrir mientras tanto.
+1. **Foco absoluto: cerrar el hueco de ~USD 2.200/mes con el estudio.** Es la inversión de
+   mayor retorno que tenés. Las palancas, de la más rápida a la más lenta:
+   - **Subir precios** (a los nuevos, y revisar los actuales al renovar). Vos ponés el precio,
+     a diferencia de la ferretería: **usá ese poder.** Es la palanca más rápida de todas.
+   - **Pasar de proyectos sueltos a iguala mensual** (retainer de branding): previsibilidad y
+     base recurrente, en vez de empezar de cero cada mes.
+   - **Upsell a los 3 clientes actuales:** más servicios a quien ya confía en vos (más barato
+     que conseguir clientes nuevos).
+   - **Reducir la concentración:** sumar 2–3 clientes medianos para no depender del de 1.500.
+   - **Salir a pelear el mercado** (hoy todavía no lo hacés): posicionamiento, referidos, red.
+   - En paralelo, mirar gastos personales recortables para achicar el número mientras tanto.
 2. **Proteger el salvavidas:** tus menos de USD 10.000 → **dolarizados y líquidos** (dólar MEP
    y/o stablecoins). **No los inviertas en riesgo. No pagues la deuda de tus hermanos con eso.**
    Es lo que te da meses de aire mientras el estudio arranca.
@@ -170,14 +181,18 @@ Estudio cubre tus 4.300/mes  →  colchón en dólares  →  aporte mensual a í
 
 ---
 
-## 5) Próximos pasos concretos (esta semana)
+## 5) Próximos pasos concretos
 
-1. **Número del estudio:** ¿cuánto factura hoy por mes y cuánto le falta para llegar a tus
-   USD 4.300? (así medimos el "hueco" exacto a cerrar).
-2. **Runway:** con tus <10k y un gasto de ~4.300/mes, calculá cuántos meses de aire te quedan
-   si el estudio no crece. Ese número marca la urgencia.
-3. **Gastos personales:** ¿hay algo recortable para bajar el número mientras el estudio arranca?
-4. Pasame esos datos y **diseñamos juntos el plan de crecimiento del estudio** (precios,
-   iguala mensual, salir al mercado), que es tu verdadera prioridad #1.
+**El objetivo está claro: estudio de USD 2.100 → 4.300/mes.** Para diseñar el plan de
+crecimiento necesito entender mejor el estudio:
 
-*Cuando los tengas, los volcamos acá y actualizamos el documento.*
+1. **Tus 3 clientes:** ¿qué les vendés exactamente y cómo cobrás (proyecto único, mensual)?
+   ¿Hace cuánto son clientes? ¿Cuál podría pagar más o sumar servicios?
+2. **Capacidad:** ¿cuántas horas/semana le dedicás hoy y cuántas más podrías? ¿Trabajás solo
+   o con equipo? (define cuánto podés crecer sin romperte).
+3. **De dónde salieron esos clientes:** referidos, redes, web, contactos. (ahí está la pista
+   del próximo).
+4. **Precio:** ¿cómo definiste lo que cobrás hoy? ¿Mirás lo que cobra el mercado por branding?
+
+Con esto te armo un **plan de crecimiento del estudio** (precios, iguala mensual, reducir
+concentración, conseguir clientes) como documento aparte. **Esa es tu verdadera prioridad #1.**
