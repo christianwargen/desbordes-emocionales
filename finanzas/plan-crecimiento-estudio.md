@@ -148,6 +148,29 @@ gran inversión, **pero el precio al cliente tiene que cubrir al editor con marg
 > del precio del paquete. Vos cobrás estrategia + guion + producción, y la producción ya
 > tiene adentro lo que le pagás al editor. Así crecés en clientes **sin** licuar tu ganancia.
 
+### ¿Cuándo delegar? La regla del valor por hora
+
+Hoy editás vos y te quedás esa porción del precio. Pero comparemos el **valor de tu hora**:
+
+| Una hora tuya… | Vale aprox. | |
+|---|---|---|
+| **Editando** | ~USD 15–20 (lo que le pagarías al editor) | 🟥 el uso más barato de tu tiempo |
+| **Vendiendo** | un cliente tipo holding = **USD 1.500/mes recurrente** | 🟩 el uso más caro |
+
+No están ni cerca. Quedarte la edición es **defender monedas mientras dejás billetes en la mesa.**
+
+> ⚠️ **La trampa:** *"delego cuando tenga más clientes, pero no consigo clientes porque la
+> edición me come el tiempo."* Es un deadlock. Se rompe **delegando una porción primero**, como
+> inversión, para comprar el tiempo que después usás para vender.
+
+**Las 3 reglas:**
+1. **No delegues en el vacío: delegá contra un plan de ventas.** Hora liberada que no usás para
+   vender = margen perdido a cambio de nada.
+2. **La edición es compra de tiempo, no pérdida de ingreso.** Ganás si la hora recomprada
+   produce más que el margen resignado — y un cliente nuevo produce ~50x lo que cuesta el editor.
+3. **Cada cliente nuevo: su producción va a editores desde el día 1.** Nunca más dejás que la
+   edición vuelva a tu agenda.
+
 ### Oportunidad escondida: upsell dentro del propio holding
 
 Mencionaste que los guiones hoy los estás haciendo a fondo para **1 de las 3 marcas**. A medida
@@ -175,4 +198,37 @@ barato que existe.
 esas horas las usás para vender a empresas → cada cliente nuevo lo producís sumando editores, no
 tus horas. Así duplicás los ingresos sin duplicar tu carga.
 
-*A medida que arranques estos pasos, actualizamos el documento con números y fechas.*
+---
+
+## 9) Cronograma: las primeras 4 semanas para salir a vender
+
+> Meta del mes: aplicar precios nuevos, recomprar un bloque fijo de horas de venta y **tener
+> 2–3 propuestas en la calle** apuntando a 1 cliente tipo empresa/holding.
+> Meta a 60–90 días: **+1 cliente grande (+USD 1.000–1.500)** → cerca de los 4.300.
+
+### Semana 1 — Preparar la artillería
+- **Delegar a tu editora** un primer bloque (ej. la edición de 1 cliente) para liberar un
+  **bloque fijo semanal de ventas** (ej. 4–5 hs). Ponelo en el calendario y protegelo.
+- Escribir tus **2–3 paquetes con precio** (editor incluido, con margen).
+- Armar un **mini-portfolio / 1–2 casos** (con permiso, resultados del holding o lo que tengas).
+- Hacer una **lista de 15–20 prospectos** tipo "empresa/holding con varias marcas y mala
+  presencia digital".
+
+### Semana 2 — Activar lo tibio (warm)
+- **Pedir presentaciones** a cada cliente contento + al socio gerente del holding (a otros dueños).
+- Primeras reuniones/llamadas con los referidos que aparezcan.
+- Empezar a **publicar en TUS redes** (mostrar trabajo, proceso, resultados): coherencia básica.
+
+### Semana 3 — Salir en frío (outbound)
+- Contactar la lista de 15–20 con una **propuesta concreta** (no "hola, hago redes", sino
+  "vi esto de tu marca, lo mejoraría así").
+- Seguir reuniones. **Cerrar la veterinaria** (está tibia hace semanas, activala).
+
+### Semana 4 — Cerrar y medir
+- Seguimiento de todas las propuestas (la plata está en el follow-up).
+- Apuntar a **cerrar 1 cliente nuevo**, idealmente tipo empresa.
+- **Revisar números:** ¿cuántas horas liberaste?, ¿cuántas reuniones?, ¿cuántas propuestas?,
+  ¿precios nuevos aplicados? Eso te dice si el motor está girando.
+
+*A medida que arranques estos pasos, actualizamos el documento con los resultados reales,
+números y fechas.*
