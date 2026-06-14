@@ -12,6 +12,9 @@ tu negocio y tu conocimiento.
 >
 > **[`plan-crecimiento-estudio.md`](plan-crecimiento-estudio.md)** — tu prioridad #1: el plan
 > concreto para duplicar el estudio (de ~2.150 a 4.300/mes), apuntando a clientes tipo empresa/holding.
+>
+> **[`seguimiento-mensual.md`](seguimiento-mensual.md)** — planilla simple para medir el avance
+> mes a mes (ingresos, propuestas, horas, concentración). Llenala 5 minutos por mes.
 
 ## Cómo está organizado
 

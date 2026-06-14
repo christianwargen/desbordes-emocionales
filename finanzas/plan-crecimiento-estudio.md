@@ -178,6 +178,43 @@ que estandarizás el proceso para las tres, ese mismo cliente puede ser la base 
 servicios o más marcas** en el futuro: crecer dentro de una cuenta que ya te paga es lo más
 barato que existe.
 
+### Producción: automatizar, delegar o hacerlo vos
+
+No toda la edición se trata igual. Ordenala por **cuánto se repite**:
+
+| Trabajo | Naturaleza | Tratamiento |
+|---|---|---|
+| **Holding / Mercado Casa** (lineal, una toma, sin b-roll) | plantilla, repetitivo | 🤖 **Automatizar** (Remotion + Claude Code) |
+| **Mercedes** (~4 hs/video, con b-roll) | complejo, artesanal | 👤 **Delegar** a editora (y revisar precio) |
+| **Estefanía** (poco tiempo) | simple | 👤 **Delegar** a editora |
+
+**La jerarquía del apalancamiento:**
+```
+Automatizar (software, costo ~0)  >  Delegar (editor, costo bajo)  >  Hacerlo vos (carísimo)
+```
+Subí cada tarea lo más arriba posible. Vos quedás **solo** para lo que no se automatiza ni se
+delega: estrategia, guiones y ventas.
+
+**1. Automatizar lo repetitivo (Remotion):** tu instinto es bueno. Videos uniformes, una toma,
+sin b-roll = caso ideal para producción por plantilla. Construido el pipeline, cada video tiene
+costo marginal ~0 y escala infinito = margen puro.
+- *Expectativa honesta:* no es plug-and-play. Es armar un pipeline (transcribir → subtítulos →
+  recortar silencios → plantilla → render). Claude Code te ayuda, pero es un proyecto de horas.
+- *Regla:* **time-boxealo.** v1 en un fin de semana. Si funciona, tenés motor para el holding y
+  plantilla para futuros clientes templated. Si se complica, delegás. Que no sea excusa para no vender.
+
+**2. Delegar lo complejo (Mercedes, Estefanía):** ya tenés editora, pasáselo **ya**. Recuperás
+el bloque de horas más grande de un saque.
+- 🚩 **Alerta Mercedes:** 4 videos × ~4 hs = ~16 hs/mes por USD 400. Economía pésima de tu
+  tiempo. Delegá **y revisá el precio**: con editor adentro y tarifa real, o sube o no conviene.
+
+**3. Cuidado de secuencia:** automatizar y delegar son para **liberar tiempo para vender**, no
+para reemplazar la venta. Delegá ya (rápido), automatizá en paralelo (time-boxed), y el tiempo
+liberado va al cronograma de ventas. Tu prioridad #1 sigue siendo llegar a 4.300 vendiendo.
+
+> 🌱 *A futuro:* esta capacidad de producir contenido templated a costo casi cero puede volverse
+> parte de tu pitch e incluso una oferta productizada. Pero eso es Fase 2 — primero, vender.
+
 ---
 
 ## 8) Acciones para esta semana
