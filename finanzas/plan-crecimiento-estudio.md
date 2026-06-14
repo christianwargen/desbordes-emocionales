@@ -269,3 +269,53 @@ tus horas. Así duplicás los ingresos sin duplicar tu carga.
 
 *A medida que arranques estos pasos, actualizamos el documento con los resultados reales,
 números y fechas.*
+
+---
+
+## 10) Dónde y cómo buscar clientes (canales priorizados)
+
+### El orden recomendado
+
+| Prioridad | Canal | Por qué |
+|---|---|---|
+| 🥇 1 | **Referidos + Instagram** | Referidos = tu único canal probado. IG = donde vive tu cliente ideal **y** es tu portfolio |
+| 🥈 2 | **LinkedIn** | Para llegar a **decisores** de empresas/holdings (el segmento que te duplica) |
+| 🥉 3 | **Cold email** | Recién cuando sepas qué mensaje convierte. No antes |
+
+### Por qué el mail va último (no primero)
+
+El mail tienta porque escala. Pero su debilidad es esa misma: **escalás algo que todavía no
+sabés si funciona.** No tenés validado qué pitch cierra, la tasa de respuesta es baja, hay
+entregabilidad y lista que armar.
+
+> 📌 **Secuencia correcta:** usá canales de **alto contacto** (referidos, IG, LinkedIn) para
+> aprender qué mensaje engancha → recién ahí escalás ese mensaje ganador por mail.
+> **No escales algo que no sabés si funciona.**
+
+### El insight clave: tu filtro es visible
+
+Tu cliente ideal = **empresa con presencia digital floja**. Eso se **ve en Instagram**: scrolleás
+y encontrás exactamente quién te necesita. Cada cuenta mala es un **lead pre-calificado + un pitch
+servido**. El mail no te deja calificar eso.
+
+Y hay coherencia en juego: **vender redes por mail es incoherente.** Vender redes mostrando **tus**
+redes + un mini-diagnóstico de la cuenta del prospecto **es la demostración** de que sabés. El
+medio es la prueba.
+
+### Cómo abordar (value-first, no "hola, hago redes")
+
+Abordaje tipo **auditoría**:
+> *"Miré la cuenta de [marca]. Veo 3 cosas que mejoraría ya: [X], [Y], [Z]. Te armo un ejemplo
+> si te interesa."*
+
+Liderá con valor e insight, no con tu servicio. Eso te separa del 99% que manda "ofrezco gestión
+de redes".
+
+### Filtro para armar la lista (en cualquier canal)
+
+Buscá negocios que cumplan:
+- ✅ **Empresa / PyME / holding** (no individuo suelto: esos "te ven caro")
+- ✅ **Varias marcas o productos** (más cuentas = más ticket)
+- ✅ **Presencia digital floja** (poco contenido, inconsistente, mala calidad)
+- ✅ **Rubro que vende por imagen** (gastronomía, retail, inmobiliaria, estética, fitness, etc.)
+- ✅ **Capacidad de pago** (factura, tiene operación real)
