@@ -4,6 +4,12 @@ Espacio vivo para construir, revisar y poner a prueba tu estrategia de inversió
 La idea es que esto crezca con vos: lo actualizamos a medida que cambia tu capital,
 tu negocio y tu conocimiento.
 
+## 📄 Archivo para descargar
+
+> **[`perfil-financiero-completo.md`](perfil-financiero-completo.md)** — todo en un solo
+> archivo, con los números reales (gastos ~USD 4.300/mes, flujo negativo, deuda familiar).
+> **Es el documento maestro y el más actualizado.** Si vas a leer/descargar uno solo, es este.
+
 ## Cómo está organizado
 
 | Documento | Qué contiene |
