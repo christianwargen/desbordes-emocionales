@@ -9,6 +9,9 @@ tu negocio y tu conocimiento.
 > **[`perfil-financiero-completo.md`](perfil-financiero-completo.md)** — todo en un solo
 > archivo, con los números reales (gastos ~USD 4.300/mes, flujo negativo, deuda familiar).
 > **Es el documento maestro y el más actualizado.** Si vas a leer/descargar uno solo, es este.
+>
+> **[`plan-crecimiento-estudio.md`](plan-crecimiento-estudio.md)** — tu prioridad #1: el plan
+> concreto para duplicar el estudio (de ~2.150 a 4.300/mes), apuntando a clientes tipo empresa/holding.
 
 ## Cómo está organizado
 

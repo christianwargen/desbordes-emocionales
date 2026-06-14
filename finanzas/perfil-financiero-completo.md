@@ -17,7 +17,7 @@
 | País / moneda | Argentina, cobrás en pesos | Hay que dolarizar el ahorro sí o sí |
 | Capital disponible | Menos de USD 10.000 | Es tu **salvavidas**, no capital de inversión |
 | Tu parte de los gastos | ~6.000.000 ARS ≈ **USD 4.300/mes** (dólar 1.400) | Es tu "número" a cubrir cada mes |
-| Ingreso del estudio | **USD 2.100/mes** (3 clientes: 1.500 + 400 + 200) | Cubre ~la mitad de tu parte |
+| Ingreso del estudio | **~USD 2.150/mes** (3 clientes: 1.500 + 400 + 250) | Cubre ~la mitad de tu parte. Ver `plan-crecimiento-estudio.md` |
 | El hueco | **~USD 2.200/mes** | Hoy lo cubren tu mujer + fondos compartidos; querés dejar de depender de eso |
 | Concentración de clientes | El cliente de 1.500 = **71% de tus ingresos** | ⚠️ Riesgo alto: si se va, caés a 600 |
 | Ahorro mensual | Cero | El motor (el estudio) todavía no llega a cubrirte |
