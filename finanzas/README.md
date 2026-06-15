@@ -6,6 +6,9 @@ tu negocio y tu conocimiento.
 
 ## 📄 Archivo para descargar
 
+> **[`00-prompt-de-contexto.md`](00-prompt-de-contexto.md)** — cómo retomar todo esto en un
+> proyecto nuevo: setup + el prompt de arranque listo para copiar y pegar.
+>
 > **[`perfil-financiero-completo.md`](perfil-financiero-completo.md)** — todo en un solo
 > archivo, con los números reales (gastos ~USD 4.300/mes, flujo negativo, deuda familiar).
 > **Es el documento maestro y el más actualizado.** Si vas a leer/descargar uno solo, es este.
