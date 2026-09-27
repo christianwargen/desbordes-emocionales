@@ -58,3 +58,7 @@ No requiere dependencias. Para previsualizar:
 python3 -m http.server 8000
 # abrir http://localhost:8000
 ```
+
+---
+
+Otro proyecto en este repo: [**Subasta de Cracks**](./subasta-futbol/) — juego de subasta de futbolistas históricos con partido simulado.

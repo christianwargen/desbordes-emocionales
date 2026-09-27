@@ -278,6 +278,85 @@
     renderSubasta();
   }
 
+  // Revelacion de la carta al nominar (P1): bandera -> posicion -> club ->
+  // carta entera con destello. Dura <=1.5s, se saltea con un toque y se
+  // omite si el sistema pide prefers-reduced-motion.
+  function mostrarRevelacion(jugador, cb) {
+    var reducida = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducida) { cb(); return; }
+
+    var overlay = document.createElement('div');
+    overlay.className = 'revelacion';
+    var destello = jugador.categoria === 'Leyenda' ? '<div class="revelacion__destello" id="rev-destello"></div>' : '';
+    overlay.innerHTML =
+      '<div class="revelacion__contenido">' +
+      '<div class="revelacion__paso revelacion__bandera" id="rev-bandera">' + jugador.bandera + '</div>' +
+      '<div class="revelacion__paso revelacion__posicion" id="rev-posicion">' + jugador.posDetalle + '</div>' +
+      '<div class="revelacion__paso revelacion__club" id="rev-club">' + escapeHtml(jugador.club) + '</div>' +
+      '<div class="revelacion__paso revelacion__carta" id="rev-carta">' + renderCarta(jugador, { tamano: 'grande' }) + destello + '</div>' +
+      '<div class="revelacion__toque">Tocá para saltear</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    var pasos = ['rev-bandera', 'rev-posicion', 'rev-club', 'rev-carta'];
+    var timers = [];
+    var terminado = false;
+
+    function mostrarPaso(idActivo) {
+      pasos.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('activo', id === idActivo);
+      });
+      if (idActivo === 'rev-carta') {
+        var d = document.getElementById('rev-destello');
+        if (d) d.classList.add('activo');
+      }
+    }
+
+    function finalizar() {
+      if (terminado) return;
+      terminado = true;
+      timers.forEach(function (t) { clearTimeout(t); });
+      overlay.remove();
+      cb();
+    }
+
+    overlay.addEventListener('click', finalizar);
+    timers.push(setTimeout(function () { mostrarPaso('rev-bandera'); }, 10));
+    timers.push(setTimeout(function () { mostrarPaso('rev-posicion'); }, 320));
+    timers.push(setTimeout(function () { mostrarPaso('rev-club'); }, 620));
+    timers.push(setTimeout(function () { mostrarPaso('rev-carta'); }, 900));
+    timers.push(setTimeout(finalizar, 1450));
+  }
+
+  function nominarConRevelacion(managerId, jugadorId) {
+    var partido = Estado.torneo.partidoActual;
+    var jugador = idAJugador(jugadorId);
+    var lotesAntes = partido.lotes.length;
+    var nuevo;
+    try {
+      nuevo = subastaMod.nominar(partido, managerId, jugadorId);
+    } catch (e) {
+      mostrarToast(e.message);
+      return;
+    }
+    if (nuevo.lotes.length > lotesAntes) {
+      // se cerro solo (al rival no le alcanzaba ni para el $1 inicial)
+      Estado.torneo.partidoActual = nuevo;
+      var loteInfo = nuevo.lotes[nuevo.lotes.length - 1];
+      var otro = nuevo.managers.filter(function (m) { return m.id !== loteInfo.ganador; })[0].id;
+      mostrarToast(mensajeAdjudicacion(loteInfo, true, otro));
+      guardarEstado();
+      renderSubasta();
+      return;
+    }
+    mostrarRevelacion(jugador, function () {
+      Estado.torneo.partidoActual = nuevo;
+      guardarEstado();
+      renderSubasta();
+    });
+  }
+
   function botonPuja(monto, max, precioActual, etiqueta, claseExtra) {
     var deshabilitado = monto > max || monto <= precioActual || monto % CONFIG.INCREMENTO !== 0;
     return '<button type="button" class="btn ' + claseExtra + '" data-puja-monto="' + monto + '"' + (deshabilitado ? ' disabled' : '') + '>' + etiqueta + '</button>';
@@ -300,7 +379,7 @@
       document.getElementById('btn-sacar-subasta').addEventListener('click', function () {
         var jugadorId = UI.jugadorSeleccionado;
         UI.jugadorSeleccionado = null;
-        ejecutarAccionSubasta(function (p) { return subastaMod.nominar(p, turno, jugadorId); }, 'nominar');
+        nominarConRevelacion(turno, jugadorId);
       });
       document.getElementById('btn-cancelar-seleccion').addEventListener('click', function () {
         UI.jugadorSeleccionado = null;
@@ -334,7 +413,7 @@
     });
     document.getElementById('btn-azar').addEventListener('click', function () {
       var elegido = partido.mercado[Math.floor(Math.random() * partido.mercado.length)];
-      ejecutarAccionSubasta(function (p) { return subastaMod.nominar(p, turno, elegido); }, 'nominar');
+      nominarConRevelacion(turno, elegido);
     });
     document.querySelectorAll('[data-jugador-id]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -370,6 +449,9 @@
     html += '<div class="cadena">' + lote.pujas.map(function (p) {
       return '<span class="m' + (p.manager + 1) + '">' + escapeHtml(nombreManager(p.manager)) + ' ' + formatearPlata(p.monto) + '</span>';
     }).join(' → ') + '</div>';
+    if (lote.pujas.length > 0) {
+      html += '<button type="button" class="btn btn--fantasma btn--chico btn-deshacer" id="btn-deshacer">↩ Deshacer</button>';
+    }
     html += '</div></section>';
 
     document.getElementById('centro-subasta').innerHTML = html;
@@ -383,6 +465,16 @@
     var btnPasar = document.getElementById('btn-pasar');
     if (btnPasar) btnPasar.addEventListener('click', function () {
       ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); }, 'pasar');
+    });
+    var btnDeshacer = document.getElementById('btn-deshacer');
+    if (btnDeshacer) btnDeshacer.addEventListener('click', function () {
+      try {
+        Estado.torneo.partidoActual = subastaMod.deshacer(Estado.torneo.partidoActual);
+        guardarEstado();
+        renderSubasta();
+      } catch (e) {
+        mostrarToast(e.message);
+      }
     });
   }
 
@@ -750,7 +842,8 @@
     var torneo = Estado.torneo;
     var stats = calcularResumenTorneo(torneo);
 
-    var html = '<div class="campeon-trofeo">🏆</div><div class="campeon-nombre">' + escapeHtml(nombreManager(torneo.campeon)) + '</div>';
+    var colorCampeon = torneo.managers.filter(function (m) { return m.id === torneo.campeon; })[0].color;
+    var html = '<div class="campeon-trofeo">🏆</div><div class="campeon-nombre" style="color:' + colorCampeon + '">' + escapeHtml(nombreManager(torneo.campeon)) + '</div>';
     html += '<div class="campeon-resumen">';
     html += datoResumen('Partidos jugados', torneo.historial.length);
     torneo.managers.forEach(function (m) {
@@ -831,6 +924,26 @@
       });
     });
   }
+
+  // Atajos de teclado (P2): manager 1 Q/W/E/A, manager 2 P/O/I/L. Solo
+  // responden las teclas del manager al que le toca pujar.
+  document.addEventListener('keydown', function (e) {
+    if (Estado.pantalla !== 'subasta' || !Estado.torneo) return;
+    var partido = Estado.torneo.partidoActual;
+    if (!partido || !partido.lote) return;
+    var turno = partido.lote.turno;
+    var mapa = turno === 0 ? { q: 'medio', w: 'uno', e: 'dos', a: 'pasar' } : { p: 'medio', o: 'uno', i: 'dos', l: 'pasar' };
+    var accion = mapa[e.key.toLowerCase()];
+    if (!accion) return;
+    e.preventDefault();
+    if (accion === 'pasar') {
+      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); }, 'pasar');
+      return;
+    }
+    var lote = partido.lote;
+    var monto = accion === 'medio' ? lote.precio + CONFIG.INCREMENTO : accion === 'uno' ? lote.precio + 100 : lote.precio + 200;
+    ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); }, 'pujar');
+  });
 
   document.addEventListener('DOMContentLoaded', function () {
     var guardado = cargarEstadoGuardado();

@@ -109,12 +109,60 @@ simple, siguiendo adelante sin frenar a preguntar:
 - **`pendienteGol` en la calibración**: bajó de 110 a 85 (única constante tocada) para que
   los ocho escenarios de la sección 5.5 den todos OK a la vez; el resto de `CONFIG_SIM`
   quedó igual a los valores iniciales del brief.
+- **Persistencia mínima**: en `localStorage` sólo se guardan `{ torneo, pantalla }`. Los
+  resultados de partido y las probabilidades de la previa NO se cachean: como
+  `simularPartido`/`probabilidadVictoria` son determinísticos dado el seed del partido
+  (`partido.seed`), recargar en medio de la previa o del relato los vuelve a calcular
+  igual, en vez de guardar un blob más grande. Si recargás a mitad del relato animado del
+  partido, la animación arranca de nuevo desde 0' (no queda a mitad de camino), pero el
+  resultado final es el mismo siempre.
+- **Botón «🎲 Al azar»**: usa `Math.random()`, no el RNG con semilla del motor. Es sólo una
+  comodidad de UI (equivale a que la persona elija un jugador cualquiera); no afecta el
+  determinismo del mercado ni del partido, que sólo dependen del seed del torneo.
+- **Color del nombre en la pantalla Campeón**: se toma en vivo del manager que ganó
+  (`torneo.campeon`), no de un color fijo, para que ande bien sin importar quién ganó.
+- **Toast de adjudicación**: aparece abajo del todo de la pantalla (no arriba) para no
+  taparse con los títulos o el marcador de cada pantalla.
+- **Atajos de teclado (P2)**: sólo responden si hay un lote en curso y sólo las teclas del
+  manager al que le toca pujar en ese momento (`Q/W/E/A` para el manager 1, `P/O/I/L` para
+  el manager 2); no hay atajo para nominar ni para compra directa.
+- **Revelación al nominar (P1)**: bandera (0–0,3s) → posición (0,3–0,6s) → club (0,6–0,9s) →
+  carta completa con destello si es Leyenda (0,9–1,45s); se cierra sola al llegar a 1,45s,
+  se puede saltear tocando en cualquier momento, y se omite por completo si
+  `prefers-reduced-motion` está activo.
 
 ## Correcciones al CSV
 
 Ninguna. Se revisó `data/jugadores-base.csv` fila por fila (nombre, país, posición, año
 pico, club, OVR) y no se encontraron errores factuales evidentes.
 
+## Verificación en navegador
+
+Con Chromium vía Playwright (`/opt/pw-browsers`, sin `playwright install`), se automatizó
+un torneo completo (nominar/pujar/pasar/fichar al azar, previa, partido, resultado) en tres
+tamaños: 1280×800, 390×844 y 360×740. En los tres casos: `scrollWidth === clientWidth` (sin
+scroll horizontal) y cero errores de consola. También se probaron por separado: el modo
+«10 partidos» (progreso `partido N/10` correcto), recargar la página a mitad de una subasta
+(retoma exactamente la misma pantalla y el mismo partido), la pantalla de Campeón (armando
+un torneo casi terminado directamente con el motor para no tener que jugar 10 partidos
+reales), la revelación de carta al nominar, deshacer una puja, y los atajos de teclado
+(incluyendo que las teclas del manager que no tiene el turno no hagan nada). Las cartas se
+compararon a ojo contra `referencia/cartas.html`: misma estructura, mismas 4 categorías,
+arqueros con sus 6 estadísticas propias, minis con sólo OVR/posición/nombre.
+
+Durante esta verificación se encontró y corrigió un bug real: el nombre en la pantalla de
+Campeón estaba siempre pintado con el color del manager 2 (naranja), sin importar quién
+había ganado.
+
 ## Pendiente / lo que puede no estar perfecto
 
-Se termina de completar en la fase de verificación y pulido (sección 11 de `SESION.md`).
+- El modo «Primero a 100» se verificó armando el estado casi terminado directamente con el
+  motor (`torneo.js`) en vez de jugar 10-19 partidos reales por la UI uno por uno; el
+  camino completo (subasta → previa → partido → resultado → siguiente) sí se jugó de
+  punta a punta varias veces, y la máquina de estados del torneo tiene su propia batería de
+  tests (fin por los dos modos, desempate 50-50, nominación alternada).
+- Nombres de carta que llegan justo a los 12 caracteres (p. ej. «Hugo Sánchez», «Van der
+  Sar») pueden recortarse con «…» en el tamaño mini si la fuente no entra: es el
+  comportamiento propio de `cartas.css` sin modificar (`text-overflow: ellipsis`), no algo
+  que se ajustó a mano.
+- No hay sonido ni animación del partido en una cancha (fuera de alcance, sección 12).

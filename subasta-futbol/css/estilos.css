@@ -299,7 +299,7 @@ details.reglas li { margin-bottom: 6px; }
 .toast-adjudicacion {
   position: fixed;
   left: 50%;
-  top: 18px;
+  bottom: 18px;
   transform: translateX(-50%);
   background: var(--panel-alto);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -309,12 +309,14 @@ details.reglas li { margin-bottom: 6px; }
   font-size: 1.05rem;
   box-shadow: var(--sombra);
   z-index: 50;
+  max-width: calc(100vw - 32px);
+  text-align: center;
   animation: toast-in-out 1.5s ease forwards;
 }
 @keyframes toast-in-out {
-  0% { opacity: 0; transform: translate(-50%, -10px); }
+  0% { opacity: 0; transform: translate(-50%, 10px); }
   12%, 82% { opacity: 1; transform: translate(-50%, 0); }
-  100% { opacity: 0; transform: translate(-50%, -6px); }
+  100% { opacity: 0; transform: translate(-50%, 6px); }
 }
 
 /* ---------- Historial ---------- */
@@ -351,6 +353,7 @@ details.reglas li { margin-bottom: 6px; }
 .previa-equipo[data-manager="0"] .previa-equipo__nombre { color: var(--m1); }
 .previa-equipo[data-manager="1"] .previa-equipo__nombre { color: var(--m2); }
 .previa-formacion { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.previa-formacion > div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 1.1rem; line-height: 1; }
 .previa-arquero-aviso { font-size: 0.85rem; color: var(--peligro); margin-bottom: 8px; }
 
 .probabilidad-barra {
@@ -417,6 +420,33 @@ details.reglas li { margin-bottom: 6px; }
 .campeon-dato { background: var(--panel); border: 1px solid var(--panel-borde); border-radius: var(--radio-chico); padding: 14px; }
 .campeon-dato__etiqueta { font-size: 0.8rem; color: var(--texto-suave); }
 .campeon-dato__valor { font-family: var(--fuente-num); font-size: 1.3rem; }
+
+/* ---------- Revelacion al nominar (P1) ---------- */
+.revelacion {
+  position: fixed; inset: 0; z-index: 70;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(3, 10, 7, 0.92);
+  cursor: pointer;
+}
+.revelacion__contenido { position: relative; width: 260px; height: 340px; display: flex; align-items: center; justify-content: center; }
+.revelacion__paso { position: absolute; opacity: 0; transform: scale(0.8); transition: opacity 0.25s ease, transform 0.25s ease; }
+.revelacion__paso.activo { opacity: 1; transform: scale(1); }
+.revelacion__bandera { font-size: 5rem; }
+.revelacion__posicion { font-family: var(--fuente-num); font-size: 2.6rem; font-weight: 700; }
+.revelacion__club { font-family: var(--fuente-num); font-size: 1.5rem; font-weight: 600; color: var(--texto-suave); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; }
+.revelacion__destello {
+  position: absolute; inset: -40px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 60%);
+  opacity: 0;
+}
+.revelacion__destello.activo { animation: revelacion-flash 0.6s ease forwards; }
+.revelacion__toque { position: absolute; bottom: -34px; font-size: 0.8rem; color: var(--texto-suave); }
+@keyframes revelacion-flash { 0% { opacity: 0; } 35% { opacity: 0.9; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .revelacion__paso { transition: none; }
+}
+
+.btn-deshacer { margin-top: 10px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
