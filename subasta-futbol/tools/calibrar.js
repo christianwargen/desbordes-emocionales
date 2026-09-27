@@ -23,30 +23,33 @@ function porPosicionOrdenado(pos) {
   return jugadores.filter(function (j) { return j.posicion === pos; }).sort(function (a, b) { return b.ovr - a.ovr; });
 }
 
-function jugadorMasCercanoOvr(lista, ovrObjetivo, evitarId) {
+function jugadorMasCercanoOvr(lista, ovrObjetivo, evitarIds) {
   var mejor = null, mejorDist = Infinity;
   lista.forEach(function (j) {
-    if (j.id === evitarId) return;
+    if (evitarIds.indexOf(j.id) !== -1) return;
     var dist = Math.abs(j.ovr - ovrObjetivo);
     if (dist < mejorDist) { mejorDist = dist; mejor = j; }
   });
   return mejor;
 }
 
-// Arma dos equipos (1 POR + 1 DEF + 1 MED + 1 DEL cada uno): el equipo A
-// sale de un ranking medio por posicion, y para el equipo B se busca, en
-// cada posicion, al jugador cuyo OVR esta mas cerca de (OVR de A - target).
+// Arma dos equipos de 4 de campo (DEF + MED + DEL + DEL; el arquero es el
+// estandar para los dos): el equipo A sale de un ranking por posicion (el
+// segundo DEL, 12 puestos mas abajo), y para el equipo B se busca, en cada
+// lugar, al jugador cuyo OVR esta mas cerca de (OVR de A - target).
 function armarParPorDiferencia(targetDiff, rankBaseA) {
-  var posiciones = ['POR', 'DEF', 'MED', 'DEL'];
-  var listas = {};
-  posiciones.forEach(function (p) { listas[p] = porPosicionOrdenado(p); });
+  var lugares = [['DEF', 0], ['MED', 0], ['DEL', 0], ['DEL', 12]];
+  var listas = { DEF: porPosicionOrdenado('DEF'), MED: porPosicionOrdenado('MED'), DEL: porPosicionOrdenado('DEL') };
 
-  var equipoA = posiciones.map(function (p) { return listas[p][rankBaseA]; });
-  var equipoB = posiciones.map(function (p, i) {
-    return jugadorMasCercanoOvr(listas[p], equipoA[i].ovr - targetDiff, equipoA[i].id);
+  var equipoA = lugares.map(function (l) { return listas[l[0]][rankBaseA + l[1]]; });
+  var usados = equipoA.map(function (j) { return j.id; });
+  var equipoB = lugares.map(function (l, i) {
+    var elegido = jugadorMasCercanoOvr(listas[l[0]], equipoA[i].ovr - targetDiff, usados);
+    usados.push(elegido.id);
+    return elegido;
   });
   var diffReal = (equipoA.reduce(function (s, j) { return s + j.ovr; }, 0) -
-    equipoB.reduce(function (s, j) { return s + j.ovr; }, 0)) / posiciones.length;
+    equipoB.reduce(function (s, j) { return s + j.ovr; }, 0)) / lugares.length;
   return { equipoA: equipoA, equipoB: equipoB, diffReal: diffReal };
 }
 
@@ -66,25 +69,20 @@ function escenarioDiferencia(targetDiff, etiqueta) {
 
 function correrDraftsAleatorios(n, seed) {
   var random = rngMod.crearRng(seed);
-  var porteros = porPosicionOrdenado('POR');
   var campoTodos = jugadores.filter(function (j) { return j.posicion !== 'POR'; });
 
   var totalGoles = 0;
+  var aAlargue = 0;
   var aPenales = 0;
   for (var i = 0; i < n; i++) {
-    var porA = rngMod.elegir(random, porteros);
-    var campoA = rngMod.mezclar(random, campoTodos).slice(0, 3);
-    var porB = rngMod.elegir(random, porteros);
-    var campoB = rngMod.mezclar(random, campoTodos).slice(0, 3);
-    var equipoA = [porA].concat(campoA);
-    var equipoB = [porB].concat(campoB);
-
+    var mezcla = rngMod.mezclar(random, campoTodos);
     var rngPartido = rngMod.crearRng(seed + ':partido:' + i);
-    var res = sim.simularPartido(equipoA, equipoB, rngPartido);
+    var res = sim.simularPartido(mezcla.slice(0, 4), mezcla.slice(4, 8), rngPartido);
     totalGoles += res.goles[0] + res.goles[1];
+    if (res.alargue) aAlargue++;
     if (res.penales) aPenales++;
   }
-  return { golesPromedio: totalGoles / n, pctPenales: aPenales / n };
+  return { golesPromedio: totalGoles / n, pctAlargue: aAlargue / n, pctPenales: aPenales / n };
 }
 
 function pct(x) { return (x * 100).toFixed(1) + '%'; }
@@ -99,20 +97,22 @@ function agregarFila(nombre, valorTexto, objetivoTexto, ok) {
 
 // 1) Dos equipos identicos
 (function () {
-  var equipoA = [porNombreCarta('Kroos'), porNombreCarta('Ferdinand'), porNombreCarta('Griezmann'), porNombreCarta('Oblak')];
+  var equipoA = [porNombreCarta('Kroos'), porNombreCarta('Ferdinand'), porNombreCarta('Griezmann'), porNombreCarta('Hazard')];
   var equipoB = equipoA.map(function (j) { return Object.assign({}, j, { id: j.id + 100000 }); });
   var probs = sim.probabilidadVictoria(equipoA, equipoB, N, 'calib:identicos');
   var ok = probs[0] >= 0.48 && probs[0] <= 0.52;
   agregarFila('Dos equipos identicos', 'gana A ' + pct(probs[0]), '48%-52%', ok);
 })();
 
-// 2) Drafts aleatorios (1 POR + 3 de campo de todo el pool)
+// 2) Drafts aleatorios (4 de campo de todo el pool)
 (function () {
   var r = correrDraftsAleatorios(N, 'calib:drafts');
   var okGoles = r.golesPromedio >= 2.8 && r.golesPromedio <= 4.2;
-  var okPenales = r.pctPenales >= 0.15 && r.pctPenales <= 0.28;
-  agregarFila('Drafts aleatorios: goles/partido', r.golesPromedio.toFixed(2), '2.8-4.2', okGoles);
-  agregarFila('Drafts aleatorios: % a penales', pct(r.pctPenales), '15%-28%', okPenales);
+  var okAlargue = r.pctAlargue >= 0.12 && r.pctAlargue <= 0.28;
+  var okPenales = r.pctPenales <= 0.06;
+  agregarFila('Drafts aleatorios: goles/partido (90\' + alargue)', r.golesPromedio.toFixed(2), '2.8-4.2', okGoles);
+  agregarFila('Drafts aleatorios: % que van al alargue', pct(r.pctAlargue), '12%-28%', okAlargue);
+  agregarFila('Drafts aleatorios: % que llegan a penales', pct(r.pctPenales), '<=6%', okPenales);
 })();
 
 // 3) Diferencia de OVR promedio ~3
@@ -141,29 +141,20 @@ function agregarFila(nombre, valorTexto, objetivoTexto, ok) {
 
 // 6) Equipo de leyendas vs equipo modesto
 (function () {
-  var equipoA = [porNombreCarta('Yashin'), porNombreCarta('Beckenbauer'), porNombreCarta('Maradona'), porNombreCarta('Messi')];
-  var equipoB = [porNombreCarta('Zenga'), porNombreCarta('Ayala'), porNombreCarta('Bochini'), porNombreCarta('Caniggia')];
+  var equipoA = [porNombreCarta('Beckenbauer'), porNombreCarta('Maradona'), porNombreCarta('Messi'), porNombreCarta('Pelé')];
+  var equipoB = [porNombreCarta('Ruggeri'), porNombreCarta('Ayala'), porNombreCarta('Bochini'), porNombreCarta('Caniggia')];
   var probs = sim.probabilidadVictoria(equipoA, equipoB, N, 'calib:leyendas');
-  var ok = probs[0] >= 0.88 && probs[0] <= 0.95;
-  agregarFila('Yashin+Beckenbauer+Maradona+Messi vs Zenga+Ayala+Bochini+Caniggia', 'gana A ' + pct(probs[0]), '88%-95%', ok);
+  var ok = probs[0] >= 0.88 && probs[0] <= 0.96;
+  agregarFila('Beckenbauer+Maradona+Messi+Pelé vs Ruggeri+Ayala+Bochini+Caniggia', 'gana A ' + pct(probs[0]), '88%-96%', ok);
 })();
 
-// 7) Con arquero vs sin arquero
+// 7) Equilibrado vs todo ataque (mismo OVR promedio, 90)
 (function () {
-  var conArquero = [porNombreCarta('Yashin'), porNombreCarta('Messi'), porNombreCarta('Pelé'), porNombreCarta('Maradona')];
-  var sinArquero = [porNombreCarta('Cruyff'), porNombreCarta('Messi'), porNombreCarta('Pelé'), porNombreCarta('Maradona')];
-  var probs = sim.probabilidadVictoria(conArquero, sinArquero, N, 'calib:sinarquero');
-  var ok = probs[0] >= 0.80;
-  agregarFila('Con arquero (Yashin) vs sin arquero (Cruyff de campo)', 'gana con arquero ' + pct(probs[0]), '>=80%', ok);
-})();
-
-// 8) Equilibrado vs todo ataque
-(function () {
-  var equilibrado = [porNombreCarta('Kahn'), porNombreCarta('Puyol'), porNombreCarta('Gerrard'), porNombreCarta('Raúl')];
-  var todoAtaque = [porNombreCarta('Kahn'), porNombreCarta('Raúl'), porNombreCarta('Totti'), porNombreCarta('Del Piero')];
+  var equilibrado = [porNombreCarta('Nesta'), porNombreCarta('Puyol'), porNombreCarta('Gerrard'), porNombreCarta('Raúl')];
+  var todoAtaque = [porNombreCarta('Totti'), porNombreCarta('Del Piero'), porNombreCarta('Tostão'), porNombreCarta('Bergkamp')];
   var probs = sim.probabilidadVictoria(equilibrado, todoAtaque, N, 'calib:equilibrado');
-  var ok = probs[0] >= 0.52 && probs[0] <= 0.68;
-  agregarFila('Equilibrado (Kahn,Puyol,Gerrard,Raúl) vs todo ataque (Kahn,Raúl,Totti,Del Piero)', 'gana equilibrado ' + pct(probs[0]), '52%-68%', ok);
+  var ok = probs[0] >= 0.50 && probs[0] <= 0.66;
+  agregarFila('Equilibrado (Nesta,Puyol,Gerrard,Raúl) vs todo ataque (Totti,Del Piero,Tostão,Bergkamp)', 'gana equilibrado ' + pct(probs[0]), '50%-66%', ok);
 })();
 
 var anchoNombre = filas.reduce(function (m, f) { return Math.max(m, f.nombre.length); }, 'Escenario'.length);

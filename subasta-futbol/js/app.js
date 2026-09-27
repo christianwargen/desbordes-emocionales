@@ -58,6 +58,23 @@
     try { localStorage.removeItem(CLAVE_STORAGE); } catch (e) { /* nada que hacer */ }
   }
 
+  // Confirmación en dos toques, dentro de la página (sin window.confirm, que en
+  // algunos visores embebidos no se muestra y devuelve siempre "no").
+  function confirmarConDobleToque(boton, textoConfirmacion, accion) {
+    if (boton.dataset.armado === '1') {
+      clearTimeout(Number(boton.dataset.timer));
+      accion();
+      return;
+    }
+    var textoOriginal = boton.textContent;
+    boton.dataset.armado = '1';
+    boton.textContent = textoConfirmacion;
+    boton.dataset.timer = String(setTimeout(function () {
+      boton.dataset.armado = '';
+      boton.textContent = textoOriginal;
+    }, 4000));
+  }
+
   function mostrarToast(texto) {
     var cont = document.getElementById('toast-cont');
     if (!cont) return;
@@ -120,7 +137,7 @@
         '<div class="metrica__barra"><div class="metrica__relleno" style="width:' + pct + '%"></div></div>' +
         '<span class="metrica__valor">' + Math.round(val) + '</span></div>';
     }
-    return '<div class="metricas">' + barra('ATQ', m.ATQ) + barra('CRE', m.CRE) + barra('DEF', m.DEF) + barra('ARQ', m.ARQ) + '</div>';
+    return '<div class="metricas">' + barra('ATQ', m.ATQ) + barra('CRE', m.CRE) + barra('DEF', m.DEF) + '</div>';
   }
 
   // ------------------------------------------------------------------
@@ -175,10 +192,10 @@
         irA(guardado.pantalla || 'subasta');
       });
       document.getElementById('btn-descartar-torneo').addEventListener('click', function () {
-        if (window.confirm('¿Empezar un torneo nuevo? Se va a perder el torneo guardado.')) {
+        confirmarConDobleToque(this, 'Tocá de nuevo para borrar el guardado', function () {
           borrarEstadoGuardado();
           cont.innerHTML = '';
-        }
+        });
       });
     } else {
       cont.innerHTML = '';
@@ -542,13 +559,9 @@
     [0, 1].forEach(function (i) {
       var m = partido.managers[i];
       html += '<div class="previa-equipo" data-manager="' + i + '"><div class="previa-equipo__nombre">' + escapeHtml(m.nombre) + '</div>';
-      if (metricas[i].arquero.posicion !== 'POR') {
-        html += '<div class="previa-arquero-aviso">⚠️ Sin arquero: ataja ' + escapeHtml(metricas[i].arquero.nombreCarta) + '</div>';
-      }
       html += '<div class="previa-formacion">';
       equipos[i].forEach(function (j) {
-        var marca = j.id === metricas[i].arquero.id ? '🧤 ' : '';
-        html += '<div style="text-align:center">' + (marca ? '<div>' + marca + '</div>' : '') + renderCarta(j, { tamano: 'mini' }) + '</div>';
+        html += '<div style="text-align:center">' + renderCarta(j, { tamano: 'mini' }) + '</div>';
       });
       html += '</div>';
       html += renderMetricas(equipos[i]);
@@ -562,6 +575,9 @@
       '<div class="probabilidad-barra__lado" style="width:' + pA + '%;background:' + partido.managers[0].color + '">' + escapeHtml(partido.managers[0].nombre) + ' ' + pA + '%</div>' +
       '<div class="probabilidad-barra__lado" style="width:' + pB + '%;background:' + partido.managers[1].color + '">' + escapeHtml(partido.managers[1].nombre) + ' ' + pB + '%</div>' +
       '</div>';
+
+    html += '<p class="previa-nota">🧤 Los dos equipos le patean al mismo arquero (nivel ' + metricas[0].ARQ + '). ' +
+      'Si empatan: alargue con gol de oro y, si nadie la mete, penales.</p>';
 
     document.getElementById('previa-contenido').innerHTML = html;
   }
@@ -579,11 +595,11 @@
     '¡GOL, GOL, GOL! {jugador} no perdona.',
   ];
   var FRASES_ATAJADA = [
-    '{arquero} vuela y la saca. ¡Qué atajada!',
-    '{arquero} le dice que no a {pateador}.',
-    '{arquero} se estira y manda al córner.',
-    'Remate de {pateador}... y {arquero} responde presente.',
-    '{arquero} ataja como puede y salva a su equipo.',
+    'Remate de {pateador}... el arquero vuela y la saca. ¡Qué atajada!',
+    'El arquero le dice que no a {pateador}.',
+    '{pateador} le pega fuerte y el arquero manda al córner.',
+    'Tiro de {pateador}... y el arquero responde presente.',
+    '{pateador} se la quiere picar, pero el arquero la agarra.',
   ];
 
   function plantilla(texto, reemplazos) {
@@ -596,13 +612,13 @@
       var autor = idAJugador(ev.autor);
       var idx = (ev.minuto + ev.autor) % FRASES_GOL.length;
       var texto = plantilla(FRASES_GOL[idx], { jugador: autor.nombreCarta });
+      if (ev.alargue) texto = '¡GOL DE ORO! ' + texto;
       if (ev.asistencia) texto += ' Asistencia de ' + idAJugador(ev.asistencia).nombreCarta + '.';
       return texto;
     }
-    var arquero = idAJugador(ev.arquero);
     var pateador = idAJugador(ev.pateador);
-    var idx2 = (ev.minuto + ev.arquero) % FRASES_ATAJADA.length;
-    return plantilla(FRASES_ATAJADA[idx2], { arquero: arquero.nombreCarta, pateador: pateador.nombreCarta });
+    var idx2 = (ev.minuto + ev.pateador) % FRASES_ATAJADA.length;
+    return plantilla(FRASES_ATAJADA[idx2], { pateador: pateador.nombreCarta });
   }
 
   function agregarEventoDom(ev) {
@@ -646,34 +662,52 @@
     animarNoventaMinutos(resultado, partido);
   }
 
+  // Minuto en que termina el partido: 90, el del gol de oro o 120 si hubo alargue sin goles.
+  function minutoFinal(resultado) {
+    if (!resultado.alargue) return 90;
+    return resultado.alargue.golDeOro || 120;
+  }
+
+  function agregarAvisoAlargueDom() {
+    var lista = document.getElementById('eventos-lista');
+    if (!lista) return;
+    var div = document.createElement('div');
+    div.className = 'evento-item evento-item--aviso';
+    div.textContent = 'Terminan los 90 empatados. ¡Alargue con gol de oro!';
+    lista.appendChild(div);
+  }
+
   function animarNoventaMinutos(resultado, partido) {
-    var duracionTotal = 6000;
+    var msPorMinuto = 6000 / 90;
+    var fin = minutoFinal(resultado);
     var eventosOrdenados = resultado.eventos.slice().sort(function (a, b) { return a.minuto - b.minuto; });
     var goles = [0, 0];
 
     eventosOrdenados.forEach(function (ev) {
-      var t = (ev.minuto / 90) * duracionTotal;
       animacion.timers.push(setTimeout(function () {
         if (animacion.saltado) return;
         pintarReloj(ev.minuto);
         agregarEventoDom(ev);
         if (ev.tipo === 'gol') { goles[ev.equipo]++; pintarMarcador(goles); }
-      }, t));
+      }, ev.minuto * msPorMinuto));
     });
 
-    for (var min = 0; min <= 90; min += 5) {
+    if (resultado.alargue) {
+      animacion.timers.push(setTimeout(function () { if (!animacion.saltado) agregarAvisoAlargueDom(); }, 90.5 * msPorMinuto));
+    }
+
+    for (var min = 0; min <= fin; min += 5) {
       (function (m) {
-        var t = (m / 90) * duracionTotal;
-        animacion.timers.push(setTimeout(function () { if (!animacion.saltado) pintarReloj(m); }, t));
+        animacion.timers.push(setTimeout(function () { if (!animacion.saltado) pintarReloj(m); }, m * msPorMinuto));
       })(min);
     }
 
     animacion.timers.push(setTimeout(function () {
       if (animacion.saltado) return;
-      pintarReloj(90);
+      pintarReloj(fin);
       pintarMarcador(resultado.goles);
       continuarConPenalesOFinal(resultado, partido);
-    }, duracionTotal + 200));
+    }, fin * msPorMinuto + 200));
   }
 
   function continuarConPenalesOFinal(resultado, partido) {
@@ -728,9 +762,14 @@
     var lista = document.getElementById('eventos-lista');
     if (lista) {
       lista.innerHTML = '';
-      resultado.eventos.slice().sort(function (a, b) { return a.minuto - b.minuto; }).forEach(agregarEventoDom);
+      var avisoPuesto = false;
+      resultado.eventos.slice().sort(function (a, b) { return a.minuto - b.minuto; }).forEach(function (ev) {
+        if (ev.alargue && !avisoPuesto) { agregarAvisoAlargueDom(); avisoPuesto = true; }
+        agregarEventoDom(ev);
+      });
+      if (resultado.alargue && !avisoPuesto) agregarAvisoAlargueDom();
     }
-    pintarReloj(90);
+    pintarReloj(minutoFinal(resultado));
     pintarMarcador(resultado.goles);
     pintarPenalesInstantaneo(resultado);
     finalizarPartido(resultado);
@@ -765,6 +804,8 @@
     html += '<div class="resultado-marcador">' + resultado.goles[0] + ' - ' + resultado.goles[1];
     if (resultado.penales) {
       html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(pen. ' + resultado.penales.resultado[0] + '-' + resultado.penales.resultado[1] + ')</small>';
+    } else if (resultado.alargue && resultado.alargue.golDeOro) {
+      html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(gol de oro, ' + resultado.alargue.golDeOro + "')</small>";
     }
     html += '</div>';
     html += '<div class="resultado-ganador">Ganó ' + escapeHtml(nombreManager(ultimo.ganador)) + ' (+' + torneo.config.puntosPorVictoria + ')</div>';
@@ -776,7 +817,7 @@
       var goles = resultado.eventos.filter(function (e) { return e.tipo === 'gol' && e.equipo === i; });
       if (goles.length === 0) html += '<li style="color:var(--texto-suave)">Sin goles</li>';
       goles.forEach(function (e) {
-        html += '<li>⚽ ' + e.minuto + "' " + escapeHtml(idAJugador(e.autor).nombreCarta) +
+        html += '<li>⚽ ' + e.minuto + "' " + (e.alargue ? '(gol de oro) ' : '') + escapeHtml(idAJugador(e.autor).nombreCarta) +
           (e.asistencia ? ' (asist. ' + escapeHtml(idAJugador(e.asistencia).nombreCarta) + ')' : '') + '</li>';
       });
       html += '</ul></div>';
@@ -907,11 +948,14 @@
       irA('subasta');
     });
     document.getElementById('btn-nuevo-torneo-campeon').addEventListener('click', function () {
-      if (window.confirm('¿Empezar un nuevo torneo?')) {
+      var boton = this;
+      confirmarConDobleToque(boton, 'Tocá de nuevo para empezar otro', function () {
+        boton.dataset.armado = '';
+        boton.textContent = 'Nuevo torneo';
         borrarEstadoGuardado();
         Estado.torneo = null;
         irA('inicio');
-      }
+      });
     });
     document.getElementById('btn-historial-global').addEventListener('click', abrirHistorial);
     document.getElementById('form-inicio').addEventListener('submit', function (e) {
@@ -946,7 +990,7 @@
     ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); }, 'pujar');
   });
 
-  document.addEventListener('DOMContentLoaded', function () {
+  function arrancar() {
     var guardado = cargarEstadoGuardado();
     if (guardado && guardado.torneo) {
       Estado.torneo = guardado.torneo;
@@ -954,5 +998,8 @@
     }
     wireBotonesGlobales();
     irA(Estado.pantalla);
-  });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
 })();

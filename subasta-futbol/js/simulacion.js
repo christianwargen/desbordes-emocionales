@@ -8,31 +8,27 @@
 })(typeof self !== 'undefined' ? self : this, function (rngMod) {
   'use strict';
 
+  // Constantes del simulador (calibradas con tools/calibrar.js, ver README).
+  // El arquero es el mismo para los dos equipos (arqueroEstandar): los 4
+  // comprados juegan de campo y el partido lo define su destreza.
+  // Si empatan en los 90': alargue de 30' con gol de oro (una jugada cada 3');
+  // si nadie convierte, penales contra el mismo arquero.
   var CONFIG_SIM = {
     jugadas: 16,
     expPosesion: 3, posesionMin: 0.30, posesionMax: 0.70,
     baseRemate: 0.42, pendienteRemate: 75, remateMin: 0.12, remateMax: 0.92,
     baseGol: 0.36, pendienteGol: 130, golMin: 0.08, golMax: 0.80,
+    arqueroEstandar: 90,
+    jugadasAlargue: 10, minutosPorJugadaAlargue: 3,
     penalBase: 0.75, penalPendiente: 200, penalMin: 0.55, penalMax: 0.92,
   };
 
   function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
   function promedio(lista) { return lista.reduce(function (a, b) { return a + b; }, 0) / lista.length; }
 
-  // El arquero es el del plantel con mayor `arq` (desempate: MENOR OVR). Si no hay
-  // POR, todos los de campo tienen el mismo `arq`, y al arco va el mas flojo: el
-  // crack del equipo sigue jugando de campo.
-  function elegirArquero(equipo) {
-    var ordenado = equipo.slice().sort(function (a, b) {
-      if (b.arq !== a.arq) return b.arq - a.arq;
-      return a.ovr - b.ovr;
-    });
-    return ordenado[0];
-  }
-
+  // Los 4 del plantel juegan de campo; el arquero es el estandar para los dos.
   function metricasEquipo(equipo) {
-    var arquero = elegirArquero(equipo);
-    var campo = equipo.filter(function (j) { return j !== arquero; });
+    var campo = equipo.slice();
     var atas = campo.map(function (j) { return j.ata; });
     var cres = campo.map(function (j) { return j.cre; });
     var defs = campo.map(function (j) { return j.def; });
@@ -40,8 +36,7 @@
       ATQ: 0.5 * Math.max.apply(null, atas) + 0.5 * promedio(atas),
       CRE: 0.5 * Math.max.apply(null, cres) + 0.5 * promedio(cres),
       DEF: 0.3 * Math.max.apply(null, defs) + 0.7 * promedio(defs),
-      ARQ: arquero.arq,
-      arquero: arquero,
+      ARQ: CONFIG_SIM.arqueroEstandar,
       campo: campo,
     };
   }
@@ -50,134 +45,104 @@
     return rngMod.ponderado(rng, lista, function (j) { return j.ata * j.ata; });
   }
 
-  function jugarNoventaMinutos(rng, metricas) {
-    var posesionA = clamp(
-      Math.pow(metricas[0].CRE, CONFIG_SIM.expPosesion) /
-        (Math.pow(metricas[0].CRE, CONFIG_SIM.expPosesion) + Math.pow(metricas[1].CRE, CONFIG_SIM.expPosesion)),
-      CONFIG_SIM.posesionMin, CONFIG_SIM.posesionMax
+  function calcularPosesionA(metricas) {
+    var a = Math.pow(metricas[0].CRE, CONFIG_SIM.expPosesion);
+    var b = Math.pow(metricas[1].CRE, CONFIG_SIM.expPosesion);
+    return clamp(a / (a + b), CONFIG_SIM.posesionMin, CONFIG_SIM.posesionMax);
+  }
+
+  // Una jugada: ataca uno segun la posesion; puede haber remate y gol.
+  function jugarJugada(rng, metricas, posesionA, minuto, enAlargue, estado) {
+    var atacante = rng() < posesionA ? 0 : 1;
+    var defensor = 1 - atacante;
+    estado.posesion[atacante]++;
+
+    var pRemate = clamp(
+      CONFIG_SIM.baseRemate + (metricas[atacante].ATQ - metricas[defensor].DEF) / CONFIG_SIM.pendienteRemate,
+      CONFIG_SIM.remateMin, CONFIG_SIM.remateMax
     );
+    if (rng() >= pRemate) return;
+    estado.remates[atacante]++;
 
-    var minutos = [];
-    for (var i = 0; i < CONFIG_SIM.jugadas; i++) minutos.push(rngMod.entero(rng, 1, 90));
-    minutos.sort(function (a, b) { return a - b; });
-
-    var goles = [0, 0];
-    var remates = [0, 0];
-    var posesionCuenta = [0, 0];
-    var eventos = [];
-
-    minutos.forEach(function (minuto) {
-      var atacante = rng() < posesionA ? 0 : 1;
-      var defensor = 1 - atacante;
-      posesionCuenta[atacante]++;
-
-      var pRemate = clamp(
-        CONFIG_SIM.baseRemate + (metricas[atacante].ATQ - metricas[defensor].DEF) / CONFIG_SIM.pendienteRemate,
-        CONFIG_SIM.remateMin, CONFIG_SIM.remateMax
-      );
-      if (rng() >= pRemate) return;
-      remates[atacante]++;
-
-      var pGol = clamp(
-        CONFIG_SIM.baseGol + (metricas[atacante].ATQ - metricas[defensor].ARQ) / CONFIG_SIM.pendienteGol,
-        CONFIG_SIM.golMin, CONFIG_SIM.golMax
-      );
-      var campoAtacante = metricas[atacante].campo;
-      if (rng() < pGol) {
-        goles[atacante]++;
-        var autor = elegirPonderadoAta2(rng, campoAtacante);
-        var evento = { minuto: minuto, tipo: 'gol', equipo: atacante, autor: autor.id };
-        if (rng() < 0.70) {
-          var candidatosAsis = campoAtacante.filter(function (j) { return j.id !== autor.id; });
-          var asistente = rngMod.ponderado(rng, candidatosAsis, function (j) { return j.cre; });
-          evento.asistencia = asistente.id;
-        }
-        eventos.push(evento);
-      } else {
-        var pateador = elegirPonderadoAta2(rng, campoAtacante);
-        eventos.push({
-          minuto: minuto, tipo: 'atajada', equipo: defensor,
-          arquero: metricas[defensor].arquero.id, pateador: pateador.id,
-        });
+    var pGol = clamp(
+      CONFIG_SIM.baseGol + (metricas[atacante].ATQ - metricas[defensor].ARQ) / CONFIG_SIM.pendienteGol,
+      CONFIG_SIM.golMin, CONFIG_SIM.golMax
+    );
+    var campoAtacante = metricas[atacante].campo;
+    var evento;
+    if (rng() < pGol) {
+      estado.goles[atacante]++;
+      var autor = elegirPonderadoAta2(rng, campoAtacante);
+      evento = { minuto: minuto, tipo: 'gol', equipo: atacante, autor: autor.id };
+      if (rng() < 0.70) {
+        var candidatosAsis = campoAtacante.filter(function (j) { return j.id !== autor.id; });
+        var asistente = rngMod.ponderado(rng, candidatosAsis, function (j) { return j.cre; });
+        evento.asistencia = asistente.id;
       }
-    });
-
-    var totalPosesion = posesionCuenta[0] + posesionCuenta[1];
-    var posesionPorc0 = totalPosesion === 0 ? 50 : Math.round((posesionCuenta[0] / totalPosesion) * 100);
-    return {
-      goles: goles,
-      eventos: eventos,
-      estadisticas: { posesion: [posesionPorc0, 100 - posesionPorc0], remates: remates },
-    };
+    } else {
+      var pateador = elegirPonderadoAta2(rng, campoAtacante);
+      evento = { minuto: minuto, tipo: 'atajada', equipo: defensor, pateador: pateador.id };
+    }
+    if (enAlargue) evento.alargue = true;
+    estado.eventos.push(evento);
   }
 
-  // Orden de pateadores: los 3 de campo por `ata` descendente, el arquero
-  // patea siempre ultimo. Ciclico si hace falta patear una 5ta vez.
-  function ordenPenales(metricasEq) {
-    var campoOrdenado = metricasEq.campo.slice().sort(function (a, b) { return b.ata - a.ata; });
-    return campoOrdenado.concat([metricasEq.arquero]);
-  }
-
+  // Penales: patean los 4 en orden de `ata` descendente (ciclico), siempre
+  // contra el arquero estandar. 5 por lado, cortando si ya esta definido;
+  // despues, muerte subita.
   function simularPenales(rng, metricas) {
-    var ordenes = [ordenPenales(metricas[0]), ordenPenales(metricas[1])];
-    var kicksTaken = [0, 0];
+    var ordenes = metricas.map(function (m) {
+      return m.campo.slice().sort(function (a, b) { return b.ata - a.ata; });
+    });
+    var pateados = [0, 0];
     var goles = [0, 0];
     var tiros = [];
 
     function definido() {
-      if (kicksTaken[0] < 5 || kicksTaken[1] < 5) {
-        var restA = Math.max(0, 5 - kicksTaken[0]);
-        var restB = Math.max(0, 5 - kicksTaken[1]);
-        if (goles[0] > goles[1] + restB) return true;
-        if (goles[1] > goles[0] + restA) return true;
-        return false;
+      if (pateados[0] < 5 || pateados[1] < 5) {
+        var restanA = Math.max(0, 5 - pateados[0]);
+        var restanB = Math.max(0, 5 - pateados[1]);
+        return goles[0] > goles[1] + restanB || goles[1] > goles[0] + restanA;
       }
       return goles[0] !== goles[1];
     }
 
-    function tirar(eq) {
-      var rival = 1 - eq;
-      var kicker = ordenes[eq][kicksTaken[eq] % ordenes[eq].length];
+    function patear(eq) {
+      var pateador = ordenes[eq][pateados[eq] % ordenes[eq].length];
       var p = clamp(
-        CONFIG_SIM.penalBase + (kicker.ata - metricas[rival].arquero.arq) / CONFIG_SIM.penalPendiente,
+        CONFIG_SIM.penalBase + (pateador.ata - CONFIG_SIM.arqueroEstandar) / CONFIG_SIM.penalPendiente,
         CONFIG_SIM.penalMin, CONFIG_SIM.penalMax
       );
       var convertido = rng() < p;
-      kicksTaken[eq]++;
+      pateados[eq]++;
       if (convertido) goles[eq]++;
-      tiros.push({ equipo: eq, pateador: kicker.id, convertido: convertido });
+      tiros.push({ equipo: eq, pateador: pateador.id, convertido: convertido });
     }
 
-    while ((kicksTaken[0] < 5 || kicksTaken[1] < 5) && !definido()) {
-      if (kicksTaken[0] < 5) tirar(0);
+    while ((pateados[0] < 5 || pateados[1] < 5) && !definido()) {
+      if (pateados[0] < 5) patear(0);
       if (definido()) break;
-      if (kicksTaken[1] < 5) tirar(1);
+      if (pateados[1] < 5) patear(1);
     }
-
     while (goles[0] === goles[1]) {
-      tirar(0);
-      tirar(1);
+      patear(0);
+      patear(1);
     }
-
     return { tiros: tiros, resultado: goles };
   }
 
   function calcularFigura(metricas, eventos, ganador) {
     var golesPorJugador = {};
     var asisPorJugador = {};
-    var totalGoles = 0;
     eventos.forEach(function (e) {
       if (e.tipo !== 'gol') return;
-      totalGoles++;
       golesPorJugador[e.autor] = (golesPorJugador[e.autor] || 0) + 1;
       if (e.asistencia) asisPorJugador[e.asistencia] = (asisPorJugador[e.asistencia] || 0) + 1;
     });
 
-    if (totalGoles === 0) return metricas[ganador].arquero.id;
-
     var candidatos = [];
     [0, 1].forEach(function (eq) {
-      metricas[eq].campo.concat([metricas[eq].arquero]).forEach(function (j) {
+      metricas[eq].campo.forEach(function (j) {
         candidatos.push({
           id: j.id, ovr: j.ovr, equipo: eq,
           goles: golesPorJugador[j.id] || 0,
@@ -185,47 +150,57 @@
         });
       });
     });
+    // Mas goles, despues mas asistencias, despues el equipo ganador, despues mayor OVR.
     candidatos.sort(function (a, b) {
       if (b.goles !== a.goles) return b.goles - a.goles;
       if (b.asistencias !== a.asistencias) return b.asistencias - a.asistencias;
-      if (b.ovr !== a.ovr) return b.ovr - a.ovr;
-      if (a.equipo === ganador && b.equipo !== ganador) return -1;
-      if (b.equipo === ganador && a.equipo !== ganador) return 1;
-      return 0;
+      if ((a.equipo === ganador) !== (b.equipo === ganador)) return a.equipo === ganador ? -1 : 1;
+      return b.ovr - a.ovr;
     });
     return candidatos[0].id;
   }
 
   // simularPartido(equipoA, equipoB, rng): equipoA/equipoB son arrays de 4
-  // jugadores (objetos con id, ovr, ata, cre, def, arq). Toda la
-  // aleatoriedad sale de `rng` (rng.crearRng(seed)).
+  // jugadores (objetos con id, ovr, ata, cre, def). Toda la aleatoriedad sale
+  // de `rng` (rng.crearRng(seed)).
   function simularPartido(equipoA, equipoB, rng) {
     var metricas = [metricasEquipo(equipoA), metricasEquipo(equipoB)];
-    var partido90 = jugarNoventaMinutos(rng, metricas);
-    var goles = partido90.goles;
-    var eventos = partido90.eventos;
-    var penales = null;
+    var posesionA = calcularPosesionA(metricas);
+    var estado = { goles: [0, 0], remates: [0, 0], posesion: [0, 0], eventos: [] };
 
-    var ganador;
-    if (goles[0] === goles[1]) {
-      penales = simularPenales(rng, metricas);
-      ganador = penales.resultado[0] > penales.resultado[1] ? 0 : 1;
-    } else {
-      ganador = goles[0] > goles[1] ? 0 : 1;
+    var minutos = [];
+    for (var i = 0; i < CONFIG_SIM.jugadas; i++) minutos.push(rngMod.entero(rng, 1, 90));
+    minutos.sort(function (a, b) { return a - b; });
+    minutos.forEach(function (minuto) { jugarJugada(rng, metricas, posesionA, minuto, false, estado); });
+
+    var alargue = null;
+    var penales = null;
+    if (estado.goles[0] === estado.goles[1]) {
+      alargue = { golDeOro: null };
+      for (var k = 0; k < CONFIG_SIM.jugadasAlargue && estado.goles[0] === estado.goles[1]; k++) {
+        var minutoAlargue = 91 + k * CONFIG_SIM.minutosPorJugadaAlargue;
+        jugarJugada(rng, metricas, posesionA, minutoAlargue, true, estado);
+        if (estado.goles[0] !== estado.goles[1]) alargue.golDeOro = minutoAlargue;
+      }
+      if (estado.goles[0] === estado.goles[1]) penales = simularPenales(rng, metricas);
     }
 
-    var figura = calcularFigura(metricas, eventos, ganador);
+    var ganador;
+    if (penales) ganador = penales.resultado[0] > penales.resultado[1] ? 0 : 1;
+    else ganador = estado.goles[0] > estado.goles[1] ? 0 : 1;
+
+    var totalPosesion = estado.posesion[0] + estado.posesion[1];
+    var posesionPorc0 = totalPosesion === 0 ? 50 : Math.round((estado.posesion[0] / totalPosesion) * 100);
 
     return {
-      goles: goles,
-      eventos: eventos,
+      goles: estado.goles,
+      eventos: estado.eventos,
+      alargue: alargue,
       penales: penales,
-      estadisticas: partido90.estadisticas,
-      metricas: metricas.map(function (m) {
-        return { ATQ: m.ATQ, CRE: m.CRE, DEF: m.DEF, ARQ: m.ARQ, arquero: m.arquero.id, sinArquero: m.arquero.posicion !== 'POR' };
-      }),
+      estadisticas: { posesion: [posesionPorc0, 100 - posesionPorc0], remates: estado.remates },
+      metricas: metricas.map(function (m) { return { ATQ: m.ATQ, CRE: m.CRE, DEF: m.DEF, ARQ: m.ARQ }; }),
       ganador: ganador,
-      figura: figura,
+      figura: calcularFigura(metricas, estado.eventos, ganador),
     };
   }
 

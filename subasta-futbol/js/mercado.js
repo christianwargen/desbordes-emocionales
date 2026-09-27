@@ -10,6 +10,8 @@
 
   var CONFIG = configMod.CONFIG;
   var CATEGORIAS = ['Leyenda', 'Crack', 'Estrella', 'Figura'];
+  // Al mercado solo salen jugadores de campo: el arquero es el mismo para los dos equipos.
+  var jugadoresCampo = jugadores.filter(function (j) { return j.posicion !== 'POR'; });
 
   function agruparPorCategoria(lista) {
     var grupos = { Leyenda: [], Crack: [], Estrella: [], Figura: [] };
@@ -59,7 +61,7 @@
   // mismo seed siempre da el mismo mercado.
   function generarMercado(seed) {
     var random = rngMod.crearRng(seed);
-    var porCategoria = agruparPorCategoria(jugadores);
+    var porCategoria = agruparPorCategoria(jugadoresCampo);
 
     var elegidos = [];
     CATEGORIAS.forEach(function (cat) {
@@ -74,8 +76,8 @@
       var intentos = 0;
       while (contarPosicion(elegidos, posFaltante) < minimos[posFaltante] && intentos < intentosMax) {
         intentos++;
-        var ok = intentarReemplazo(elegidos, posFaltante, porCategoria, jugadores, random, true);
-        if (!ok) intentarReemplazo(elegidos, posFaltante, porCategoria, jugadores, random, false);
+        var ok = intentarReemplazo(elegidos, posFaltante, porCategoria, jugadoresCampo, random, true);
+        if (!ok) intentarReemplazo(elegidos, posFaltante, porCategoria, jugadoresCampo, random, false);
       }
     });
 

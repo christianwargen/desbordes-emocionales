@@ -64,7 +64,7 @@ Reglas de trabajo:
   Nombres editables al empezar; por defecto «Jugador 1» y «Jugador 2».
   Colores fijos: manager 1 **celeste** (`#38BDF8`), manager 2 **naranja** (`#FB923C`).
 - El torneo es una sucesión de **partidos**. Cada partido = **mercado nuevo → subasta → partido simulado → puntos**.
-- Ganar un partido da **10 puntos**. No hay empates: si termina igualado en los 90', se define por penales.
+- Ganar un partido da **10 puntos**. No hay empates: si termina igualado en los 90', se juega un **alargue de 30' con gol de oro**; si nadie convierte, **penales** (ver 5.3).
 - **Modo de torneo** (se elige en la pantalla de inicio):
   - **«Primero a 100»** (por defecto): gana el torneo el primero que llega a 100 puntos (10 victorias).
     Puede llevar entre 10 y 19 partidos.
@@ -91,8 +91,8 @@ Reglas de trabajo:
   ```
 
   Ejemplos: con $9 y 3 lugares libres, la puja máxima es $7. Con $8,50 y 2 lugares libres, $7,50.
-- No hay posiciones obligatorias. Podés comprar 4 delanteros; la simulación se encarga de castigarlo
-  (ver 5.1: alguien va a tener que atajar).
+- **Se compran solo jugadores de campo.** El arquero es el mismo para los dos equipos (un arquero estándar de nivel 90):
+  nadie gana ni pierde por el arquero, el partido lo define la destreza de los 4 comprados. No hay posiciones obligatorias.
 
 ### 2.3 Mercado del partido
 
@@ -105,7 +105,7 @@ Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200, sin
 | Estrella  | 89–91   | 10                     |
 | Figura    | ≤ 88    | 7                      |
 
-- Restricciones de posición: **al menos 3 POR, 4 DEF, 4 MED y 4 DEL**. Si el sorteo no las cumple, reemplazá
+- Restricciones de posición: **sin arqueros** (no salen al mercado) y **al menos 4 DEF, 4 MED y 4 DEL**. Si el sorteo no las cumple, reemplazá
   al azar un jugador de una posición sobrante por uno de la posición faltante **de la misma categoría**
   (si en esa categoría no hay disponibles, de cualquier categoría) hasta cumplirlas.
 - Composición y restricciones van en el objeto de configuración (`MERCADO = { tamano, porCategoria, minPorPosicion }`).
@@ -149,7 +149,7 @@ Casos borde que el motor tiene que cubrir (y testear):
 - Al terminar la subasta se muestra la **previa**: las dos formaciones, quién ataja, las métricas de equipo
   (ATQ / CRE / DEF / ARQ, ver 5.1) y una **probabilidad estimada** de victoria (2000 simulaciones rápidas con un RNG aparte).
 - Al tocar «Jugar partido» se simula (sección 5) y se muestra un relato corto: reloj del 0' al 90' en ~6 segundos
-  con los eventos apareciendo, botón «Saltar al resultado», y si hace falta la tanda de penales (✅/❌ uno por uno).
+  con los eventos apareciendo, botón «Saltar al resultado»; si hace falta, el alargue con gol de oro y la tanda de penales (✅/❌ uno por uno).
 - El resultado es **determinístico dado el seed del partido**: recargar la página no cambia un partido ya jugado.
 
 ---
@@ -264,16 +264,15 @@ ya probados en un prototipo). Toda la aleatoriedad sale del `rng` que se pasa po
 
 Los atributos `ata`, `cre`, `def` y `arq` son los **derivados de la carta** (sección 3.2).
 
-- **Arquero** = el del plantel con mayor `arq` (desempate: **menor** OVR, así sin POR ataja el más flojo y no el crack). Los otros 3 son **jugadores de campo**.
-  Si nadie es POR, ataja el de campo con más `arq` (≈ 5–20): el equipo lo sufre muchísimo. La previa lo avisa:
-  «⚠️ Sin arquero: ataja Cruyff».
-- Sobre los 3 de campo:
+- **Arquero estándar:** los dos equipos atacan contra el mismo arquero, `ARQ = CONFIG_SIM.arqueroEstandar` (90).
+  Los 4 comprados son **jugadores de campo**.
+- Sobre los 4 de campo:
 
   ```
   ATQ = 0.5 · max(ata) + 0.5 · promedio(ata)
   CRE = 0.5 · max(cre) + 0.5 · promedio(cre)
   DEF = 0.3 · max(def) + 0.7 · promedio(def)      // la defensa es más colectiva
-  ARQ = arquero.arq
+  ARQ = arqueroEstandar                            // igual para los dos
   ```
 
 ### 5.2 Los 90 minutos
@@ -297,15 +296,17 @@ Se sortean `jugadas` minutos uniformes en 1..90 y se ordenan. Para cada jugada:
     si rng() < pGol → GOL.
         Autor: entre los 3 de campo, ponderado por ata².
         Asistencia (opcional, 70 % de los goles): otro de campo, ponderado por cre.
-    si no → ATAJADA del arquero rival (registrala como evento).
+    si no → ATAJADA del arquero (registrala como evento).
 ```
 
-### 5.3 Penales (si hay empate en los 90')
+### 5.3 Alargue con gol de oro y penales (si hay empate en los 90')
 
-- Patean en orden de `ata` descendente los 4 (incluido el arquero, que patea último), cíclico.
-- `p = clamp(penalBase + (pateador.ata − arqueroRival.arq) / penalPendiente, penalMin, penalMax)`.
-- 5 por lado alternados, cortando antes si ya está definido; si siguen iguales, muerte súbita.
-- Siempre hay ganador.
+- **Alargue de 30' con gol de oro:** una jugada cada 3 minutos desde el 91' (10 jugadas), con las mismas reglas.
+  El primer gol termina el partido.
+- Si nadie convierte en el alargue, **penales** contra el arquero estándar: patean los 4 en orden de `ata` descendente, cíclico.
+  `p = clamp(penalBase + (pateador.ata − arqueroEstandar) / penalPendiente, penalMin, penalMax)`.
+  5 por lado alternados, cortando antes si ya está definido; si siguen iguales, muerte súbita.
+- Siempre hay ganador. Llegan a penales muy pocos partidos (objetivo ≤ 6 %, ver 5.5).
 
 ### 5.4 Salida de `simularPartido(equipoA, equipoB, rng)`
 
@@ -313,21 +314,22 @@ Se sortean `jugadas` minutos uniformes en 1..90 y se ordenan. Para cada jugada:
 {
   goles: [2, 1],
   eventos: [ { minuto: 23, tipo: "gol", equipo: 0, autor: 130, asistencia: 67 },
-             { minuto: 51, tipo: "atajada", equipo: 1, arquero: 1, pateador: 129 }, ... ],
+             { minuto: 51, tipo: "atajada", equipo: 1, pateador: 129 },
+             { minuto: 97, tipo: "gol", equipo: 1, autor: 67, alargue: true }, ... ],
+  alargue: null | { golDeOro: 97 | null },
   penales: null | { tiros: [{ equipo, pateador, convertido }], resultado: [4, 3] },
   estadisticas: { posesion: [58, 42], remates: [7, 4] },
-  metricas: [ {ATQ, CRE, DEF, ARQ, arquero}, {…} ],
+  metricas: [ {ATQ, CRE, DEF, ARQ}, {…} ],
   ganador: 0,
   figura: 130
 }
 ```
 
-**Figura del partido:** el de más goles (desempate: más asistencias, después mayor OVR, priorizando al equipo ganador);
-si nadie hizo goles, el arquero del ganador.
+**Figura del partido:** el de más goles (desempate: más asistencias, después el equipo ganador, después mayor OVR).
 
 También: `probabilidadVictoria(equipoA, equipoB, n = 2000, seed)` → `[pA, pB]` para la previa.
 
-Relato: un par de frases por tipo de evento, variadas y en rioplatense («¡GOOOL de Messi! La colgó del ángulo», «Yashin vuela y la saca»).
+Relato: un par de frases por tipo de evento, variadas y en rioplatense («¡GOOOL de Messi! La colgó del ángulo», «El arquero vuela y se la saca a Pelé»).
 Nada de relatos largos.
 
 ### 5.5 Calibración (obligatoria)
@@ -339,13 +341,12 @@ y pegá la salida final en el README.
 | Escenario | Objetivo |
 |-----------|----------|
 | Dos equipos idénticos | gana A entre 48 % y 52 % |
-| Drafts aleatorios (1 POR + 3 de campo de todo el pool) | 2,8–4,2 goles por partido; 15 %–28 % a penales |
-| Diferencia de OVR promedio ≈ 3 (ambos equipos POR+DEF+MED+DEL) | gana el mejor 57 %–67 % |
+| Drafts aleatorios (4 de campo de todo el pool) | 2,8–4,2 goles por partido; 12 %–28 % van al alargue; ≤ 6 % llegan a penales |
+| Diferencia de OVR promedio ≈ 3 (DEF+MED+DEL+DEL, promedio de 10 cruces) | gana el mejor 57 %–67 % |
 | Diferencia ≈ 6 | 68 %–80 % |
 | Diferencia ≈ 10 | 82 %–92 % |
-| Yashin + Beckenbauer + Maradona + Messi vs Zenga + Ayala + Bochini + Caniggia | 88 %–95 % |
-| Yashin + Messi + Pelé + Maradona vs Cruyff + Messi + Pelé + Maradona (sin arquero) | con arquero gana ≥ 80 % |
-| Equilibrado (Kahn, Puyol, Gerrard, Raúl) vs todo ataque (Kahn, Raúl, Totti, Del Piero) | equilibrado 52 %–68 % |
+| Beckenbauer + Maradona + Messi + Pelé vs Ruggeri + Ayala + Bochini + Caniggia | 88 %–96 % |
+| Equilibrado (Nesta, Puyol, Gerrard, Raúl) vs todo ataque (Totti, Del Piero, Tostão, Bergkamp) | equilibrado 50 %–66 % |
 
 La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni «4 cracks de ataque» ni «equipo equilibrado» tienen que ser una estrategia dominante.
 
@@ -375,10 +376,10 @@ La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni 
      Solo el panel del manager de turno tiene los controles activos y resaltado con su color.
    - Al adjudicar: banner 1,5 s «¡Maradona es de Ana por $12,50!» y la carta vuela/aparece en su plantel.
    - **Compra directa:** banner explicando «Juan ya completó. Ana elige 2 más a $1».
-3. **Previa**: dos columnas con las formaciones (🧤 marca al arquero, aviso si no hay POR), métricas enfrentadas
+3. **Previa**: dos columnas con las formaciones, métricas enfrentadas (ATQ/CRE/DEF), aviso de que el arquero es el mismo para los dos
    y la barra de probabilidad («Ana 63 % · Juan 37 %»). Botón «Jugar partido».
-4. **Partido**: marcador grande, reloj corriendo, eventos apareciendo; penales si hace falta; «Saltar».
-5. **Resultado**: marcador final (+ penales), «Ganó Ana (+10)», goles con minuto, posesión y remates, figura del partido,
+4. **Partido**: marcador grande, reloj corriendo, eventos apareciendo; alargue con gol de oro y penales si hace falta; «Saltar».
+5. **Resultado**: marcador final (+ «gol de oro» o penales), «Ganó Ana (+10)», goles con minuto, posesión y remates, figura del partido,
    tabla del torneo y botón «Siguiente partido» (o «Ver campeón»).
 6. **Campeón**: trofeo, puntos finales y un resumen del torneo: partidos jugados, victorias de cada uno,
    goleador del torneo (sumando todos los partidos), fichaje más caro, «ganga» (más goles por dólar gastado).
@@ -489,8 +490,8 @@ Estado y persistencia:
   - **propiedad:** 2000 subastas con acciones legales al azar (mezclando +$0,50, +$1, +$2, Todo y Pasar) terminan siempre con 4 y 4,
     presupuestos ≥ 0 y múltiplos de 50, el invariante `presupuesto ≥ lugaresLibres × 100` se cumple después de cada acción,
     y cada manager pagó exactamente `2000 − presupuestoFinal`.
-- **simulacion:** determinismo con seed; `goles` coincide con los eventos de gol; con empate en 90' siempre hay penales y ganador;
-  el equipo sin arquero pierde claramente contra el mismo equipo con arquero (≥ 75 % en 2000 partidos).
+- **simulacion:** determinismo con seed; `goles` coincide con los eventos de gol; con empate en 90' hay alargue con gol de oro
+  (termina con el primer gol) y, si nadie convierte, penales con ganador; el arquero es el mismo para los dos; < 8 % de penales.
 - **torneo:** +10 al ganador; fin «Primero a 100»; fin «10 partidos» con desempate en 50–50; nomina primero el perdedor;
   serializar → deserializar devuelve el mismo estado.
 

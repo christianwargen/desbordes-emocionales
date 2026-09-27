@@ -22,12 +22,12 @@ test('composicion por categoria: 3 Leyenda, 4 Crack, 10 Estrella, 7 Figura', fun
   }
 });
 
-test('minimos por posicion: al menos 3 POR, 4 DEF, 4 MED, 4 DEL', function () {
+test('sin arqueros y con minimos por posicion: 4 DEF, 4 MED, 4 DEL', function () {
   for (var s = 0; s < 200; s++) {
     var ids = mercadoMod.generarMercado('pos-' + s);
     var conteo = { POR: 0, DEF: 0, MED: 0, DEL: 0 };
     ids.forEach(function (id) { conteo[byId.get(id).posicion]++; });
-    assert.ok(conteo.POR >= 3, 'seed pos-' + s + ' POR=' + conteo.POR);
+    assert.equal(conteo.POR, 0, 'seed pos-' + s + ' no deberia haber arqueros en el mercado');
     assert.ok(conteo.DEF >= 4, 'seed pos-' + s + ' DEF=' + conteo.DEF);
     assert.ok(conteo.MED >= 4, 'seed pos-' + s + ' MED=' + conteo.MED);
     assert.ok(conteo.DEL >= 4, 'seed pos-' + s + ' DEL=' + conteo.DEL);

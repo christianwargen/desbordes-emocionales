@@ -4,6 +4,7 @@
    ========================================================================== */
 
 :root {
+  color-scheme: dark;
   --fondo: #060f0c;
   --fondo-degrade: radial-gradient(120% 60% at 50% 0%, #0f2a1c 0%, #060f0c 55%);
   --panel: #0d1f17;
@@ -35,6 +36,7 @@ body {
   background: var(--fondo-degrade), var(--fondo);
   color: var(--texto);
   font-family: var(--fuente-texto);
+  font-size: 16px;
   line-height: 1.45;
   overflow-x: hidden;
 }
@@ -97,7 +99,7 @@ button {
 .fila-botones { display: flex; flex-wrap: wrap; gap: 10px; }
 
 /* ---------- Pantallas ---------- */
-.pantalla { display: none; min-height: 100vh; padding: 20px 0 48px; }
+.pantalla { display: none; padding: 20px 0 48px; }
 .pantalla.activa { display: block; }
 
 .pantalla__titulo { font-size: 2rem; margin-bottom: 4px; }
@@ -305,7 +307,7 @@ details.reglas li { margin-bottom: 6px; }
 .toast-adjudicacion {
   position: fixed;
   left: 50%;
-  bottom: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   background: var(--panel-alto);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -336,7 +338,7 @@ details.reglas li { margin-bottom: 6px; }
   height: 100%;
   background: var(--panel);
   border-left: 1px solid var(--panel-borde);
-  padding: 20px;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 20px calc(20px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
 }
 .historial-panel__cabecera { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
@@ -361,7 +363,8 @@ details.reglas li { margin-bottom: 6px; }
 .previa-equipo[data-manager="1"] .previa-equipo__nombre { color: var(--m2); }
 .previa-formacion { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 .previa-formacion > div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 1.1rem; line-height: 1; }
-.previa-arquero-aviso { font-size: 0.85rem; color: var(--peligro); margin-bottom: 8px; }
+.previa-nota { text-align: center; font-size: 0.9rem; margin: 4px 0 0; }
+.evento-item--aviso { justify-content: center; font-family: var(--fuente-num); font-size: 1.15rem; color: #ffe08a; border-bottom-style: solid; }
 
 .probabilidad-barra {
   display: flex;

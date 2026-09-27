@@ -21,7 +21,8 @@
     MERCADO: {
       tamano: 24,
       porCategoria: { Leyenda: 3, Crack: 4, Estrella: 10, Figura: 7 },
-      minPorPosicion: { POR: 3, DEF: 4, MED: 4, DEL: 4 },
+      // Sin arqueros: el arquero es el mismo para los dos equipos (ver simulacion.js).
+      minPorPosicion: { DEF: 4, MED: 4, DEL: 4 },
     },
     COLORES: {
       manager1: '#38BDF8',

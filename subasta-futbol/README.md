@@ -41,25 +41,25 @@ fija (reproducible):
 ```
 Calibracion del simulador (20000 partidos por escenario)
 
-| Escenario                                                                        | Resultado              | Objetivo | OK/FALLA |
-| -------------------------------------------------------------------------------- | ---------------------- | -------- | -------- |
-| Dos equipos identicos                                                            | gana A 49.5%           | 48%-52%  | OK |
-| Drafts aleatorios: goles/partido                                                 | 3.57                   | 2.8-4.2  | OK |
-| Drafts aleatorios: % a penales                                                   | 21.4%                  | 15%-28%  | OK |
-| Diferencia de OVR ~3 (real 3.0)                                                  | gana el mejor 63.9%    | 57%-67%  | OK |
-| Diferencia de OVR ~6 (real 5.7)                                                  | gana el mejor 74.8%    | 68%-80%  | OK |
-| Diferencia de OVR ~10 (real 7.3)                                                 | gana el mejor 83.5%    | 82%-92%  | OK |
-| Yashin+Beckenbauer+Maradona+Messi vs Zenga+Ayala+Bochini+Caniggia                | gana A 91.1%           | 88%-95%  | OK |
-| Con arquero (Yashin) vs sin arquero (Cruyff de campo)                            | gana con arquero 87.6% | >=80%    | OK |
-| Equilibrado (Kahn,Puyol,Gerrard,Raúl) vs todo ataque (Kahn,Raúl,Totti,Del Piero) | gana equilibrado 53.9% | 52%-68%  | OK |
+| Escenario                                                                               | Resultado              | Objetivo | OK/FALLA |
+| --------------------------------------------------------------------------------------- | ---------------------- | -------- | -------- |
+| Dos equipos identicos                                                                   | gana A 49.7%           | 48%-52%  | OK |
+| Drafts aleatorios: goles/partido (90' + alargue)                                        | 3.71                   | 2.8-4.2  | OK |
+| Drafts aleatorios: % que van al alargue                                                 | 21.4%                  | 12%-28%  | OK |
+| Drafts aleatorios: % que llegan a penales                                               | 2.4%                   | <=6%     | OK |
+| Diferencia de OVR ~3 (real 3.0)                                                         | gana el mejor 62.6%    | 57%-67%  | OK |
+| Diferencia de OVR ~6 (real 5.8)                                                         | gana el mejor 73.8%    | 68%-80%  | OK |
+| Diferencia de OVR ~10 (real 7.0)                                                        | gana el mejor 82.8%    | 82%-92%  | OK |
+| Beckenbauer+Maradona+Messi+Pelé vs Ruggeri+Ayala+Bochini+Caniggia                       | gana A 90.4%           | 88%-96%  | OK |
+| Equilibrado (Nesta,Puyol,Gerrard,Raúl) vs todo ataque (Totti,Del Piero,Tostão,Bergkamp) | gana equilibrado 53.4% | 50%-66%  | OK |
 
 Todos los escenarios OK.
 ```
 
 `CONFIG_SIM` final. Cambios respecto de los valores iniciales del brief: `jugadas` 18 → 16,
-`pendienteRemate` 90 → 75, `remateMax` 0,85 → 0,92 y `pendienteGol` 110 → 130. Hicieron falta
-después de corregir las estadísticas de las cartas (ver «Revisión de datos» abajo): con
-jugadores más diferenciados, la defensa tiene que pesar más y la calidad un poco menos.
+`pendienteRemate` 90 → 75, `remateMax` 0,85 → 0,92 y `pendienteGol` 110 → 130 (después de corregir
+las estadísticas de las cartas), más `arqueroEstandar`, `jugadasAlargue` y `minutosPorJugadaAlargue`
+para el arquero único y el alargue con gol de oro (ver «Cambio de reglas» abajo).
 
 ```json
 {
@@ -75,6 +75,9 @@ jugadores más diferenciados, la defensa tiene que pesar más y la calidad un po
   "pendienteGol": 130,
   "golMin": 0.08,
   "golMax": 0.8,
+  "arqueroEstandar": 90,
+  "jugadasAlargue": 10,
+  "minutosPorJugadaAlargue": 3,
   "penalBase": 0.75,
   "penalPendiente": 200,
   "penalMin": 0.55,
@@ -186,8 +189,20 @@ Correcciones en `tools/generar-jugadores.js`:
   lado y compactos (antes había que bajar por los dos paneles para poder pujar). El aviso de
   adjudicación ya no bloquea los botones que tiene debajo, y los nombres largos usan letra
   más chica para no cortarse.
-- Sin arquero, al arco va el jugador de campo de **menor** OVR (antes, con todos los de campo
-  empatados en `arq`, iba el de mayor OVR: el crack terminaba atajando). También en `SESION.md` §5.1.
 - En la carta, el nombre tenía la parte de arriba recortada y no se veían los tildes de las
   mayúsculas (PELE, KAKA): se corrigió en `css/cartas.css` y `referencia/cartas.css`.
+
+## Cambio de reglas: arquero único y alargue con gol de oro
+
+Pedido después de probar la primera versión: que el partido lo defina la destreza de los jugadores,
+no el arquero ni los penales.
+
+- **Arquero estándar para los dos equipos** (nivel 90, `CONFIG_SIM.arqueroEstandar`). Los arqueros no
+  salen al mercado (siguen en `js/jugadores.js` pero `generarMercado` los excluye): se compran 4
+  jugadores de campo y los 4 juegan. La previa lo aclara y las métricas muestran ATQ, CRE y DEF.
+- **Empate en los 90': alargue de 30' con gol de oro** (una jugada cada 3', del 91' al 118'). El primer
+  gol termina el partido. **Si nadie convierte, penales** contra el mismo arquero. En la calibración,
+  ~21 % de los partidos van al alargue y solo ~2,4 % llegan a penales.
+- `window.confirm` se reemplazó por una confirmación de dos toques dentro de la página (en algunos
+  visores embebidos el diálogo no aparece y el botón quedaba muerto).
 
