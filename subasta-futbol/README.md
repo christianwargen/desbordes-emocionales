@@ -43,34 +43,36 @@ Calibracion del simulador (20000 partidos por escenario)
 
 | Escenario                                                                        | Resultado              | Objetivo | OK/FALLA |
 | -------------------------------------------------------------------------------- | ---------------------- | -------- | -------- |
-| Dos equipos identicos                                                            | gana A 50.1%           | 48%-52%  | OK |
-| Drafts aleatorios: goles/partido                                                 | 4.05                   | 2.8-4.2  | OK |
-| Drafts aleatorios: % a penales                                                   | 19.6%                  | 15%-28%  | OK |
-| Diferencia de OVR ~3 (real 3.0)                                                  | gana el mejor 66.8%    | 57%-67%  | OK |
-| Diferencia de OVR ~6 (real 6.0)                                                  | gana el mejor 68.8%    | 68%-80%  | OK |
-| Diferencia de OVR ~10 (real 8.5)                                                 | gana el mejor 87.0%    | 82%-92%  | OK |
-| Yashin+Beckenbauer+Maradona+Messi vs Zenga+Ayala+Bochini+Caniggia                | gana A 89.3%           | 88%-95%  | OK |
-| Con arquero (Yashin) vs sin arquero (Cruyff de campo)                            | gana con arquero 81.4% | >=80%    | OK |
-| Equilibrado (Kahn,Puyol,Gerrard,Raúl) vs todo ataque (Kahn,Raúl,Totti,Del Piero) | gana equilibrado 55.0% | 52%-68%  | OK |
+| Dos equipos identicos                                                            | gana A 49.5%           | 48%-52%  | OK |
+| Drafts aleatorios: goles/partido                                                 | 3.57                   | 2.8-4.2  | OK |
+| Drafts aleatorios: % a penales                                                   | 21.4%                  | 15%-28%  | OK |
+| Diferencia de OVR ~3 (real 3.0)                                                  | gana el mejor 63.9%    | 57%-67%  | OK |
+| Diferencia de OVR ~6 (real 5.7)                                                  | gana el mejor 74.8%    | 68%-80%  | OK |
+| Diferencia de OVR ~10 (real 7.3)                                                 | gana el mejor 83.5%    | 82%-92%  | OK |
+| Yashin+Beckenbauer+Maradona+Messi vs Zenga+Ayala+Bochini+Caniggia                | gana A 91.1%           | 88%-95%  | OK |
+| Con arquero (Yashin) vs sin arquero (Cruyff de campo)                            | gana con arquero 87.6% | >=80%    | OK |
+| Equilibrado (Kahn,Puyol,Gerrard,Raúl) vs todo ataque (Kahn,Raúl,Totti,Del Piero) | gana equilibrado 53.9% | 52%-68%  | OK |
 
 Todos los escenarios OK.
 ```
 
-`CONFIG_SIM` final (único cambio respecto de los valores iniciales del brief: `pendienteGol`
-bajó de 110 a 85 para que la ventaja de calidad pese un poco más, sin tocar las fórmulas):
+`CONFIG_SIM` final. Cambios respecto de los valores iniciales del brief: `jugadas` 18 → 16,
+`pendienteRemate` 90 → 75, `remateMax` 0,85 → 0,92 y `pendienteGol` 110 → 130. Hicieron falta
+después de corregir las estadísticas de las cartas (ver «Revisión de datos» abajo): con
+jugadores más diferenciados, la defensa tiene que pesar más y la calidad un poco menos.
 
 ```json
 {
-  "jugadas": 18,
+  "jugadas": 16,
   "expPosesion": 3,
   "posesionMin": 0.3,
   "posesionMax": 0.7,
   "baseRemate": 0.42,
-  "pendienteRemate": 90,
+  "pendienteRemate": 75,
   "remateMin": 0.12,
-  "remateMax": 0.85,
+  "remateMax": 0.92,
   "baseGol": 0.36,
-  "pendienteGol": 85,
+  "pendienteGol": 130,
   "golMin": 0.08,
   "golMax": 0.8,
   "penalBase": 0.75,
@@ -106,9 +108,9 @@ simple, siguiendo adelante sin frenar a preguntar:
   cualquier objeto con al menos `{ganador}`) y la guarda tal cual en el historial del
   partido jugado, junto con los lotes de la subasta, para poder reconstruir el resumen del
   torneo (goleador, fichaje más caro, etc.) en la pantalla de campeón.
-- **`pendienteGol` en la calibración**: bajó de 110 a 85 (única constante tocada) para que
-  los ocho escenarios de la sección 5.5 den todos OK a la vez; el resto de `CONFIG_SIM`
-  quedó igual a los valores iniciales del brief.
+- **Calibración**: los escenarios «Diferencia de OVR ~3/~6/~10» promedian 10 cruces de
+  equipos distintos (antes medían un único cruce, que dependía demasiado de los jugadores
+  puntuales). Las constantes finales están en la sección anterior.
 - **Persistencia mínima**: en `localStorage` sólo se guardan `{ torneo, pantalla }`. Los
   resultados de partido y las probabilidades de la previa NO se cachean: como
   `simularPartido`/`probabilidadVictoria` son determinísticos dado el seed del partido
@@ -166,3 +168,22 @@ había ganado.
   comportamiento propio de `cartas.css` sin modificar (`text-overflow: ellipsis`), no algo
   que se ajustó a mano.
 - No hay sonido ni animación del partido en una cancha (fuera de alcance, sección 12).
+
+## Revisión de datos (después de la primera versión)
+
+La primera versión de `js/jugadores.js` pasaba los tests pero tenía estadísticas secundarias
+infladas: los arquetipos restaban muy poco al OVR, así que los defensores promediaban TIR 80 y
+PAS 89 (Maldini con TIR 89 y FÍS 99), 58 jugadores tenían FÍS ≥ 95 y 124 de los 200 compartían
+una carta idéntica con otro (Cafu = Facchetti = Lahm = Carlos Alberto = Nílton Santos).
+Correcciones en `tools/generar-jugadores.js`:
+
+- Arquetipos retocados con perfiles realistas: defensores con TIR ~55 y PAS ~70, delanteros con
+  DEF ~40 y FÍS ~78, volantes creativos que no marcan, arqueros con VEL baja.
+- Variación propia por jugador (−4..+4 por estadística, determinística por id): ya no hay dos
+  cartas iguales. La estadística principal se sigue resolviendo para quedar a ±2 del OVR.
+- Arquetipo nuevo `pivote` (Busquets, Rodri, Redondo: pase y marca); Kaká pasa a `enganche`.
+- Sin arquero, al arco va el jugador de campo de **menor** OVR (antes, con todos los de campo
+  empatados en `arq`, iba el de mayor OVR: el crack terminaba atajando). También en `SESION.md` §5.1.
+- En la carta, el nombre tenía la parte de arriba recortada y no se veían los tildes de las
+  mayúsculas (PELE, KAKA): se corrigió en `css/cartas.css` y `referencia/cartas.css`.
+

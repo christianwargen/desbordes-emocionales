@@ -50,16 +50,16 @@
     "ovr": 94,
     "categoria": "Crack",
     "carta": {
-      "est": 88,
-      "par": 99,
-      "saq": 79,
+      "est": 92,
+      "par": 93,
+      "saq": 76,
       "ref": 99,
-      "vel": 84,
-      "col": 90
+      "vel": 62,
+      "col": 92
     },
-    "ata": 28,
-    "cre": 47,
-    "def": 45,
+    "ata": 27,
+    "cre": 46,
+    "def": 46,
     "arq": 94
   },
   {
@@ -77,15 +77,15 @@
     "categoria": "Crack",
     "carta": {
       "est": 91,
-      "par": 91,
-      "saq": 98,
-      "ref": 95,
-      "vel": 89,
-      "col": 95
+      "par": 92,
+      "saq": 90,
+      "ref": 98,
+      "vel": 68,
+      "col": 91
     },
-    "ata": 34,
-    "cre": 59,
-    "def": 48,
+    "ata": 31,
+    "cre": 54,
+    "def": 46,
     "arq": 93
   },
   {
@@ -102,15 +102,15 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "est": 86,
+      "est": 87,
       "par": 95,
-      "saq": 77,
+      "saq": 73,
       "ref": 99,
-      "vel": 82,
-      "col": 88
+      "vel": 63,
+      "col": 87
     },
-    "ata": 27,
-    "cre": 46,
+    "ata": 26,
+    "cre": 44,
     "def": 44,
     "arq": 92
   },
@@ -128,16 +128,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "est": 99,
-      "par": 81,
-      "saq": 83,
-      "ref": 89,
-      "vel": 77,
-      "col": 95
+      "est": 95,
+      "par": 80,
+      "saq": 75,
+      "ref": 91,
+      "vel": 57,
+      "col": 98
     },
-    "ata": 29,
-    "cre": 50,
-    "def": 48,
+    "ata": 26,
+    "cre": 45,
+    "def": 49,
     "arq": 91
   },
   {
@@ -155,15 +155,15 @@
     "categoria": "Estrella",
     "carta": {
       "est": 85,
-      "par": 93,
-      "saq": 76,
-      "ref": 99,
-      "vel": 81,
-      "col": 87
+      "par": 97,
+      "saq": 74,
+      "ref": 98,
+      "vel": 64,
+      "col": 84
     },
-    "ata": 27,
-    "cre": 46,
-    "def": 44,
+    "ata": 26,
+    "cre": 44,
+    "def": 42,
     "arq": 91
   },
   {
@@ -180,16 +180,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "est": 93,
-      "par": 91,
-      "saq": 75,
-      "ref": 83,
-      "vel": 77,
-      "col": 97
+      "est": 91,
+      "par": 89,
+      "saq": 72,
+      "ref": 85,
+      "vel": 56,
+      "col": 99
     },
-    "ata": 26,
-    "cre": 45,
-    "def": 49,
+    "ata": 25,
+    "cre": 43,
+    "def": 50,
     "arq": 91
   },
   {
@@ -206,16 +206,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "est": 99,
-      "par": 79,
-      "saq": 82,
-      "ref": 88,
-      "vel": 76,
-      "col": 94
+      "est": 98,
+      "par": 77,
+      "saq": 76,
+      "ref": 87,
+      "vel": 62,
+      "col": 98
     },
-    "ata": 29,
-    "cre": 49,
-    "def": 47,
+    "ata": 27,
+    "cre": 46,
+    "def": 49,
     "arq": 90
   },
   {
@@ -232,16 +232,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "est": 92,
-      "par": 90,
+      "est": 89,
+      "par": 92,
       "saq": 74,
-      "ref": 82,
-      "vel": 76,
-      "col": 96
+      "ref": 81,
+      "vel": 59,
+      "col": 98
     },
     "ata": 26,
     "cre": 44,
-    "def": 48,
+    "def": 49,
     "arq": 90
   },
   {
@@ -259,15 +259,15 @@
     "categoria": "Estrella",
     "carta": {
       "est": 89,
-      "par": 89,
-      "saq": 83,
+      "par": 93,
+      "saq": 80,
       "ref": 89,
-      "vel": 83,
-      "col": 89
+      "vel": 63,
+      "col": 85
     },
-    "ata": 29,
-    "cre": 50,
-    "def": 45,
+    "ata": 28,
+    "cre": 48,
+    "def": 43,
     "arq": 89
   },
   {
@@ -285,15 +285,15 @@
     "categoria": "Estrella",
     "carta": {
       "est": 87,
-      "par": 87,
-      "saq": 94,
-      "ref": 91,
-      "vel": 85,
-      "col": 91
+      "par": 85,
+      "saq": 84,
+      "ref": 94,
+      "vel": 66,
+      "col": 90
     },
-    "ata": 33,
-    "cre": 56,
-    "def": 46,
+    "ata": 29,
+    "cre": 50,
+    "def": 45,
     "arq": 89
   },
   {
@@ -311,14 +311,14 @@
     "categoria": "Figura",
     "carta": {
       "est": 90,
-      "par": 88,
-      "saq": 72,
-      "ref": 80,
-      "vel": 74,
-      "col": 94
+      "par": 90,
+      "saq": 67,
+      "ref": 79,
+      "vel": 51,
+      "col": 93
     },
-    "ata": 25,
-    "cre": 43,
+    "ata": 23,
+    "cre": 40,
     "def": 47,
     "arq": 88
   },
@@ -336,16 +336,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "est": 86,
+      "est": 85,
       "par": 86,
-      "saq": 93,
-      "ref": 90,
-      "vel": 84,
-      "col": 90
+      "saq": 82,
+      "ref": 89,
+      "vel": 65,
+      "col": 92
     },
-    "ata": 33,
-    "cre": 56,
-    "def": 45,
+    "ata": 29,
+    "cre": 49,
+    "def": 46,
     "arq": 88
   },
   {
@@ -362,16 +362,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "est": 82,
-      "par": 88,
-      "saq": 73,
-      "ref": 98,
-      "vel": 78,
-      "col": 84
+      "est": 84,
+      "par": 92,
+      "saq": 71,
+      "ref": 96,
+      "vel": 59,
+      "col": 80
     },
-    "ata": 26,
-    "cre": 44,
-    "def": 42,
+    "ata": 25,
+    "cre": 43,
+    "def": 40,
     "arq": 88
   },
   {
@@ -388,15 +388,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "est": 82,
-      "par": 88,
-      "saq": 73,
-      "ref": 98,
-      "vel": 78,
+      "est": 78,
+      "par": 94,
+      "saq": 65,
+      "ref": 96,
+      "vel": 58,
       "col": 84
     },
-    "ata": 26,
-    "cre": 44,
+    "ata": 23,
+    "cre": 39,
     "def": 42,
     "arq": 88
   },
@@ -414,16 +414,16 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "est": 87,
-      "par": 87,
-      "saq": 81,
+      "est": 84,
+      "par": 91,
+      "saq": 74,
       "ref": 87,
-      "vel": 81,
-      "col": 87
+      "vel": 59,
+      "col": 86
     },
-    "ata": 28,
-    "cre": 49,
-    "def": 44,
+    "ata": 26,
+    "cre": 44,
+    "def": 43,
     "arq": 87
   },
   {
@@ -441,14 +441,14 @@
     "categoria": "Figura",
     "carta": {
       "est": 81,
-      "par": 87,
-      "saq": 72,
-      "ref": 97,
-      "vel": 77,
-      "col": 83
+      "par": 84,
+      "saq": 63,
+      "ref": 99,
+      "vel": 53,
+      "col": 84
     },
-    "ata": 25,
-    "cre": 43,
+    "ata": 22,
+    "cre": 38,
     "def": 42,
     "arq": 87
   },
@@ -466,16 +466,16 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "est": 84,
-      "par": 84,
+      "est": 83,
+      "par": 80,
       "saq": 99,
-      "ref": 88,
-      "vel": 82,
-      "col": 88
+      "ref": 89,
+      "vel": 65,
+      "col": 92
     },
     "ata": 35,
     "cre": 59,
-    "def": 44,
+    "def": 46,
     "arq": 86
   },
   {
@@ -492,16 +492,16 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "est": 88,
-      "par": 86,
-      "saq": 70,
-      "ref": 78,
-      "vel": 72,
-      "col": 92
+      "est": 91,
+      "par": 81,
+      "saq": 68,
+      "ref": 79,
+      "vel": 56,
+      "col": 93
     },
-    "ata": 25,
-    "cre": 42,
-    "def": 46,
+    "ata": 24,
+    "cre": 41,
+    "def": 47,
     "arq": 86
   },
   {
@@ -518,16 +518,16 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "est": 80,
-      "par": 86,
-      "saq": 71,
-      "ref": 96,
-      "vel": 76,
-      "col": 82
+      "est": 77,
+      "par": 83,
+      "saq": 66,
+      "ref": 98,
+      "vel": 56,
+      "col": 86
     },
-    "ata": 25,
-    "cre": 43,
-    "def": 41,
+    "ata": 23,
+    "cre": 40,
+    "def": 43,
     "arq": 86
   },
   {
@@ -544,16 +544,16 @@
     "ovr": 97,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 99,
-      "tir": 89,
-      "pas": 99,
-      "reg": 99,
+      "rit": 87,
+      "tir": 69,
+      "pas": 87,
+      "reg": 86,
       "def": 99,
-      "fis": 89
+      "fis": 84
     },
-    "ata": 94,
-    "cre": 99,
-    "def": 97,
+    "ata": 78,
+    "cre": 87,
+    "def": 95,
     "arq": 10
   },
   {
@@ -570,15 +570,15 @@
     "ovr": 95,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 95,
-      "tir": 89,
-      "pas": 99,
-      "reg": 95,
-      "def": 94,
-      "fis": 99
+      "rit": 80,
+      "tir": 61,
+      "pas": 78,
+      "reg": 76,
+      "def": 98,
+      "fis": 87
     },
-    "ata": 92,
-    "cre": 97,
+    "ata": 69,
+    "cre": 77,
     "def": 95,
     "arq": 10
   },
@@ -622,15 +622,15 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 82,
-      "tir": 82,
-      "pas": 94,
-      "reg": 88,
-      "def": 91,
-      "fis": 94
+      "rit": 65,
+      "tir": 53,
+      "pas": 82,
+      "reg": 75,
+      "def": 95,
+      "fis": 84
     },
-    "ata": 84,
-    "cre": 92,
+    "ata": 62,
+    "cre": 79,
     "def": 92,
     "arq": 10
   },
@@ -648,15 +648,15 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 92,
-      "tir": 86,
-      "pas": 96,
-      "reg": 92,
-      "def": 91,
-      "fis": 96
+      "rit": 81,
+      "tir": 59,
+      "pas": 68,
+      "reg": 66,
+      "def": 94,
+      "fis": 85
     },
-    "ata": 89,
-    "cre": 94,
+    "ata": 66,
+    "cre": 67,
     "def": 92,
     "arq": 10
   },
@@ -674,15 +674,15 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 89,
-      "tir": 87,
-      "pas": 81,
-      "reg": 83,
-      "def": 88,
-      "fis": 99
+      "rit": 70,
+      "tir": 52,
+      "pas": 62,
+      "reg": 60,
+      "def": 90,
+      "fis": 94
     },
-    "ata": 86,
-    "cre": 82,
+    "ata": 58,
+    "cre": 61,
     "def": 91,
     "arq": 10
   },
@@ -700,15 +700,15 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 89,
-      "tir": 87,
-      "pas": 81,
-      "reg": 83,
-      "def": 88,
-      "fis": 99
+      "rit": 74,
+      "tir": 59,
+      "pas": 60,
+      "reg": 57,
+      "def": 91,
+      "fis": 92
     },
-    "ata": 86,
-    "cre": 82,
+    "ata": 61,
+    "cre": 59,
     "def": 91,
     "arq": 10
   },
@@ -726,15 +726,15 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 91,
-      "tir": 85,
-      "pas": 95,
-      "reg": 91,
-      "def": 90,
-      "fis": 95
+      "rit": 79,
+      "tir": 58,
+      "pas": 72,
+      "reg": 69,
+      "def": 94,
+      "fis": 83
     },
-    "ata": 88,
-    "cre": 93,
+    "ata": 66,
+    "cre": 71,
     "def": 91,
     "arq": 10
   },
@@ -752,15 +752,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 80,
-      "pas": 94,
-      "reg": 96,
+      "rit": 84,
+      "tir": 62,
+      "pas": 74,
+      "reg": 82,
       "def": 93,
-      "fis": 80
+      "fis": 82
     },
-    "ata": 89,
-    "cre": 95,
+    "ata": 72,
+    "cre": 77,
     "def": 90,
     "arq": 10
   },
@@ -778,15 +778,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 80,
-      "pas": 94,
-      "reg": 96,
-      "def": 93,
-      "fis": 80
+      "rit": 92,
+      "tir": 60,
+      "pas": 77,
+      "reg": 74,
+      "def": 90,
+      "fis": 90
     },
-    "ata": 89,
-    "cre": 95,
+    "ata": 71,
+    "cre": 76,
     "def": 90,
     "arq": 10
   },
@@ -804,15 +804,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 99,
-      "pas": 92,
-      "reg": 98,
+      "rit": 98,
+      "tir": 85,
+      "pas": 84,
+      "reg": 84,
       "def": 92,
-      "fis": 84
+      "fis": 83
     },
-    "ata": 99,
-    "cre": 94,
+    "ata": 87,
+    "cre": 84,
     "def": 90,
     "arq": 10
   },
@@ -830,15 +830,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 84,
-      "pas": 94,
-      "reg": 90,
-      "def": 89,
-      "fis": 94
+      "rit": 79,
+      "tir": 54,
+      "pas": 66,
+      "reg": 68,
+      "def": 93,
+      "fis": 82
     },
-    "ata": 87,
-    "cre": 92,
+    "ata": 63,
+    "cre": 67,
     "def": 90,
     "arq": 10
   },
@@ -856,15 +856,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 80,
-      "pas": 94,
-      "reg": 96,
-      "def": 93,
-      "fis": 80
+      "rit": 91,
+      "tir": 56,
+      "pas": 80,
+      "reg": 80,
+      "def": 92,
+      "fis": 83
     },
-    "ata": 89,
-    "cre": 95,
+    "ata": 70,
+    "cre": 80,
     "def": 90,
     "arq": 10
   },
@@ -882,15 +882,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 80,
-      "pas": 94,
-      "reg": 96,
+      "rit": 88,
+      "tir": 57,
+      "pas": 79,
+      "reg": 75,
       "def": 93,
-      "fis": 80
+      "fis": 82
     },
-    "ata": 89,
-    "cre": 95,
+    "ata": 69,
+    "cre": 77,
     "def": 90,
     "arq": 10
   },
@@ -908,15 +908,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 80,
-      "pas": 94,
-      "reg": 96,
+      "rit": 86,
+      "tir": 57,
+      "pas": 80,
+      "reg": 77,
       "def": 93,
-      "fis": 80
+      "fis": 82
     },
-    "ata": 89,
-    "cre": 95,
+    "ata": 69,
+    "cre": 79,
     "def": 90,
     "arq": 10
   },
@@ -934,15 +934,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 94,
-      "tir": 82,
-      "pas": 99,
-      "reg": 98,
-      "def": 93,
-      "fis": 82
+      "rit": 80,
+      "tir": 57,
+      "pas": 87,
+      "reg": 83,
+      "def": 92,
+      "fis": 84
     },
-    "ata": 89,
-    "cre": 99,
+    "ata": 69,
+    "cre": 85,
     "def": 90,
     "arq": 10
   },
@@ -960,15 +960,15 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 84,
-      "pas": 94,
-      "reg": 90,
-      "def": 89,
-      "fis": 94
+      "rit": 77,
+      "tir": 56,
+      "pas": 70,
+      "reg": 68,
+      "def": 92,
+      "fis": 84
     },
-    "ata": 87,
-    "cre": 92,
+    "ata": 64,
+    "cre": 69,
     "def": 90,
     "arq": 10
   },
@@ -986,15 +986,15 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 93,
-      "tir": 81,
-      "pas": 99,
-      "reg": 97,
-      "def": 92,
-      "fis": 81
+      "rit": 78,
+      "tir": 59,
+      "pas": 86,
+      "reg": 82,
+      "def": 93,
+      "fis": 76
     },
-    "ata": 88,
-    "cre": 98,
+    "ata": 70,
+    "cre": 84,
     "def": 89,
     "arq": 10
   },
@@ -1012,15 +1012,15 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 85,
-      "pas": 79,
-      "reg": 81,
-      "def": 86,
-      "fis": 99
+      "rit": 71,
+      "tir": 53,
+      "pas": 61,
+      "reg": 62,
+      "def": 90,
+      "fis": 87
     },
-    "ata": 84,
-    "cre": 80,
+    "ata": 59,
+    "cre": 61,
     "def": 89,
     "arq": 10
   },
@@ -1038,15 +1038,15 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 81,
-      "tir": 75,
-      "pas": 77,
-      "reg": 77,
+      "rit": 68,
+      "tir": 42,
+      "pas": 60,
+      "reg": 52,
       "def": 86,
       "fis": 99
     },
-    "ata": 77,
-    "cre": 77,
+    "ata": 50,
+    "cre": 57,
     "def": 89,
     "arq": 10
   },
@@ -1064,15 +1064,15 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 89,
-      "tir": 83,
-      "pas": 93,
-      "reg": 89,
-      "def": 88,
-      "fis": 93
+      "rit": 78,
+      "tir": 58,
+      "pas": 70,
+      "reg": 71,
+      "def": 91,
+      "fis": 82
     },
-    "ata": 86,
-    "cre": 91,
+    "ata": 66,
+    "cre": 70,
     "def": 89,
     "arq": 10
   },
@@ -1090,15 +1090,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 92,
-      "tir": 80,
-      "pas": 99,
-      "reg": 96,
-      "def": 91,
-      "fis": 80
+      "rit": 78,
+      "tir": 60,
+      "pas": 79,
+      "reg": 82,
+      "def": 90,
+      "fis": 82
     },
-    "ata": 87,
-    "cre": 98,
+    "ata": 70,
+    "cre": 80,
     "def": 88,
     "arq": 10
   },
@@ -1116,15 +1116,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 92,
-      "tir": 80,
-      "pas": 99,
-      "reg": 96,
+      "rit": 72,
+      "tir": 61,
+      "pas": 80,
+      "reg": 74,
       "def": 91,
       "fis": 80
     },
-    "ata": 87,
-    "cre": 98,
+    "ata": 67,
+    "cre": 78,
     "def": 88,
     "arq": 10
   },
@@ -1142,15 +1142,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 78,
-      "pas": 92,
-      "reg": 94,
-      "def": 91,
-      "fis": 78
+      "rit": 88,
+      "tir": 61,
+      "pas": 74,
+      "reg": 79,
+      "def": 89,
+      "fis": 85
     },
-    "ata": 87,
-    "cre": 93,
+    "ata": 72,
+    "cre": 76,
     "def": 88,
     "arq": 10
   },
@@ -1168,15 +1168,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 88,
-      "tir": 82,
-      "pas": 92,
-      "reg": 88,
-      "def": 87,
-      "fis": 92
+      "rit": 77,
+      "tir": 51,
+      "pas": 65,
+      "reg": 66,
+      "def": 91,
+      "fis": 79
     },
-    "ata": 85,
-    "cre": 90,
+    "ata": 61,
+    "cre": 65,
     "def": 88,
     "arq": 10
   },
@@ -1194,15 +1194,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 86,
-      "tir": 84,
-      "pas": 78,
-      "reg": 80,
-      "def": 85,
-      "fis": 98
+      "rit": 69,
+      "tir": 51,
+      "pas": 56,
+      "reg": 55,
+      "def": 87,
+      "fis": 91
     },
-    "ata": 83,
-    "cre": 79,
+    "ata": 56,
+    "cre": 56,
     "def": 88,
     "arq": 10
   },
@@ -1220,15 +1220,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 78,
-      "pas": 92,
-      "reg": 94,
-      "def": 91,
-      "fis": 78
+      "rit": 83,
+      "tir": 55,
+      "pas": 74,
+      "reg": 72,
+      "def": 88,
+      "fis": 88
     },
-    "ata": 87,
-    "cre": 93,
+    "ata": 66,
+    "cre": 73,
     "def": 88,
     "arq": 10
   },
@@ -1246,15 +1246,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 88,
-      "tir": 82,
-      "pas": 92,
-      "reg": 88,
-      "def": 87,
-      "fis": 92
+      "rit": 71,
+      "tir": 49,
+      "pas": 72,
+      "reg": 66,
+      "def": 89,
+      "fis": 84
     },
-    "ata": 85,
-    "cre": 90,
+    "ata": 59,
+    "cre": 70,
     "def": 88,
     "arq": 10
   },
@@ -1272,15 +1272,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 78,
-      "pas": 92,
-      "reg": 94,
-      "def": 91,
-      "fis": 78
+      "rit": 82,
+      "tir": 55,
+      "pas": 74,
+      "reg": 72,
+      "def": 89,
+      "fis": 86
     },
-    "ata": 87,
-    "cre": 93,
+    "ata": 66,
+    "cre": 73,
     "def": 88,
     "arq": 10
   },
@@ -1298,15 +1298,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 87,
-      "tir": 81,
-      "pas": 91,
-      "reg": 87,
-      "def": 86,
-      "fis": 91
+      "rit": 69,
+      "tir": 56,
+      "pas": 65,
+      "reg": 63,
+      "def": 90,
+      "fis": 78
     },
-    "ata": 84,
-    "cre": 89,
+    "ata": 61,
+    "cre": 64,
     "def": 87,
     "arq": 10
   },
@@ -1324,15 +1324,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 79,
-      "tir": 73,
-      "pas": 75,
-      "reg": 75,
-      "def": 83,
-      "fis": 99
+      "rit": 71,
+      "tir": 40,
+      "pas": 55,
+      "reg": 52,
+      "def": 86,
+      "fis": 89
     },
-    "ata": 75,
-    "cre": 75,
+    "ata": 50,
+    "cre": 54,
     "def": 87,
     "arq": 10
   },
@@ -1350,15 +1350,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 77,
-      "pas": 91,
-      "reg": 93,
-      "def": 90,
-      "fis": 77
+      "rit": 84,
+      "tir": 53,
+      "pas": 79,
+      "reg": 78,
+      "def": 89,
+      "fis": 80
     },
-    "ata": 86,
-    "cre": 92,
+    "ata": 67,
+    "cre": 79,
     "def": 87,
     "arq": 10
   },
@@ -1376,15 +1376,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 79,
-      "tir": 73,
-      "pas": 75,
-      "reg": 75,
-      "def": 83,
-      "fis": 99
+      "rit": 71,
+      "tir": 45,
+      "pas": 52,
+      "reg": 50,
+      "def": 84,
+      "fis": 96
     },
-    "ata": 75,
-    "cre": 75,
+    "ata": 52,
+    "cre": 51,
     "def": 87,
     "arq": 10
   },
@@ -1402,15 +1402,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 91,
-      "tir": 79,
-      "pas": 99,
-      "reg": 95,
-      "def": 90,
-      "fis": 79
+      "rit": 70,
+      "tir": 57,
+      "pas": 79,
+      "reg": 78,
+      "def": 91,
+      "fis": 76
     },
-    "ata": 86,
-    "cre": 97,
+    "ata": 66,
+    "cre": 79,
     "def": 87,
     "arq": 10
   },
@@ -1428,15 +1428,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 79,
-      "tir": 73,
-      "pas": 75,
-      "reg": 75,
-      "def": 83,
-      "fis": 99
+      "rit": 70,
+      "tir": 38,
+      "pas": 57,
+      "reg": 49,
+      "def": 86,
+      "fis": 90
     },
-    "ata": 75,
-    "cre": 75,
+    "ata": 48,
+    "cre": 54,
     "def": 87,
     "arq": 10
   },
@@ -1454,15 +1454,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 79,
-      "tir": 73,
-      "pas": 75,
-      "reg": 75,
-      "def": 83,
-      "fis": 99
+      "rit": 68,
+      "tir": 43,
+      "pas": 57,
+      "reg": 57,
+      "def": 85,
+      "fis": 92
     },
-    "ata": 75,
-    "cre": 75,
+    "ata": 52,
+    "cre": 57,
     "def": 87,
     "arq": 10
   },
@@ -1480,15 +1480,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 79,
-      "tir": 73,
-      "pas": 75,
-      "reg": 75,
-      "def": 83,
-      "fis": 99
+      "rit": 68,
+      "tir": 41,
+      "pas": 51,
+      "reg": 49,
+      "def": 86,
+      "fis": 89
     },
-    "ata": 75,
-    "cre": 75,
+    "ata": 49,
+    "cre": 50,
     "def": 87,
     "arq": 10
   },
@@ -1506,15 +1506,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 91,
-      "tir": 79,
-      "pas": 99,
-      "reg": 95,
+      "rit": 69,
+      "tir": 58,
+      "pas": 84,
+      "reg": 75,
       "def": 90,
       "fis": 79
     },
-    "ata": 86,
-    "cre": 97,
+    "ata": 65,
+    "cre": 80,
     "def": 87,
     "arq": 10
   },
@@ -1532,15 +1532,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 77,
-      "pas": 91,
-      "reg": 93,
-      "def": 90,
-      "fis": 77
+      "rit": 86,
+      "tir": 56,
+      "pas": 71,
+      "reg": 71,
+      "def": 88,
+      "fis": 85
     },
-    "ata": 86,
-    "cre": 92,
+    "ata": 67,
+    "cre": 71,
     "def": 87,
     "arq": 10
   },
@@ -1558,15 +1558,15 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 85,
-      "tir": 83,
-      "pas": 77,
-      "reg": 79,
-      "def": 84,
-      "fis": 97
+      "rit": 66,
+      "tir": 48,
+      "pas": 60,
+      "reg": 58,
+      "def": 87,
+      "fis": 86
     },
-    "ata": 82,
-    "cre": 78,
+    "ata": 55,
+    "cre": 59,
     "def": 87,
     "arq": 10
   },
@@ -1584,15 +1584,15 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 82,
-      "pas": 76,
-      "reg": 78,
-      "def": 83,
-      "fis": 96
+      "rit": 66,
+      "tir": 54,
+      "pas": 62,
+      "reg": 60,
+      "def": 85,
+      "fis": 89
     },
-    "ata": 81,
-    "cre": 77,
+    "ata": 58,
+    "cre": 61,
     "def": 86,
     "arq": 10
   },
@@ -1610,15 +1610,15 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "rit": 86,
-      "tir": 80,
-      "pas": 90,
-      "reg": 86,
-      "def": 85,
-      "fis": 90
+      "rit": 68,
+      "tir": 55,
+      "pas": 65,
+      "reg": 63,
+      "def": 88,
+      "fis": 81
     },
-    "ata": 83,
-    "cre": 88,
+    "ata": 60,
+    "cre": 64,
     "def": 86,
     "arq": 10
   },
@@ -1636,15 +1636,15 @@
     "ovr": 86,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 76,
-      "pas": 90,
-      "reg": 92,
-      "def": 89,
-      "fis": 76
+      "rit": 87,
+      "tir": 57,
+      "pas": 77,
+      "reg": 77,
+      "def": 88,
+      "fis": 80
     },
-    "ata": 85,
-    "cre": 91,
+    "ata": 69,
+    "cre": 77,
     "def": 86,
     "arq": 10
   },
@@ -1662,15 +1662,15 @@
     "ovr": 85,
     "categoria": "Figura",
     "carta": {
-      "rit": 85,
-      "tir": 79,
-      "pas": 89,
-      "reg": 85,
-      "def": 84,
-      "fis": 89
+      "rit": 74,
+      "tir": 53,
+      "pas": 66,
+      "reg": 67,
+      "def": 88,
+      "fis": 75
     },
-    "ata": 82,
-    "cre": 87,
+    "ata": 61,
+    "cre": 66,
     "def": 85,
     "arq": 10
   },
@@ -1688,15 +1688,15 @@
     "ovr": 85,
     "categoria": "Figura",
     "carta": {
-      "rit": 83,
-      "tir": 81,
-      "pas": 75,
-      "reg": 77,
-      "def": 82,
-      "fis": 95
+      "rit": 69,
+      "tir": 54,
+      "pas": 59,
+      "reg": 52,
+      "def": 83,
+      "fis": 91
     },
-    "ata": 80,
-    "cre": 76,
+    "ata": 56,
+    "cre": 56,
     "def": 85,
     "arq": 10
   },
@@ -1714,15 +1714,15 @@
     "ovr": 85,
     "categoria": "Figura",
     "carta": {
-      "rit": 85,
-      "tir": 79,
-      "pas": 89,
-      "reg": 85,
-      "def": 84,
-      "fis": 89
+      "rit": 69,
+      "tir": 50,
+      "pas": 66,
+      "reg": 66,
+      "def": 88,
+      "fis": 75
     },
-    "ata": 82,
-    "cre": 87,
+    "ata": 59,
+    "cre": 66,
     "def": 85,
     "arq": 10
   },
@@ -1740,16 +1740,16 @@
     "ovr": 99,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 95,
+      "rit": 91,
       "tir": 99,
       "pas": 99,
       "reg": 99,
-      "def": 79,
-      "fis": 89
+      "def": 40,
+      "fis": 75
     },
-    "ata": 98,
+    "ata": 97,
     "cre": 99,
-    "def": 82,
+    "def": 49,
     "arq": 10
   },
   {
@@ -1766,16 +1766,16 @@
     "ovr": 96,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 92,
+      "rit": 87,
       "tir": 99,
-      "pas": 94,
-      "reg": 99,
-      "def": 76,
-      "fis": 86
+      "pas": 97,
+      "reg": 95,
+      "def": 39,
+      "fis": 75
     },
-    "ata": 98,
+    "ata": 95,
     "cre": 96,
-    "def": 79,
+    "def": 48,
     "arq": 10
   },
   {
@@ -1792,16 +1792,16 @@
     "ovr": 95,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 91,
+      "rit": 93,
       "tir": 99,
-      "pas": 92,
-      "reg": 99,
-      "def": 75,
-      "fis": 85
+      "pas": 93,
+      "reg": 98,
+      "def": 43,
+      "fis": 74
     },
-    "ata": 97,
+    "ata": 98,
     "cre": 95,
-    "def": 78,
+    "def": 51,
     "arq": 10
   },
   {
@@ -1818,16 +1818,16 @@
     "ovr": 95,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 91,
+      "rit": 85,
       "tir": 99,
-      "pas": 92,
-      "reg": 99,
-      "def": 75,
-      "fis": 85
+      "pas": 95,
+      "reg": 95,
+      "def": 41,
+      "fis": 75
     },
-    "ata": 97,
+    "ata": 95,
     "cre": 95,
-    "def": 78,
+    "def": 50,
     "arq": 10
   },
   {
@@ -1844,16 +1844,16 @@
     "ovr": 94,
     "categoria": "Crack",
     "carta": {
-      "rit": 90,
-      "tir": 99,
-      "pas": 91,
-      "reg": 99,
-      "def": 74,
-      "fis": 84
+      "rit": 88,
+      "tir": 94,
+      "pas": 93,
+      "reg": 96,
+      "def": 35,
+      "fis": 76
     },
-    "ata": 97,
+    "ata": 93,
     "cre": 94,
-    "def": 77,
+    "def": 45,
     "arq": 10
   },
   {
@@ -1870,16 +1870,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 83,
-      "tir": 85,
-      "pas": 98,
-      "reg": 85,
-      "def": 68,
-      "fis": 89
+      "rit": 77,
+      "tir": 77,
+      "pas": 99,
+      "reg": 84,
+      "def": 59,
+      "fis": 77
     },
-    "ata": 85,
+    "ata": 79,
     "cre": 93,
-    "def": 73,
+    "def": 64,
     "arq": 10
   },
   {
@@ -1896,16 +1896,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 89,
-      "tir": 99,
-      "pas": 89,
-      "reg": 99,
-      "def": 73,
-      "fis": 83
+      "rit": 85,
+      "tir": 93,
+      "pas": 91,
+      "reg": 96,
+      "def": 36,
+      "fis": 70
     },
-    "ata": 97,
+    "ata": 92,
     "cre": 93,
-    "def": 76,
+    "def": 45,
     "arq": 10
   },
   {
@@ -1922,16 +1922,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 99,
-      "tir": 95,
-      "pas": 93,
-      "reg": 93,
-      "def": 83,
-      "fis": 99
+      "rit": 83,
+      "tir": 91,
+      "pas": 95,
+      "reg": 90,
+      "def": 81,
+      "fis": 91
     },
-    "ata": 95,
+    "ata": 89,
     "cre": 93,
-    "def": 87,
+    "def": 84,
     "arq": 10
   },
   {
@@ -1948,16 +1948,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 99,
-      "tir": 95,
-      "pas": 93,
-      "reg": 93,
-      "def": 83,
-      "fis": 99
+      "rit": 88,
+      "tir": 89,
+      "pas": 94,
+      "reg": 92,
+      "def": 80,
+      "fis": 87
     },
-    "ata": 95,
+    "ata": 90,
     "cre": 93,
-    "def": 87,
+    "def": 82,
     "arq": 10
   },
   {
@@ -1974,16 +1974,16 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 82,
-      "tir": 84,
-      "pas": 97,
-      "reg": 84,
-      "def": 67,
-      "fis": 88
+      "rit": 75,
+      "tir": 83,
+      "pas": 93,
+      "reg": 90,
+      "def": 61,
+      "fis": 75
     },
     "ata": 84,
     "cre": 92,
-    "def": 72,
+    "def": 65,
     "arq": 10
   },
   {
@@ -2000,16 +2000,16 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 99,
-      "tir": 94,
+      "rit": 90,
+      "tir": 97,
       "pas": 92,
       "reg": 92,
-      "def": 82,
-      "fis": 99
+      "def": 35,
+      "fis": 66
     },
     "ata": 94,
     "cre": 92,
-    "def": 86,
+    "def": 43,
     "arq": 10
   },
   {
@@ -2026,16 +2026,16 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 99,
-      "tir": 94,
-      "pas": 92,
-      "reg": 92,
-      "def": 82,
-      "fis": 99
+      "rit": 85,
+      "tir": 87,
+      "pas": 94,
+      "reg": 89,
+      "def": 74,
+      "fis": 87
     },
-    "ata": 94,
+    "ata": 87,
     "cre": 92,
-    "def": 86,
+    "def": 77,
     "arq": 10
   },
   {
@@ -2052,16 +2052,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 81,
-      "tir": 83,
-      "pas": 96,
-      "reg": 83,
-      "def": 66,
-      "fis": 87
+      "rit": 69,
+      "tir": 75,
+      "pas": 98,
+      "reg": 81,
+      "def": 62,
+      "fis": 71
     },
-    "ata": 83,
+    "ata": 76,
     "cre": 91,
-    "def": 71,
+    "def": 64,
     "arq": 10
   },
   {
@@ -2078,16 +2078,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 93,
-      "pas": 91,
-      "reg": 91,
-      "def": 81,
-      "fis": 99
+      "rit": 81,
+      "tir": 86,
+      "pas": 96,
+      "reg": 84,
+      "def": 79,
+      "fis": 88
     },
-    "ata": 94,
+    "ata": 84,
     "cre": 91,
-    "def": 86,
+    "def": 81,
     "arq": 10
   },
   {
@@ -2104,16 +2104,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 81,
+      "rit": 75,
       "tir": 83,
       "pas": 96,
-      "reg": 83,
-      "def": 66,
-      "fis": 87
+      "reg": 84,
+      "def": 59,
+      "fis": 74
     },
-    "ata": 83,
+    "ata": 82,
     "cre": 91,
-    "def": 71,
+    "def": 63,
     "arq": 10
   },
   {
@@ -2130,16 +2130,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 93,
-      "pas": 91,
-      "reg": 91,
+      "rit": 84,
+      "tir": 86,
+      "pas": 95,
+      "reg": 85,
       "def": 81,
-      "fis": 99
+      "fis": 87
     },
-    "ata": 94,
+    "ata": 85,
     "cre": 91,
-    "def": 86,
+    "def": 83,
     "arq": 10
   },
   {
@@ -2157,15 +2157,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 87,
-      "tir": 99,
-      "pas": 86,
-      "reg": 99,
-      "def": 71,
-      "fis": 81
+      "tir": 92,
+      "pas": 89,
+      "reg": 94,
+      "def": 40,
+      "fis": 66
     },
-    "ata": 97,
+    "ata": 92,
     "cre": 91,
-    "def": 74,
+    "def": 47,
     "arq": 10
   },
   {
@@ -2182,16 +2182,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 99,
-      "pas": 86,
-      "reg": 99,
-      "def": 71,
-      "fis": 81
+      "rit": 89,
+      "tir": 94,
+      "pas": 88,
+      "reg": 95,
+      "def": 39,
+      "fis": 68
     },
-    "ata": 97,
+    "ata": 93,
     "cre": 91,
-    "def": 74,
+    "def": 46,
     "arq": 10
   },
   {
@@ -2208,16 +2208,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 99,
-      "pas": 86,
-      "reg": 99,
-      "def": 71,
-      "fis": 81
+      "rit": 82,
+      "tir": 91,
+      "pas": 91,
+      "reg": 91,
+      "def": 36,
+      "fis": 71
     },
-    "ata": 97,
+    "ata": 89,
     "cre": 91,
-    "def": 74,
+    "def": 45,
     "arq": 10
   },
   {
@@ -2234,16 +2234,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 99,
-      "pas": 86,
-      "reg": 99,
-      "def": 71,
-      "fis": 81
+      "rit": 81,
+      "tir": 96,
+      "pas": 87,
+      "reg": 97,
+      "def": 35,
+      "fis": 73
     },
-    "ata": 97,
+    "ata": 93,
     "cre": 91,
-    "def": 74,
+    "def": 45,
     "arq": 10
   },
   {
@@ -2260,16 +2260,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 95,
-      "pas": 86,
-      "reg": 99,
-      "def": 69,
-      "fis": 85
+      "rit": 96,
+      "tir": 82,
+      "pas": 90,
+      "reg": 93,
+      "def": 41,
+      "fis": 65
     },
-    "ata": 97,
+    "ata": 88,
     "cre": 91,
-    "def": 73,
+    "def": 47,
     "arq": 10
   },
   {
@@ -2286,16 +2286,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 86,
-      "tir": 98,
-      "pas": 84,
-      "reg": 99,
-      "def": 70,
-      "fis": 80
+      "rit": 82,
+      "tir": 92,
+      "pas": 87,
+      "reg": 95,
+      "def": 33,
+      "fis": 71
     },
-    "ata": 96,
+    "ata": 91,
     "cre": 90,
-    "def": 73,
+    "def": 43,
     "arq": 10
   },
   {
@@ -2312,16 +2312,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 98,
-      "tir": 92,
-      "pas": 90,
-      "reg": 90,
-      "def": 80,
-      "fis": 98
+      "rit": 83,
+      "tir": 90,
+      "pas": 94,
+      "reg": 84,
+      "def": 73,
+      "fis": 83
     },
-    "ata": 93,
+    "ata": 87,
     "cre": 90,
-    "def": 85,
+    "def": 76,
     "arq": 10
   },
   {
@@ -2338,16 +2338,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 80,
+      "rit": 69,
       "tir": 82,
-      "pas": 95,
-      "reg": 82,
-      "def": 65,
-      "fis": 86
+      "pas": 93,
+      "reg": 86,
+      "def": 59,
+      "fis": 70
     },
-    "ata": 82,
+    "ata": 81,
     "cre": 90,
-    "def": 70,
+    "def": 62,
     "arq": 10
   },
   {
@@ -2364,16 +2364,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 98,
-      "tir": 92,
-      "pas": 90,
-      "reg": 90,
-      "def": 80,
-      "fis": 98
+      "rit": 84,
+      "tir": 86,
+      "pas": 91,
+      "reg": 88,
+      "def": 74,
+      "fis": 85
     },
-    "ata": 93,
+    "ata": 86,
     "cre": 90,
-    "def": 85,
+    "def": 77,
     "arq": 10
   },
   {
@@ -2390,16 +2390,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 98,
-      "tir": 92,
-      "pas": 90,
-      "reg": 90,
-      "def": 80,
-      "fis": 98
+      "rit": 88,
+      "tir": 86,
+      "pas": 94,
+      "reg": 84,
+      "def": 79,
+      "fis": 82
     },
-    "ata": 93,
+    "ata": 86,
     "cre": 90,
-    "def": 85,
+    "def": 80,
     "arq": 10
   },
   {
@@ -2416,16 +2416,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 98,
-      "tir": 92,
-      "pas": 90,
-      "reg": 90,
-      "def": 80,
-      "fis": 98
+      "rit": 85,
+      "tir": 89,
+      "pas": 95,
+      "reg": 83,
+      "def": 79,
+      "fis": 84
     },
-    "ata": 93,
+    "ata": 86,
     "cre": 90,
-    "def": 85,
+    "def": 80,
     "arq": 10
   },
   {
@@ -2442,16 +2442,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 80,
-      "tir": 82,
+      "rit": 69,
+      "tir": 72,
       "pas": 95,
-      "reg": 82,
-      "def": 65,
-      "fis": 86
+      "reg": 83,
+      "def": 83,
+      "fis": 88
     },
-    "ata": 82,
+    "ata": 75,
     "cre": 90,
-    "def": 70,
+    "def": 84,
     "arq": 10
   },
   {
@@ -2469,15 +2469,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 86,
-      "tir": 98,
-      "pas": 84,
-      "reg": 99,
-      "def": 70,
-      "fis": 80
+      "tir": 93,
+      "pas": 91,
+      "reg": 89,
+      "def": 39,
+      "fis": 69
     },
-    "ata": 96,
+    "ata": 90,
     "cre": 90,
-    "def": 73,
+    "def": 47,
     "arq": 10
   },
   {
@@ -2495,15 +2495,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 86,
-      "tir": 98,
-      "pas": 84,
-      "reg": 99,
-      "def": 70,
-      "fis": 80
+      "tir": 95,
+      "pas": 91,
+      "reg": 89,
+      "def": 32,
+      "fis": 70
     },
-    "ata": 96,
+    "ata": 91,
     "cre": 90,
-    "def": 73,
+    "def": 42,
     "arq": 10
   },
   {
@@ -2520,16 +2520,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 86,
-      "tir": 98,
-      "pas": 84,
-      "reg": 99,
-      "def": 70,
-      "fis": 80
+      "rit": 81,
+      "tir": 88,
+      "pas": 89,
+      "reg": 92,
+      "def": 31,
+      "fis": 69
     },
-    "ata": 96,
+    "ata": 88,
     "cre": 90,
-    "def": 73,
+    "def": 41,
     "arq": 10
   },
   {
@@ -2546,16 +2546,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 79,
-      "tir": 81,
+      "rit": 70,
+      "tir": 74,
       "pas": 94,
-      "reg": 81,
-      "def": 64,
-      "fis": 85
+      "reg": 82,
+      "def": 63,
+      "fis": 69
     },
-    "ata": 81,
+    "ata": 76,
     "cre": 89,
-    "def": 69,
+    "def": 65,
     "arq": 10
   },
   {
@@ -2572,16 +2572,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 97,
-      "tir": 91,
-      "pas": 89,
-      "reg": 89,
-      "def": 79,
-      "fis": 97
+      "rit": 86,
+      "tir": 81,
+      "pas": 91,
+      "reg": 86,
+      "def": 72,
+      "fis": 82
     },
-    "ata": 92,
+    "ata": 84,
     "cre": 89,
-    "def": 84,
+    "def": 75,
     "arq": 10
   },
   {
@@ -2598,16 +2598,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 79,
-      "tir": 81,
-      "pas": 94,
-      "reg": 81,
-      "def": 64,
-      "fis": 85
+      "rit": 68,
+      "tir": 80,
+      "pas": 96,
+      "reg": 79,
+      "def": 62,
+      "fis": 70
     },
-    "ata": 81,
+    "ata": 77,
     "cre": 89,
-    "def": 69,
+    "def": 64,
     "arq": 10
   },
   {
@@ -2624,16 +2624,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 79,
-      "tir": 81,
-      "pas": 94,
-      "reg": 81,
-      "def": 64,
-      "fis": 85
+      "rit": 72,
+      "tir": 70,
+      "pas": 96,
+      "reg": 78,
+      "def": 81,
+      "fis": 80
     },
-    "ata": 81,
+    "ata": 73,
     "cre": 89,
-    "def": 69,
+    "def": 81,
     "arq": 10
   },
   {
@@ -2676,16 +2676,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
-      "tir": 97,
-      "pas": 82,
-      "reg": 99,
-      "def": 69,
-      "fis": 79
+      "rit": 83,
+      "tir": 94,
+      "pas": 90,
+      "reg": 87,
+      "def": 30,
+      "fis": 65
     },
-    "ata": 95,
+    "ata": 90,
     "cre": 89,
-    "def": 72,
+    "def": 39,
     "arq": 10
   },
   {
@@ -2702,15 +2702,15 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 73,
-      "pas": 73,
+      "rit": 73,
+      "tir": 60,
+      "pas": 77,
       "reg": 75,
-      "def": 86,
-      "fis": 99
+      "def": 88,
+      "fis": 91
     },
-    "ata": 76,
-    "cre": 74,
+    "ata": 67,
+    "cre": 76,
     "def": 89,
     "arq": 10
   },
@@ -2728,16 +2728,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 97,
-      "tir": 91,
-      "pas": 89,
-      "reg": 89,
-      "def": 79,
-      "fis": 97
+      "rit": 83,
+      "tir": 83,
+      "pas": 92,
+      "reg": 84,
+      "def": 77,
+      "fis": 86
     },
-    "ata": 92,
+    "ata": 83,
     "cre": 89,
-    "def": 84,
+    "def": 79,
     "arq": 10
   },
   {
@@ -2754,16 +2754,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 79,
-      "tir": 81,
-      "pas": 94,
-      "reg": 81,
-      "def": 64,
-      "fis": 85
+      "rit": 70,
+      "tir": 64,
+      "pas": 93,
+      "reg": 83,
+      "def": 82,
+      "fis": 84
     },
-    "ata": 81,
+    "ata": 71,
     "cre": 89,
-    "def": 69,
+    "def": 83,
     "arq": 10
   },
   {
@@ -2780,16 +2780,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 97,
-      "tir": 91,
-      "pas": 89,
-      "reg": 89,
-      "def": 79,
-      "fis": 97
+      "rit": 82,
+      "tir": 81,
+      "pas": 94,
+      "reg": 82,
+      "def": 72,
+      "fis": 86
     },
-    "ata": 92,
+    "ata": 82,
     "cre": 89,
-    "def": 84,
+    "def": 76,
     "arq": 10
   },
   {
@@ -2806,16 +2806,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 97,
-      "tir": 91,
-      "pas": 89,
-      "reg": 89,
-      "def": 79,
-      "fis": 97
+      "rit": 79,
+      "tir": 82,
+      "pas": 92,
+      "reg": 84,
+      "def": 75,
+      "fis": 79
     },
-    "ata": 92,
+    "ata": 82,
     "cre": 89,
-    "def": 84,
+    "def": 76,
     "arq": 10
   },
   {
@@ -2832,16 +2832,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 79,
-      "tir": 81,
-      "pas": 94,
-      "reg": 81,
-      "def": 64,
-      "fis": 85
+      "rit": 70,
+      "tir": 76,
+      "pas": 92,
+      "reg": 84,
+      "def": 57,
+      "fis": 70
     },
-    "ata": 81,
+    "ata": 77,
     "cre": 89,
-    "def": 69,
+    "def": 60,
     "arq": 10
   },
   {
@@ -2858,16 +2858,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
-      "tir": 97,
-      "pas": 82,
-      "reg": 99,
-      "def": 69,
-      "fis": 79
+      "rit": 79,
+      "tir": 89,
+      "pas": 88,
+      "reg": 91,
+      "def": 37,
+      "fis": 67
     },
-    "ata": 95,
+    "ata": 88,
     "cre": 89,
-    "def": 72,
+    "def": 45,
     "arq": 10
   },
   {
@@ -2884,16 +2884,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 82,
+      "tir": 86,
+      "pas": 85,
+      "reg": 93,
+      "def": 30,
+      "fis": 69
     },
-    "ata": 95,
+    "ata": 87,
     "cre": 88,
-    "def": 71,
+    "def": 40,
     "arq": 10
   },
   {
@@ -2910,16 +2910,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 78,
-      "tir": 80,
-      "pas": 93,
-      "reg": 80,
-      "def": 63,
-      "fis": 84
+      "rit": 68,
+      "tir": 76,
+      "pas": 92,
+      "reg": 82,
+      "def": 62,
+      "fis": 69
     },
-    "ata": 80,
+    "ata": 76,
     "cre": 88,
-    "def": 68,
+    "def": 64,
     "arq": 10
   },
   {
@@ -2936,16 +2936,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 83,
+      "tir": 94,
+      "pas": 89,
+      "reg": 86,
+      "def": 37,
+      "fis": 69
     },
-    "ata": 95,
+    "ata": 89,
     "cre": 88,
-    "def": 71,
+    "def": 45,
     "arq": 10
   },
   {
@@ -2962,16 +2962,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 81,
+      "tir": 92,
+      "pas": 86,
+      "reg": 91,
+      "def": 35,
+      "fis": 64
     },
-    "ata": 95,
+    "ata": 90,
     "cre": 88,
-    "def": 71,
+    "def": 42,
     "arq": 10
   },
   {
@@ -2988,16 +2988,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 96,
-      "tir": 90,
-      "pas": 88,
-      "reg": 88,
-      "def": 78,
-      "fis": 96
+      "rit": 85,
+      "tir": 84,
+      "pas": 92,
+      "reg": 82,
+      "def": 75,
+      "fis": 83
     },
-    "ata": 91,
+    "ata": 84,
     "cre": 88,
-    "def": 83,
+    "def": 77,
     "arq": 10
   },
   {
@@ -3014,16 +3014,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 78,
-      "tir": 80,
-      "pas": 93,
-      "reg": 80,
-      "def": 63,
-      "fis": 84
+      "rit": 69,
+      "tir": 78,
+      "pas": 90,
+      "reg": 85,
+      "def": 62,
+      "fis": 72
     },
-    "ata": 80,
+    "ata": 78,
     "cre": 88,
-    "def": 68,
+    "def": 65,
     "arq": 10
   },
   {
@@ -3040,16 +3040,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 82,
+      "tir": 89,
+      "pas": 85,
+      "reg": 92,
+      "def": 37,
+      "fis": 67
     },
-    "ata": 95,
+    "ata": 89,
     "cre": 88,
-    "def": 71,
+    "def": 45,
     "arq": 10
   },
   {
@@ -3066,16 +3066,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 82,
+      "tir": 88,
+      "pas": 86,
+      "reg": 91,
+      "def": 35,
+      "fis": 66
     },
-    "ata": 95,
+    "ata": 88,
     "cre": 88,
-    "def": 71,
+    "def": 43,
     "arq": 10
   },
   {
@@ -3092,16 +3092,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 96,
-      "tir": 90,
-      "pas": 88,
-      "reg": 88,
-      "def": 78,
-      "fis": 96
+      "rit": 83,
+      "tir": 87,
+      "pas": 89,
+      "reg": 87,
+      "def": 73,
+      "fis": 81
     },
-    "ata": 91,
+    "ata": 86,
     "cre": 88,
-    "def": 83,
+    "def": 75,
     "arq": 10
   },
   {
@@ -3118,15 +3118,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 86,
-      "tir": 72,
-      "pas": 72,
-      "reg": 74,
-      "def": 84,
-      "fis": 99
+      "rit": 76,
+      "tir": 59,
+      "pas": 76,
+      "reg": 72,
+      "def": 88,
+      "fis": 87
     },
-    "ata": 75,
-    "cre": 73,
+    "ata": 66,
+    "cre": 74,
     "def": 88,
     "arq": 10
   },
@@ -3144,16 +3144,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 96,
-      "tir": 90,
+      "rit": 83,
+      "tir": 84,
       "pas": 88,
       "reg": 88,
-      "def": 78,
-      "fis": 96
+      "def": 75,
+      "fis": 79
     },
-    "ata": 91,
+    "ata": 85,
     "cre": 88,
-    "def": 83,
+    "def": 76,
     "arq": 10
   },
   {
@@ -3170,15 +3170,15 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 86,
-      "tir": 72,
-      "pas": 72,
-      "reg": 74,
-      "def": 84,
-      "fis": 99
+      "rit": 78,
+      "tir": 59,
+      "pas": 78,
+      "reg": 76,
+      "def": 88,
+      "fis": 89
     },
-    "ata": 75,
-    "cre": 73,
+    "ata": 68,
+    "cre": 77,
     "def": 88,
     "arq": 10
   },
@@ -3196,16 +3196,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 84,
-      "tir": 96,
-      "pas": 81,
-      "reg": 99,
-      "def": 68,
-      "fis": 78
+      "rit": 82,
+      "tir": 94,
+      "pas": 87,
+      "reg": 90,
+      "def": 30,
+      "fis": 66
     },
-    "ata": 95,
+    "ata": 90,
     "cre": 88,
-    "def": 71,
+    "def": 39,
     "arq": 10
   },
   {
@@ -3222,16 +3222,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 92,
-      "pas": 81,
-      "reg": 99,
-      "def": 66,
-      "fis": 82
+      "rit": 93,
+      "tir": 78,
+      "pas": 86,
+      "reg": 91,
+      "def": 38,
+      "fis": 66
     },
-    "ata": 96,
+    "ata": 85,
     "cre": 88,
-    "def": 70,
+    "def": 45,
     "arq": 10
   },
   {
@@ -3248,16 +3248,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 92,
-      "pas": 81,
-      "reg": 99,
-      "def": 66,
-      "fis": 82
+      "rit": 90,
+      "tir": 82,
+      "pas": 83,
+      "reg": 95,
+      "def": 41,
+      "fis": 62
     },
-    "ata": 96,
+    "ata": 88,
     "cre": 88,
-    "def": 70,
+    "def": 46,
     "arq": 10
   },
   {
@@ -3274,14 +3274,14 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 85,
-      "tir": 71,
-      "pas": 71,
-      "reg": 73,
-      "def": 83,
-      "fis": 99
+      "rit": 77,
+      "tir": 58,
+      "pas": 75,
+      "reg": 68,
+      "def": 85,
+      "fis": 93
     },
-    "ata": 74,
+    "ata": 65,
     "cre": 72,
     "def": 87,
     "arq": 10
@@ -3300,16 +3300,16 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 95,
-      "tir": 89,
-      "pas": 87,
-      "reg": 87,
-      "def": 77,
-      "fis": 95
+      "rit": 81,
+      "tir": 85,
+      "pas": 89,
+      "reg": 84,
+      "def": 72,
+      "fis": 78
     },
-    "ata": 90,
+    "ata": 84,
     "cre": 87,
-    "def": 82,
+    "def": 74,
     "arq": 10
   },
   {
@@ -3326,16 +3326,16 @@
     "ovr": 87,
     "categoria": "Figura",
     "carta": {
-      "rit": 83,
-      "tir": 95,
-      "pas": 79,
-      "reg": 99,
-      "def": 67,
-      "fis": 77
+      "rit": 79,
+      "tir": 88,
+      "pas": 86,
+      "reg": 88,
+      "def": 28,
+      "fis": 68
     },
-    "ata": 94,
+    "ata": 86,
     "cre": 87,
-    "def": 70,
+    "def": 38,
     "arq": 10
   },
   {
@@ -3354,14 +3354,14 @@
     "carta": {
       "rit": 99,
       "tir": 99,
-      "pas": 97,
+      "pas": 87,
       "reg": 99,
-      "def": 65,
-      "fis": 99
+      "def": 56,
+      "fis": 88
     },
     "ata": 99,
-    "cre": 98,
-    "def": 74,
+    "cre": 92,
+    "def": 64,
     "arq": 10
   },
   {
@@ -3404,16 +3404,16 @@
     "ovr": 97,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 97,
-      "tir": 96,
-      "pas": 99,
+      "rit": 99,
+      "tir": 95,
+      "pas": 90,
       "reg": 99,
-      "def": 59,
-      "fis": 91
+      "def": 47,
+      "fis": 77
     },
     "ata": 97,
-    "cre": 99,
-    "def": 67,
+    "cre": 94,
+    "def": 55,
     "arq": 10
   },
   {
@@ -3432,14 +3432,14 @@
     "carta": {
       "rit": 99,
       "tir": 95,
-      "pas": 95,
+      "pas": 90,
       "reg": 99,
-      "def": 63,
-      "fis": 99
+      "def": 51,
+      "fis": 86
     },
     "ata": 97,
-    "cre": 97,
-    "def": 72,
+    "cre": 94,
+    "def": 60,
     "arq": 10
   },
   {
@@ -3458,14 +3458,14 @@
     "carta": {
       "rit": 99,
       "tir": 95,
-      "pas": 91,
+      "pas": 85,
       "reg": 99,
-      "def": 55,
-      "fis": 93
+      "def": 45,
+      "fis": 75
     },
     "ata": 97,
-    "cre": 94,
-    "def": 65,
+    "cre": 91,
+    "def": 53,
     "arq": 10
   },
   {
@@ -3482,16 +3482,16 @@
     "ovr": 97,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 93,
+      "rit": 94,
       "tir": 99,
-      "pas": 89,
-      "reg": 93,
-      "def": 61,
-      "fis": 99
+      "pas": 80,
+      "reg": 89,
+      "def": 48,
+      "fis": 97
     },
-    "ata": 96,
-    "cre": 91,
-    "def": 71,
+    "ata": 95,
+    "cre": 84,
+    "def": 60,
     "arq": 10
   },
   {
@@ -3508,16 +3508,16 @@
     "ovr": 96,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 90,
+      "rit": 89,
       "tir": 99,
-      "pas": 86,
-      "reg": 88,
-      "def": 56,
-      "fis": 98
+      "pas": 80,
+      "reg": 89,
+      "def": 43,
+      "fis": 89
     },
     "ata": 94,
-    "cre": 87,
-    "def": 67,
+    "cre": 84,
+    "def": 55,
     "arq": 10
   },
   {
@@ -3536,14 +3536,14 @@
     "carta": {
       "rit": 99,
       "tir": 91,
-      "pas": 97,
+      "pas": 86,
       "reg": 99,
-      "def": 55,
-      "fis": 87
+      "def": 42,
+      "fis": 75
     },
     "ata": 95,
-    "cre": 98,
-    "def": 63,
+    "cre": 91,
+    "def": 50,
     "arq": 10
   },
   {
@@ -3561,15 +3561,15 @@
     "categoria": "Leyenda",
     "carta": {
       "rit": 99,
-      "tir": 91,
-      "pas": 93,
-      "reg": 99,
-      "def": 61,
-      "fis": 97
+      "tir": 93,
+      "pas": 88,
+      "reg": 96,
+      "def": 49,
+      "fis": 84
     },
     "ata": 95,
-    "cre": 95,
-    "def": 70,
+    "cre": 91,
+    "def": 58,
     "arq": 10
   },
   {
@@ -3586,16 +3586,16 @@
     "ovr": 95,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 89,
+      "rit": 86,
       "tir": 99,
-      "pas": 85,
+      "pas": 71,
       "reg": 87,
-      "def": 55,
-      "fis": 97
+      "def": 36,
+      "fis": 85
     },
     "ata": 93,
-    "cre": 86,
-    "def": 66,
+    "cre": 77,
+    "def": 48,
     "arq": 10
   },
   {
@@ -3612,16 +3612,16 @@
     "ovr": 95,
     "categoria": "Leyenda",
     "carta": {
-      "rit": 99,
-      "tir": 91,
-      "pas": 93,
-      "reg": 99,
-      "def": 61,
-      "fis": 97
+      "rit": 94,
+      "tir": 94,
+      "pas": 83,
+      "reg": 98,
+      "def": 48,
+      "fis": 84
     },
     "ata": 95,
-    "cre": 95,
-    "def": 70,
+    "cre": 89,
+    "def": 57,
     "arq": 10
   },
   {
@@ -3638,16 +3638,16 @@
     "ovr": 94,
     "categoria": "Crack",
     "carta": {
-      "rit": 88,
+      "rit": 85,
       "tir": 99,
-      "pas": 84,
-      "reg": 86,
-      "def": 54,
-      "fis": 96
+      "pas": 71,
+      "reg": 85,
+      "def": 39,
+      "fis": 89
     },
-    "ata": 93,
-    "cre": 85,
-    "def": 65,
+    "ata": 92,
+    "cre": 77,
+    "def": 52,
     "arq": 10
   },
   {
@@ -3664,16 +3664,16 @@
     "ovr": 94,
     "categoria": "Crack",
     "carta": {
-      "rit": 94,
-      "tir": 91,
-      "pas": 99,
-      "reg": 99,
-      "def": 56,
-      "fis": 88
+      "rit": 93,
+      "tir": 93,
+      "pas": 87,
+      "reg": 96,
+      "def": 39,
+      "fis": 72
     },
     "ata": 94,
-    "cre": 99,
-    "def": 64,
+    "cre": 91,
+    "def": 47,
     "arq": 10
   },
   {
@@ -3690,16 +3690,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 97,
-      "tir": 89,
-      "pas": 91,
-      "reg": 97,
-      "def": 59,
-      "fis": 95
+      "rit": 96,
+      "tir": 90,
+      "pas": 84,
+      "reg": 96,
+      "def": 50,
+      "fis": 80
     },
     "ata": 93,
-    "cre": 93,
-    "def": 68,
+    "cre": 89,
+    "def": 58,
     "arq": 10
   },
   {
@@ -3718,14 +3718,14 @@
     "carta": {
       "rit": 99,
       "tir": 87,
-      "pas": 95,
+      "pas": 86,
       "reg": 99,
-      "def": 53,
-      "fis": 85
+      "def": 34,
+      "fis": 75
     },
     "ata": 93,
-    "cre": 97,
-    "def": 61,
+    "cre": 91,
+    "def": 44,
     "arq": 10
   },
   {
@@ -3742,16 +3742,16 @@
     "ovr": 93,
     "categoria": "Crack",
     "carta": {
-      "rit": 97,
-      "tir": 89,
-      "pas": 91,
-      "reg": 97,
-      "def": 59,
-      "fis": 95
+      "rit": 92,
+      "tir": 94,
+      "pas": 80,
+      "reg": 92,
+      "def": 48,
+      "fis": 81
     },
     "ata": 93,
-    "cre": 93,
-    "def": 68,
+    "cre": 85,
+    "def": 56,
     "arq": 10
   },
   {
@@ -3770,14 +3770,14 @@
     "carta": {
       "rit": 99,
       "tir": 85,
-      "pas": 86,
+      "pas": 82,
       "reg": 99,
-      "def": 50,
-      "fis": 88
+      "def": 33,
+      "fis": 74
     },
     "ata": 92,
-    "cre": 91,
-    "def": 60,
+    "cre": 89,
+    "def": 43,
     "arq": 10
   },
   {
@@ -3795,15 +3795,15 @@
     "categoria": "Crack",
     "carta": {
       "rit": 99,
-      "tir": 85,
-      "pas": 94,
-      "reg": 99,
-      "def": 52,
-      "fis": 84
+      "tir": 86,
+      "pas": 82,
+      "reg": 98,
+      "def": 38,
+      "fis": 68
     },
     "ata": 92,
-    "cre": 96,
-    "def": 60,
+    "cre": 88,
+    "def": 46,
     "arq": 10
   },
   {
@@ -3822,14 +3822,14 @@
     "carta": {
       "rit": 96,
       "tir": 88,
-      "pas": 90,
+      "pas": 83,
       "reg": 96,
-      "def": 58,
-      "fis": 94
+      "def": 44,
+      "fis": 79
     },
     "ata": 92,
-    "cre": 92,
-    "def": 67,
+    "cre": 88,
+    "def": 53,
     "arq": 10
   },
   {
@@ -3846,16 +3846,16 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 92,
-      "tir": 88,
-      "pas": 99,
-      "reg": 99,
-      "def": 54,
-      "fis": 86
+      "rit": 93,
+      "tir": 90,
+      "pas": 82,
+      "reg": 95,
+      "def": 44,
+      "fis": 72
     },
     "ata": 92,
-    "cre": 99,
-    "def": 62,
+    "cre": 87,
+    "def": 51,
     "arq": 10
   },
   {
@@ -3872,16 +3872,16 @@
     "ovr": 92,
     "categoria": "Crack",
     "carta": {
-      "rit": 88,
-      "tir": 96,
-      "pas": 84,
-      "reg": 88,
-      "def": 56,
-      "fis": 99
+      "rit": 87,
+      "tir": 95,
+      "pas": 71,
+      "reg": 90,
+      "def": 47,
+      "fis": 94
     },
     "ata": 92,
-    "cre": 86,
-    "def": 67,
+    "cre": 79,
+    "def": 59,
     "arq": 10
   },
   {
@@ -3898,16 +3898,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 95,
-      "tir": 87,
-      "pas": 89,
-      "reg": 95,
-      "def": 57,
-      "fis": 93
+      "rit": 91,
+      "tir": 89,
+      "pas": 77,
+      "reg": 94,
+      "def": 48,
+      "fis": 84
     },
     "ata": 91,
-    "cre": 91,
-    "def": 66,
+    "cre": 84,
+    "def": 57,
     "arq": 10
   },
   {
@@ -3924,16 +3924,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 91,
-      "tir": 86,
-      "pas": 99,
-      "reg": 99,
-      "def": 53,
-      "fis": 85
+      "rit": 85,
+      "tir": 92,
+      "pas": 81,
+      "reg": 93,
+      "def": 41,
+      "fis": 71
     },
     "ata": 91,
-    "cre": 99,
-    "def": 61,
+    "cre": 86,
+    "def": 49,
     "arq": 10
   },
   {
@@ -3950,16 +3950,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 95,
-      "pas": 83,
-      "reg": 87,
-      "def": 55,
-      "fis": 99
+      "rit": 88,
+      "tir": 94,
+      "pas": 76,
+      "reg": 88,
+      "def": 43,
+      "fis": 94
     },
     "ata": 91,
-    "cre": 85,
-    "def": 66,
+    "cre": 81,
+    "def": 56,
     "arq": 10
   },
   {
@@ -3976,16 +3976,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
+      "rit": 89,
       "tir": 95,
-      "pas": 83,
-      "reg": 87,
-      "def": 55,
-      "fis": 99
+      "pas": 74,
+      "reg": 86,
+      "def": 41,
+      "fis": 94
     },
     "ata": 91,
-    "cre": 85,
-    "def": 66,
+    "cre": 79,
+    "def": 54,
     "arq": 10
   },
   {
@@ -4002,16 +4002,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
+      "rit": 89,
       "tir": 95,
-      "pas": 83,
-      "reg": 87,
-      "def": 55,
-      "fis": 99
+      "pas": 76,
+      "reg": 85,
+      "def": 39,
+      "fis": 93
     },
     "ata": 91,
-    "cre": 85,
-    "def": 66,
+    "cre": 80,
+    "def": 53,
     "arq": 10
   },
   {
@@ -4028,16 +4028,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 91,
-      "tir": 86,
-      "pas": 99,
-      "reg": 99,
-      "def": 53,
-      "fis": 85
+      "rit": 89,
+      "tir": 89,
+      "pas": 87,
+      "reg": 95,
+      "def": 40,
+      "fis": 71
     },
     "ata": 91,
-    "cre": 99,
-    "def": 61,
+    "cre": 90,
+    "def": 48,
     "arq": 10
   },
   {
@@ -4055,15 +4055,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 99,
-      "tir": 83,
-      "pas": 93,
-      "reg": 99,
-      "def": 51,
-      "fis": 83
+      "tir": 85,
+      "pas": 79,
+      "reg": 96,
+      "def": 36,
+      "fis": 71
     },
     "ata": 91,
-    "cre": 95,
-    "def": 59,
+    "cre": 86,
+    "def": 45,
     "arq": 10
   },
   {
@@ -4080,16 +4080,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 91,
-      "tir": 86,
-      "pas": 99,
+      "rit": 88,
+      "tir": 87,
+      "pas": 84,
       "reg": 99,
-      "def": 53,
-      "fis": 85
+      "def": 40,
+      "fis": 72
     },
     "ata": 91,
-    "cre": 99,
-    "def": 61,
+    "cre": 90,
+    "def": 48,
     "arq": 10
   },
   {
@@ -4106,16 +4106,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
-      "tir": 98,
-      "pas": 81,
-      "reg": 83,
-      "def": 51,
-      "fis": 93
+      "rit": 84,
+      "tir": 99,
+      "pas": 74,
+      "reg": 81,
+      "def": 40,
+      "fis": 87
     },
     "ata": 91,
-    "cre": 82,
-    "def": 62,
+    "cre": 77,
+    "def": 52,
     "arq": 10
   },
   {
@@ -4132,16 +4132,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 91,
-      "tir": 86,
-      "pas": 99,
-      "reg": 99,
-      "def": 53,
-      "fis": 85
+      "rit": 85,
+      "tir": 92,
+      "pas": 87,
+      "reg": 93,
+      "def": 43,
+      "fis": 71
     },
     "ata": 91,
-    "cre": 99,
-    "def": 61,
+    "cre": 89,
+    "def": 50,
     "arq": 10
   },
   {
@@ -4159,15 +4159,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 99,
-      "tir": 83,
-      "pas": 93,
-      "reg": 99,
-      "def": 51,
-      "fis": 83
+      "tir": 85,
+      "pas": 78,
+      "reg": 96,
+      "def": 32,
+      "fis": 72
     },
     "ata": 91,
-    "cre": 95,
-    "def": 59,
+    "cre": 85,
+    "def": 42,
     "arq": 10
   },
   {
@@ -4184,16 +4184,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 87,
-      "tir": 95,
-      "pas": 83,
-      "reg": 87,
-      "def": 55,
-      "fis": 99
+      "rit": 89,
+      "tir": 93,
+      "pas": 74,
+      "reg": 89,
+      "def": 45,
+      "fis": 94
     },
     "ata": 91,
-    "cre": 85,
-    "def": 66,
+    "cre": 80,
+    "def": 57,
     "arq": 10
   },
   {
@@ -4212,14 +4212,14 @@
     "carta": {
       "rit": 99,
       "tir": 83,
-      "pas": 93,
+      "pas": 82,
       "reg": 99,
-      "def": 51,
-      "fis": 83
+      "def": 37,
+      "fis": 68
     },
     "ata": 91,
-    "cre": 95,
-    "def": 59,
+    "cre": 89,
+    "def": 45,
     "arq": 10
   },
   {
@@ -4236,16 +4236,16 @@
     "ovr": 91,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
+      "rit": 87,
       "tir": 98,
-      "pas": 81,
-      "reg": 83,
-      "def": 51,
-      "fis": 93
+      "pas": 70,
+      "reg": 82,
+      "def": 38,
+      "fis": 81
     },
     "ata": 91,
-    "cre": 82,
-    "def": 62,
+    "cre": 75,
+    "def": 49,
     "arq": 10
   },
   {
@@ -4263,15 +4263,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 90,
-      "tir": 85,
-      "pas": 98,
-      "reg": 99,
-      "def": 52,
-      "fis": 84
+      "tir": 88,
+      "pas": 86,
+      "reg": 94,
+      "def": 35,
+      "fis": 73
     },
     "ata": 90,
-    "cre": 98,
-    "def": 60,
+    "cre": 89,
+    "def": 45,
     "arq": 10
   },
   {
@@ -4289,15 +4289,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 94,
-      "tir": 86,
-      "pas": 88,
-      "reg": 94,
-      "def": 56,
-      "fis": 92
+      "tir": 87,
+      "pas": 82,
+      "reg": 92,
+      "def": 42,
+      "fis": 77
     },
     "ata": 90,
-    "cre": 90,
-    "def": 65,
+    "cre": 86,
+    "def": 51,
     "arq": 10
   },
   {
@@ -4314,16 +4314,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 86,
-      "tir": 94,
-      "pas": 82,
-      "reg": 86,
-      "def": 54,
-      "fis": 99
+      "rit": 81,
+      "tir": 98,
+      "pas": 73,
+      "reg": 82,
+      "def": 42,
+      "fis": 90
     },
     "ata": 90,
-    "cre": 84,
-    "def": 65,
+    "cre": 77,
+    "def": 54,
     "arq": 10
   },
   {
@@ -4340,16 +4340,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 94,
-      "tir": 86,
-      "pas": 88,
-      "reg": 94,
-      "def": 56,
-      "fis": 92
+      "rit": 88,
+      "tir": 89,
+      "pas": 80,
+      "reg": 93,
+      "def": 41,
+      "fis": 77
     },
     "ata": 90,
-    "cre": 90,
-    "def": 65,
+    "cre": 85,
+    "def": 50,
     "arq": 10
   },
   {
@@ -4367,15 +4367,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 99,
-      "tir": 82,
-      "pas": 84,
-      "reg": 98,
-      "def": 48,
-      "fis": 86
+      "tir": 85,
+      "pas": 76,
+      "reg": 93,
+      "def": 37,
+      "fis": 68
     },
     "ata": 90,
-    "cre": 90,
-    "def": 58,
+    "cre": 83,
+    "def": 45,
     "arq": 10
   },
   {
@@ -4394,14 +4394,14 @@
     "carta": {
       "rit": 99,
       "tir": 81,
-      "pas": 92,
+      "pas": 82,
       "reg": 99,
-      "def": 50,
-      "fis": 82
+      "def": 34,
+      "fis": 70
     },
     "ata": 90,
-    "cre": 95,
-    "def": 58,
+    "cre": 89,
+    "def": 43,
     "arq": 10
   },
   {
@@ -4420,14 +4420,14 @@
     "carta": {
       "rit": 99,
       "tir": 81,
-      "pas": 92,
+      "pas": 80,
       "reg": 99,
-      "def": 50,
-      "fis": 82
+      "def": 33,
+      "fis": 64
     },
     "ata": 90,
-    "cre": 95,
-    "def": 58,
+    "cre": 88,
+    "def": 41,
     "arq": 10
   },
   {
@@ -4444,16 +4444,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 85,
-      "pas": 98,
-      "reg": 99,
-      "def": 52,
-      "fis": 84
+      "rit": 91,
+      "tir": 88,
+      "pas": 82,
+      "reg": 92,
+      "def": 40,
+      "fis": 69
     },
     "ata": 90,
-    "cre": 98,
-    "def": 60,
+    "cre": 86,
+    "def": 47,
     "arq": 10
   },
   {
@@ -4470,16 +4470,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 84,
-      "tir": 97,
-      "pas": 80,
-      "reg": 82,
-      "def": 50,
-      "fis": 92
+      "rit": 85,
+      "tir": 94,
+      "pas": 67,
+      "reg": 86,
+      "def": 34,
+      "fis": 78
     },
     "ata": 90,
-    "cre": 81,
-    "def": 61,
+    "cre": 75,
+    "def": 45,
     "arq": 10
   },
   {
@@ -4496,16 +4496,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 84,
-      "tir": 97,
-      "pas": 80,
-      "reg": 82,
-      "def": 50,
-      "fis": 92
+      "rit": 81,
+      "tir": 98,
+      "pas": 73,
+      "reg": 83,
+      "def": 35,
+      "fis": 79
     },
     "ata": 90,
-    "cre": 81,
-    "def": 61,
+    "cre": 77,
+    "def": 46,
     "arq": 10
   },
   {
@@ -4522,16 +4522,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 84,
+      "rit": 88,
       "tir": 97,
-      "pas": 80,
-      "reg": 82,
-      "def": 50,
-      "fis": 92
+      "pas": 71,
+      "reg": 79,
+      "def": 36,
+      "fis": 78
     },
     "ata": 90,
-    "cre": 81,
-    "def": 61,
+    "cre": 74,
+    "def": 47,
     "arq": 10
   },
   {
@@ -4548,16 +4548,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 86,
-      "tir": 94,
-      "pas": 82,
-      "reg": 86,
-      "def": 54,
-      "fis": 99
+      "rit": 85,
+      "tir": 97,
+      "pas": 69,
+      "reg": 81,
+      "def": 40,
+      "fis": 94
     },
     "ata": 90,
-    "cre": 84,
-    "def": 65,
+    "cre": 74,
+    "def": 54,
     "arq": 10
   },
   {
@@ -4574,16 +4574,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 85,
-      "pas": 98,
-      "reg": 99,
-      "def": 52,
-      "fis": 84
+      "rit": 84,
+      "tir": 88,
+      "pas": 86,
+      "reg": 97,
+      "def": 40,
+      "fis": 74
     },
     "ata": 90,
-    "cre": 98,
-    "def": 60,
+    "cre": 90,
+    "def": 49,
     "arq": 10
   },
   {
@@ -4600,16 +4600,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 94,
-      "tir": 86,
-      "pas": 88,
+      "rit": 91,
+      "tir": 87,
+      "pas": 82,
       "reg": 94,
-      "def": 56,
-      "fis": 92
+      "def": 42,
+      "fis": 77
     },
     "ata": 90,
-    "cre": 90,
-    "def": 65,
+    "cre": 87,
+    "def": 51,
     "arq": 10
   },
   {
@@ -4626,16 +4626,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 85,
-      "pas": 98,
+      "rit": 86,
+      "tir": 86,
+      "pas": 82,
       "reg": 99,
-      "def": 52,
-      "fis": 84
+      "def": 37,
+      "fis": 74
     },
     "ata": 90,
-    "cre": 98,
-    "def": 60,
+    "cre": 89,
+    "def": 46,
     "arq": 10
   },
   {
@@ -4652,16 +4652,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 90,
-      "tir": 85,
-      "pas": 98,
-      "reg": 99,
-      "def": 52,
-      "fis": 84
+      "rit": 84,
+      "tir": 91,
+      "pas": 87,
+      "reg": 93,
+      "def": 42,
+      "fis": 67
     },
     "ata": 90,
-    "cre": 98,
-    "def": 60,
+    "cre": 89,
+    "def": 48,
     "arq": 10
   },
   {
@@ -4678,16 +4678,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 99,
-      "tir": 81,
-      "pas": 92,
-      "reg": 99,
-      "def": 50,
-      "fis": 82
+      "rit": 98,
+      "tir": 82,
+      "pas": 77,
+      "reg": 98,
+      "def": 36,
+      "fis": 66
     },
     "ata": 90,
-    "cre": 95,
-    "def": 58,
+    "cre": 85,
+    "def": 44,
     "arq": 10
   },
   {
@@ -4704,16 +4704,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 94,
-      "tir": 86,
-      "pas": 88,
-      "reg": 94,
-      "def": 56,
-      "fis": 92
+      "rit": 96,
+      "tir": 88,
+      "pas": 82,
+      "reg": 89,
+      "def": 41,
+      "fis": 77
     },
     "ata": 90,
-    "cre": 90,
-    "def": 65,
+    "cre": 85,
+    "def": 50,
     "arq": 10
   },
   {
@@ -4730,16 +4730,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 94,
-      "tir": 86,
-      "pas": 88,
-      "reg": 94,
-      "def": 56,
-      "fis": 92
+      "rit": 88,
+      "tir": 88,
+      "pas": 78,
+      "reg": 95,
+      "def": 46,
+      "fis": 83
     },
     "ata": 90,
-    "cre": 90,
-    "def": 65,
+    "cre": 85,
+    "def": 55,
     "arq": 10
   },
   {
@@ -4756,16 +4756,16 @@
     "ovr": 90,
     "categoria": "Estrella",
     "carta": {
-      "rit": 86,
-      "tir": 94,
-      "pas": 82,
-      "reg": 86,
-      "def": 54,
-      "fis": 99
+      "rit": 85,
+      "tir": 97,
+      "pas": 76,
+      "reg": 82,
+      "def": 40,
+      "fis": 89
     },
     "ata": 90,
-    "cre": 84,
-    "def": 65,
+    "cre": 78,
+    "def": 52,
     "arq": 10
   },
   {
@@ -4783,15 +4783,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 99,
-      "tir": 79,
-      "pas": 91,
-      "reg": 99,
-      "def": 49,
-      "fis": 81
+      "tir": 81,
+      "pas": 77,
+      "reg": 96,
+      "def": 35,
+      "fis": 63
     },
     "ata": 89,
-    "cre": 94,
-    "def": 57,
+    "cre": 85,
+    "def": 42,
     "arq": 10
   },
   {
@@ -4809,15 +4809,15 @@
     "categoria": "Estrella",
     "carta": {
       "rit": 99,
-      "tir": 79,
-      "pas": 91,
-      "reg": 99,
-      "def": 49,
-      "fis": 81
+      "tir": 83,
+      "pas": 83,
+      "reg": 93,
+      "def": 35,
+      "fis": 67
     },
     "ata": 89,
-    "cre": 94,
-    "def": 57,
+    "cre": 87,
+    "def": 43,
     "arq": 10
   },
   {
@@ -4834,16 +4834,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 93,
-      "tir": 85,
-      "pas": 87,
-      "reg": 93,
-      "def": 55,
-      "fis": 91
+      "rit": 87,
+      "tir": 86,
+      "pas": 75,
+      "reg": 95,
+      "def": 45,
+      "fis": 78
     },
     "ata": 89,
-    "cre": 89,
-    "def": 64,
+    "cre": 83,
+    "def": 53,
     "arq": 10
   },
   {
@@ -4860,16 +4860,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
-      "tir": 93,
-      "pas": 81,
+      "rit": 83,
+      "tir": 94,
+      "pas": 74,
       "reg": 85,
-      "def": 53,
-      "fis": 99
+      "def": 43,
+      "fis": 92
     },
     "ata": 89,
-    "cre": 83,
-    "def": 65,
+    "cre": 78,
+    "def": 55,
     "arq": 10
   },
   {
@@ -4886,16 +4886,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 85,
-      "tir": 93,
-      "pas": 81,
-      "reg": 85,
-      "def": 53,
-      "fis": 99
+      "rit": 80,
+      "tir": 99,
+      "pas": 69,
+      "reg": 79,
+      "def": 37,
+      "fis": 86
     },
     "ata": 89,
-    "cre": 83,
-    "def": 65,
+    "cre": 73,
+    "def": 49,
     "arq": 10
   },
   {
@@ -4912,16 +4912,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 93,
-      "tir": 85,
-      "pas": 87,
-      "reg": 93,
-      "def": 55,
-      "fis": 91
+      "rit": 90,
+      "tir": 89,
+      "pas": 77,
+      "reg": 88,
+      "def": 41,
+      "fis": 76
     },
     "ata": 89,
-    "cre": 89,
-    "def": 64,
+    "cre": 81,
+    "def": 50,
     "arq": 10
   },
   {
@@ -4938,16 +4938,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 83,
-      "tir": 96,
-      "pas": 79,
-      "reg": 81,
-      "def": 49,
-      "fis": 91
+      "rit": 84,
+      "tir": 95,
+      "pas": 65,
+      "reg": 82,
+      "def": 32,
+      "fis": 81
     },
     "ata": 89,
-    "cre": 80,
-    "def": 60,
+    "cre": 72,
+    "def": 44,
     "arq": 10
   },
   {
@@ -4964,16 +4964,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 89,
-      "tir": 83,
-      "pas": 97,
-      "reg": 99,
-      "def": 51,
-      "fis": 83
+      "rit": 85,
+      "tir": 86,
+      "pas": 83,
+      "reg": 96,
+      "def": 40,
+      "fis": 70
     },
     "ata": 89,
-    "cre": 98,
-    "def": 59,
+    "cre": 88,
+    "def": 48,
     "arq": 10
   },
   {
@@ -4990,16 +4990,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 89,
+      "rit": 91,
       "tir": 83,
-      "pas": 97,
-      "reg": 99,
-      "def": 51,
-      "fis": 83
+      "pas": 86,
+      "reg": 97,
+      "def": 34,
+      "fis": 69
     },
     "ata": 89,
-    "cre": 98,
-    "def": 59,
+    "cre": 90,
+    "def": 43,
     "arq": 10
   },
   {
@@ -5018,14 +5018,14 @@
     "carta": {
       "rit": 83,
       "tir": 96,
-      "pas": 79,
+      "pas": 70,
       "reg": 81,
-      "def": 49,
-      "fis": 91
+      "def": 33,
+      "fis": 82
     },
     "ata": 89,
-    "cre": 80,
-    "def": 60,
+    "cre": 74,
+    "def": 45,
     "arq": 10
   },
   {
@@ -5042,16 +5042,16 @@
     "ovr": 89,
     "categoria": "Estrella",
     "carta": {
-      "rit": 83,
-      "tir": 96,
-      "pas": 79,
-      "reg": 81,
-      "def": 49,
-      "fis": 91
+      "rit": 82,
+      "tir": 98,
+      "pas": 66,
+      "reg": 78,
+      "def": 32,
+      "fis": 84
     },
     "ata": 89,
-    "cre": 80,
-    "def": 60,
+    "cre": 71,
+    "def": 45,
     "arq": 10
   },
   {
@@ -5068,16 +5068,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 82,
-      "tir": 95,
-      "pas": 78,
+      "rit": 78,
+      "tir": 97,
+      "pas": 66,
       "reg": 80,
-      "def": 48,
-      "fis": 90
+      "def": 29,
+      "fis": 80
     },
     "ata": 88,
-    "cre": 79,
-    "def": 59,
+    "cre": 72,
+    "def": 42,
     "arq": 10
   },
   {
@@ -5094,16 +5094,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 92,
+      "rit": 94,
       "tir": 84,
-      "pas": 86,
-      "reg": 92,
-      "def": 54,
-      "fis": 90
+      "pas": 82,
+      "reg": 90,
+      "def": 43,
+      "fis": 79
     },
     "ata": 88,
-    "cre": 88,
-    "def": 63,
+    "cre": 85,
+    "def": 52,
     "arq": 10
   },
   {
@@ -5120,16 +5120,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 99,
-      "tir": 79,
-      "pas": 82,
-      "reg": 96,
-      "def": 46,
-      "fis": 84
+      "rit": 98,
+      "tir": 81,
+      "pas": 74,
+      "reg": 93,
+      "def": 29,
+      "fis": 73
     },
     "ata": 88,
-    "cre": 88,
-    "def": 56,
+    "cre": 82,
+    "def": 40,
     "arq": 10
   },
   {
@@ -5146,16 +5146,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 82,
-      "tir": 95,
-      "pas": 78,
-      "reg": 80,
-      "def": 48,
-      "fis": 90
+      "rit": 84,
+      "tir": 96,
+      "pas": 67,
+      "reg": 78,
+      "def": 36,
+      "fis": 81
     },
     "ata": 88,
-    "cre": 79,
-    "def": 59,
+    "cre": 71,
+    "def": 47,
     "arq": 10
   },
   {
@@ -5172,16 +5172,16 @@
     "ovr": 88,
     "categoria": "Figura",
     "carta": {
-      "rit": 88,
-      "tir": 81,
-      "pas": 96,
-      "reg": 99,
-      "def": 50,
-      "fis": 82
+      "rit": 82,
+      "tir": 87,
+      "pas": 81,
+      "reg": 93,
+      "def": 39,
+      "fis": 67
     },
     "ata": 88,
-    "cre": 97,
-    "def": 58,
+    "cre": 86,
+    "def": 46,
     "arq": 10
   },
   {

@@ -117,63 +117,68 @@ function clampRedondo(v) { return clamp(Math.round(v), 20, 99); }
 // ---------------------------------------------------------------------------
 
 var ARQ_DEL = {
+  // Deltas respecto del OVR. TIR se resuelve algebraicamente, por eso RIT y REG no
+  // pueden bajar mucho en los OVR altos (si no, TIR tendria que pasar de 99).
   // area de tiro puro: TIR altisimo (resuelto), poco REG/PAS, defensa nula
-  killerArea: { rit: -6, pas: -10, reg: -8, defStat: -40, fis: 2 },
+  killerArea: { rit: -6, pas: -20, reg: -8, defStat: -55, fis: -8 },
   // pura velocidad y desborde
-  explosivo: { rit: 12, pas: -6, reg: 8, defStat: -42, fis: -4 },
+  explosivo: { rit: 12, pas: -14, reg: 6, defStat: -55, fis: -18 },
   // asociativo, mucho REG y PAS
-  tecnico: { rit: 0, pas: 8, reg: 12, defStat: -38, fis: -6 },
+  tecnico: { rit: -2, pas: -6, reg: 6, defStat: -52, fis: -20 },
   // area y fisico, target man
-  potente: { rit: -4, pas: -8, reg: -4, defStat: -36, fis: 14 },
+  potente: { rit: -6, pas: -18, reg: -6, defStat: -48, fis: 0 },
   // completo, sin debilidades marcadas
-  completo: { rit: 4, pas: -2, reg: 4, defStat: -34, fis: 2 },
+  completo: { rit: 2, pas: -10, reg: 2, defStat: -45, fis: -10 },
   // delantero de epoca clasica, gol por sobre todo
-  clasico: { rit: -6, pas: 2, reg: -2, defStat: -36, fis: 0 },
+  clasico: { rit: -6, pas: -12, reg: -2, defStat: -50, fis: -10 },
   // extremo veloz y desequilibrante
-  extremoVeloz: { rit: 14, pas: 2, reg: 10, defStat: -40, fis: -8 },
+  extremoVeloz: { rit: 12, pas: -10, reg: 8, defStat: -55, fis: -22 },
 };
 
 var ARQ_MED = {
-  // volante de creacion profunda: PAS altisimo (resuelto via REG bajo)
-  regista: { tipo: 'cre', rit: -10, tir: -8, fis: -4, reg: -8, defStat: -25 },
-  // enganche clasico: REG y regate por delante del pase directo
-  enganche: { tipo: 'cre', rit: -4, tir: 8, fis: -10, reg: 14, defStat: -20 },
+  // volante de creacion profunda: PAS altisimo (resuelto via REG)
+  regista: { tipo: 'cre', rit: -18, tir: -12, fis: -20, reg: -6, defStat: -30 },
+  // enganche clasico: REG y regate por delante del pase directo, no marca
+  enganche: { tipo: 'cre', rit: -6, tir: 2, fis: -22, reg: 2, defStat: -55 },
   // box to box, fisico y llegada
-  boxToBox: { tipo: 'cre', rit: 8, tir: 2, fis: 8, reg: 0, defStat: -10 },
+  boxToBox: { tipo: 'cre', rit: -6, tir: -4, fis: -6, reg: -4, defStat: -14 },
   // volante por afuera, desborde y centro
-  extremoMed: { tipo: 'cre', rit: 12, tir: 4, fis: -6, reg: 16, defStat: -22 },
+  extremoMed: { tipo: 'cre', rit: 4, tir: -6, fis: -22, reg: 4, defStat: -48 },
+  // pivote: organiza de atrás y también marca (Busquets, Rodri, Redondo)
+  pivote: { tipo: 'cre', rit: -20, tir: -22, fis: -6, reg: -8, defStat: -6 },
   // volante de marca / destructor: DEF resuelto, ataque casi nulo
-  destructor: { tipo: 'def', rit: -2, tir: -16, pas: -16, reg: -14, fis: 12 },
+  destructor: { tipo: 'def', rit: -12, tir: -30, pas: -14, reg: -16, fis: 2 },
 };
 
 var ARQ_DEF = {
+  // DEF se resuelve algebraicamente desde FIS, por eso FIS no puede bajar mucho.
   // libero elegante, sale jugando
-  libero: { rit: 4, tir: -8, pas: 14, reg: 8, fis: -8 },
+  libero: { rit: -14, tir: -30, pas: -6, reg: -10, fis: -10 },
   // central completo, sin debilidades
-  completoDef: { rit: 0, tir: -6, pas: 4, reg: 0, fis: 4 },
+  completoDef: { rit: -14, tir: -35, pas: -20, reg: -22, fis: -6 },
   // lateral veloz y de proyeccion
-  lateralRapido: { rit: 14, tir: -10, pas: 4, reg: 6, fis: -10 },
+  lateralRapido: { rit: -2, tir: -30, pas: -12, reg: -12, fis: -4 },
   // marcador duro, sale jugando poco
-  marcadorDuro: { rit: -2, tir: -4, pas: -10, reg: -8, fis: 10 },
+  marcadorDuro: { rit: -18, tir: -35, pas: -28, reg: -30, fis: 2 },
   // muro defensivo, casi sin salida
-  muro: { rit: -8, tir: -14, pas: -12, reg: -12, fis: 14 },
+  muro: { rit: -20, tir: -45, pas: -32, reg: -34, fis: 6 },
   // veterano de lectura, poca velocidad, buena salida
-  veteranoLectura: { rit: -10, tir: -10, pas: 2, reg: -4, fis: 2 },
+  veteranoLectura: { rit: -24, tir: -35, pas: -12, reg: -18, fis: -6 },
   // lateral ofensivo extremo (Roberto Carlos: tiro y ritmo de delantero)
-  lateralOfensivoExtremo: { rit: 16, tir: 16, pas: 2, reg: 8, fis: -6 },
+  lateralOfensivoExtremo: { rit: 6, tir: -8, pas: -10, reg: -6, fis: -4 },
 };
 
 var ARQ_POR = {
   // atajador de reflejos, menos con los pies
-  reflejos: { est: -6, ref: 10, col: -4, saq: -15, vel: -10 },
+  reflejos: { est: -6, ref: 8, col: -4, saq: -20, vel: -30 },
   // arquero de area, imponente, domina el area
-  estirada: { est: 10, ref: -2, col: 4, saq: -8, vel: -14 },
+  estirada: { est: 8, ref: -2, col: 4, saq: -14, vel: -32 },
   // arquero moderno, juega con los pies
-  saque: { est: -2, ref: 2, col: 2, saq: 5, vel: -4 },
+  saque: { est: -2, ref: 2, col: 2, saq: -4, vel: -22 },
   // equilibrado
-  mixto: { est: 0, ref: 0, col: 0, saq: -6, vel: -6 },
+  mixto: { est: 0, ref: 0, col: 0, saq: -12, vel: -28 },
   // arquero de epoca clasica, colocacion por sobre reflejos
-  clasico: { est: 2, ref: -8, col: 6, saq: -16, vel: -14 },
+  clasico: { est: 2, ref: -8, col: 6, saq: -20, vel: -34 },
 };
 
 // ---------------------------------------------------------------------------
@@ -361,7 +366,7 @@ var MAPA = {
   74: { posDetalle: 'MC', nombreCarta: 'Matthäus', arquetipo: 'boxToBox' },
   75: { posDetalle: 'MC', nombreCarta: 'Charlton', arquetipo: 'boxToBox' },
   76: { posDetalle: 'MC', nombreCarta: 'Modrić', arquetipo: 'regista' },
-  77: { posDetalle: 'MCO', nombreCarta: 'Kaká', arquetipo: 'boxToBox' },
+  77: { posDetalle: 'MCO', nombreCarta: 'Kaká', arquetipo: 'enganche' },
   78: { posDetalle: 'MC', nombreCarta: 'Gullit', arquetipo: 'boxToBox' },
   79: { posDetalle: 'MC', nombreCarta: 'Didi', arquetipo: 'regista' },
   80: { posDetalle: 'MC', nombreCarta: 'Rijkaard', arquetipo: 'boxToBox' },
@@ -378,18 +383,18 @@ var MAPA = {
   91: { posDetalle: 'MC', nombreCarta: 'Gerrard', arquetipo: 'boxToBox' },
   92: { posDetalle: 'MI', nombreCarta: 'Nedvěd', arquetipo: 'boxToBox' },
   93: { posDetalle: 'MC', nombreCarta: 'Falcão', arquetipo: 'boxToBox' },
-  94: { posDetalle: 'MCD', nombreCarta: 'Rodri', arquetipo: 'regista' },
+  94: { posDetalle: 'MCD', nombreCarta: 'Rodri', arquetipo: 'pivote' },
   95: { posDetalle: 'MC', nombreCarta: 'L. Suárez M.', arquetipo: 'enganche' },
   96: { posDetalle: 'MCO', nombreCarta: 'F. Walter', arquetipo: 'enganche' },
   97: { posDetalle: 'MCO', nombreCarta: 'Laudrup', arquetipo: 'enganche' },
   98: { posDetalle: 'MC', nombreCarta: 'Gérson', arquetipo: 'regista' },
   99: { posDetalle: 'MCO', nombreCarta: 'Mazzola', arquetipo: 'boxToBox' },
   100: { posDetalle: 'MC', nombreCarta: 'Netzer', arquetipo: 'regista' },
-  101: { posDetalle: 'MCD', nombreCarta: 'Redondo', arquetipo: 'regista' },
+  101: { posDetalle: 'MCD', nombreCarta: 'Redondo', arquetipo: 'pivote' },
   103: { posDetalle: 'MCO', nombreCarta: 'Francescoli', arquetipo: 'enganche' },
   104: { posDetalle: 'MCD', nombreCarta: 'Vieira', arquetipo: 'destructor' },
   105: { posDetalle: 'MC', nombreCarta: 'Lampard', arquetipo: 'boxToBox' },
-  106: { posDetalle: 'MCD', nombreCarta: 'Busquets', arquetipo: 'regista' },
+  106: { posDetalle: 'MCD', nombreCarta: 'Busquets', arquetipo: 'pivote' },
   107: { posDetalle: 'MC', nombreCarta: 'Ballack', arquetipo: 'boxToBox' },
   108: { posDetalle: 'MC', nombreCarta: 'Masopust', arquetipo: 'boxToBox' },
   109: { posDetalle: 'MC', nombreCarta: 'Bozsik', arquetipo: 'regista' },
@@ -490,6 +495,28 @@ var MAPA = {
 // Construccion de la carta de un jugador
 // ---------------------------------------------------------------------------
 
+// Variacion propia de cada jugador (-4..+4 por estadistica), deterministica por
+// id: sin esto, dos jugadores con el mismo arquetipo y el mismo OVR tendrian
+// cartas identicas. La estadistica principal se sigue resolviendo despues, asi
+// que la coherencia con el OVR no cambia.
+function variacion(id, clave) {
+  var texto = id + ':' + clave;
+  var h = 2166136261;
+  for (var i = 0; i < texto.length; i++) {
+    h ^= texto.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return ((h >>> 0) % 9) - 4;
+}
+
+function conVariacion(id, deltas) {
+  var out = {};
+  Object.keys(deltas).forEach(function (k) {
+    out[k] = typeof deltas[k] === 'number' ? deltas[k] + variacion(id, k) : deltas[k];
+  });
+  return out;
+}
+
 function construirCarta(fila) {
   var ancla = ANCLAS[fila.id];
   if (ancla) {
@@ -502,16 +529,16 @@ function construirCarta(fila) {
   var carta;
   if (fila.posicion === 'POR') {
     deltas = Object.assign({}, ARQ_POR[entrada.arquetipo], entrada.ajustes || {});
-    carta = calcularCartaArquero(fila.ovr, deltas);
+    carta = calcularCartaArquero(fila.ovr, conVariacion(fila.id, deltas));
   } else if (fila.posicion === 'DEF') {
     deltas = Object.assign({}, ARQ_DEF[entrada.arquetipo], entrada.ajustes || {});
-    carta = calcularCartaDefensor(fila.ovr, deltas);
+    carta = calcularCartaDefensor(fila.ovr, conVariacion(fila.id, deltas));
   } else if (fila.posicion === 'MED') {
     deltas = Object.assign({}, ARQ_MED[entrada.arquetipo], entrada.ajustes || {});
-    carta = calcularCartaMediocampista(fila.ovr, deltas);
+    carta = calcularCartaMediocampista(fila.ovr, conVariacion(fila.id, deltas));
   } else {
     deltas = Object.assign({}, ARQ_DEL[entrada.arquetipo], entrada.ajustes || {});
-    carta = calcularCartaDelantero(fila.ovr, deltas);
+    carta = calcularCartaDelantero(fila.ovr, conVariacion(fila.id, deltas));
   }
 
   if (entrada.override) {

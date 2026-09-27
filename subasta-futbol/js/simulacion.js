@@ -9,21 +9,23 @@
   'use strict';
 
   var CONFIG_SIM = {
-    jugadas: 18,
+    jugadas: 16,
     expPosesion: 3, posesionMin: 0.30, posesionMax: 0.70,
-    baseRemate: 0.42, pendienteRemate: 90, remateMin: 0.12, remateMax: 0.85,
-    baseGol: 0.36, pendienteGol: 85, golMin: 0.08, golMax: 0.80,
+    baseRemate: 0.42, pendienteRemate: 75, remateMin: 0.12, remateMax: 0.92,
+    baseGol: 0.36, pendienteGol: 130, golMin: 0.08, golMax: 0.80,
     penalBase: 0.75, penalPendiente: 200, penalMin: 0.55, penalMax: 0.92,
   };
 
   function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
   function promedio(lista) { return lista.reduce(function (a, b) { return a + b; }, 0) / lista.length; }
 
-  // El arquero es el del plantel con mayor `arq` (desempate: mayor OVR).
+  // El arquero es el del plantel con mayor `arq` (desempate: MENOR OVR). Si no hay
+  // POR, todos los de campo tienen el mismo `arq`, y al arco va el mas flojo: el
+  // crack del equipo sigue jugando de campo.
   function elegirArquero(equipo) {
     var ordenado = equipo.slice().sort(function (a, b) {
       if (b.arq !== a.arq) return b.arq - a.arq;
-      return b.ovr - a.ovr;
+      return a.ovr - b.ovr;
     });
     return ordenado[0];
   }

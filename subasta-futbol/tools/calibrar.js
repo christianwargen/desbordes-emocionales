@@ -50,6 +50,20 @@ function armarParPorDiferencia(targetDiff, rankBaseA) {
   return { equipoA: equipoA, equipoB: equipoB, diffReal: diffReal };
 }
 
+// Promedia varios cruces (equipo A tomado de rankings 0..9 por posicion) para que
+// el escenario mida "una diferencia de OVR" en general y no un cruce puntual.
+function escenarioDiferencia(targetDiff, etiqueta) {
+  var CRUCES = 10;
+  var sumaProb = 0;
+  var sumaDiff = 0;
+  for (var r = 0; r < CRUCES; r++) {
+    var par = armarParPorDiferencia(targetDiff, r);
+    sumaProb += sim.probabilidadVictoria(par.equipoA, par.equipoB, Math.round(N / CRUCES), etiqueta + ':' + r)[0];
+    sumaDiff += par.diffReal;
+  }
+  return { prob: sumaProb / CRUCES, diffReal: sumaDiff / CRUCES };
+}
+
 function correrDraftsAleatorios(n, seed) {
   var random = rngMod.crearRng(seed);
   var porteros = porPosicionOrdenado('POR');
@@ -103,24 +117,24 @@ function agregarFila(nombre, valorTexto, objetivoTexto, ok) {
 
 // 3) Diferencia de OVR promedio ~3
 (function () {
-  var par = armarParPorDiferencia(3, 2);
-  var probs = sim.probabilidadVictoria(par.equipoA, par.equipoB, N, 'calib:diff3');
+  var par = escenarioDiferencia(3, 'calib:diff3');
+  var probs = [par.prob];
   var ok = probs[0] >= 0.57 && probs[0] <= 0.67;
   agregarFila('Diferencia de OVR ~3 (real ' + par.diffReal.toFixed(1) + ')', 'gana el mejor ' + pct(probs[0]), '57%-67%', ok);
 })();
 
 // 4) Diferencia de OVR promedio ~6
 (function () {
-  var par = armarParPorDiferencia(6, 2);
-  var probs = sim.probabilidadVictoria(par.equipoA, par.equipoB, N, 'calib:diff6');
+  var par = escenarioDiferencia(6, 'calib:diff6');
+  var probs = [par.prob];
   var ok = probs[0] >= 0.68 && probs[0] <= 0.80;
   agregarFila('Diferencia de OVR ~6 (real ' + par.diffReal.toFixed(1) + ')', 'gana el mejor ' + pct(probs[0]), '68%-80%', ok);
 })();
 
 // 5) Diferencia de OVR promedio ~10
 (function () {
-  var par = armarParPorDiferencia(10, 2);
-  var probs = sim.probabilidadVictoria(par.equipoA, par.equipoB, N, 'calib:diff10');
+  var par = escenarioDiferencia(10, 'calib:diff10');
+  var probs = [par.prob];
   var ok = probs[0] >= 0.82 && probs[0] <= 0.92;
   agregarFila('Diferencia de OVR ~10 (real ' + par.diffReal.toFixed(1) + ')', 'gana el mejor ' + pct(probs[0]), '82%-92%', ok);
 })();

@@ -264,7 +264,7 @@ ya probados en un prototipo). Toda la aleatoriedad sale del `rng` que se pasa po
 
 Los atributos `ata`, `cre`, `def` y `arq` son los **derivados de la carta** (sección 3.2).
 
-- **Arquero** = el del plantel con mayor `arq` (desempate: mayor OVR). Los otros 3 son **jugadores de campo**.
+- **Arquero** = el del plantel con mayor `arq` (desempate: **menor** OVR, así sin POR ataja el más flojo y no el crack). Los otros 3 son **jugadores de campo**.
   Si nadie es POR, ataja el de campo con más `arq` (≈ 5–20): el equipo lo sufre muchísimo. La previa lo avisa:
   «⚠️ Sin arquero: ataja Cruyff».
 - Sobre los 3 de campo:

@@ -79,11 +79,20 @@ test('un equipo sin arquero pierde claramente contra el mismo equipo con arquero
   assert.ok(probs[0] >= 0.75, 'el equipo con arquero gano ' + (probs[0] * 100).toFixed(1) + '%, se esperaba >=75%');
 });
 
-test('metricasEquipo elige arquero por mayor arq (desempate mayor ovr)', function () {
+test('metricasEquipo elige arquero por mayor arq (desempate menor ovr)', function () {
   var equipo = equipoA();
   var m = sim.metricasEquipo(equipo);
   assert.equal(m.arquero.id, 4);
   assert.equal(m.campo.length, 3);
+});
+
+test('sin arquero, ataja el de campo de menor OVR (el crack sigue jugando)', function () {
+  var jugadores = require('../js/jugadores.js');
+  var porNombre = function (n) { return jugadores.filter(function (j) { return j.nombreCarta === n; })[0]; };
+  var equipo = [porNombre('Messi'), porNombre('Maradona'), porNombre('Pelé'), porNombre('Caniggia')];
+  var m = sim.metricasEquipo(equipo);
+  assert.equal(m.arquero.nombreCarta, 'Caniggia');
+  assert.ok(m.campo.some(function (j) { return j.nombreCarta === 'Messi'; }));
 });
 
 test('probabilidadVictoria devuelve probabilidades que suman 1', function () {

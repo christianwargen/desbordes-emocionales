@@ -58,7 +58,7 @@
 }
 .carta__silueta { position: absolute; right: 7cqw; top: 10cqw; width: 60cqw; height: 58cqw; fill: var(--silueta); }
 .carta__nombre {
-  position: absolute; left: 8cqw; right: 8cqw; top: 70cqw;
+  position: absolute; left: 8cqw; right: 8cqw; top: 68cqw; padding-top: 2cqw;
   text-align: center; font-size: 11cqw; font-weight: 700; line-height: 1.15;
   text-transform: uppercase; letter-spacing: .01em;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -135,7 +135,7 @@
 .carta--mini .carta__ovr { font-size: 26cqw; }
 .carta--mini .carta__pos { font-size: 12cqw; }
 .carta--mini .carta__silueta { top: 12cqw; width: 64cqw; height: 64cqw; right: 5cqw; }
-.carta--mini .carta__nombre { top: 88cqw; left: 5cqw; right: 5cqw; font-size: 12.5cqw; letter-spacing: -.01em; border-bottom: 0; }
+.carta--mini .carta__nombre { top: 85cqw; left: 5cqw; right: 5cqw; font-size: 12.5cqw; letter-spacing: -.01em; border-bottom: 0; }
 
 /* Lugar vacío del plantel */
 .carta-vacia {

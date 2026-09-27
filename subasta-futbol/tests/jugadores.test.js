@@ -131,3 +131,25 @@ test('siglaClub tiene 3 letras y bandera no esta vacia', function () {
     assert.ok(j.bandera && j.bandera.length > 0, j.nombreCarta + ' sin bandera');
   });
 });
+
+test('no hay dos cartas identicas', function () {
+  var vistas = {};
+  jugadores.forEach(function (j) {
+    var clave = JSON.stringify(j.carta);
+    assert.ok(!vistas[clave], j.nombreCarta + ' tiene la misma carta que ' + vistas[clave]);
+    vistas[clave] = j.nombreCarta;
+  });
+});
+
+test('los perfiles por posicion son realistas (sin estadisticas infladas)', function () {
+  function promedio(pos, clave) {
+    var lista = jugadores.filter(function (j) { return j.posicion === pos; });
+    return lista.reduce(function (s, j) { return s + j.carta[clave]; }, 0) / lista.length;
+  }
+  assert.ok(promedio('DEF', 'tir') < 65, 'los defensores tiran demasiado bien');
+  assert.ok(promedio('DEF', 'pas') < 78, 'los defensores pasan demasiado bien');
+  assert.ok(promedio('DEL', 'def') < 50, 'los delanteros defienden demasiado bien');
+  assert.ok(promedio('MED', 'def') < 65, 'los volantes defienden demasiado bien');
+  var fisicoAlto = jugadores.filter(function (j) { return j.posicion !== 'POR' && j.carta.fis >= 95; });
+  assert.ok(fisicoAlto.length <= 10, fisicoAlto.length + ' jugadores con FIS >= 95');
+});
