@@ -96,7 +96,7 @@ Reglas de trabajo:
 
 ### 2.3 Mercado del partido
 
-Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200, sin repetir dentro del mercado:
+Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200 jugadores de campo (los 20 arqueros de la base no salen), sin repetir dentro del mercado:
 
 | Categoría | OVR     | Cantidad en el mercado |
 |-----------|---------|------------------------|
@@ -158,7 +158,7 @@ Casos borde que el motor tiene que cubrir (y testear):
 
 ### 3.1 Fuente
 
-`subasta-futbol/data/jugadores-base.csv` (ya está en el repo, curado a mano) trae las 200 filas con:
+`subasta-futbol/data/jugadores-base.csv` (ya está en el repo, curado a mano) trae 220 filas (200 de campo + 20 arqueros; ids 201–220 se sumaron cuando los arqueros salieron del mercado) con:
 `id, nombre, pais, posicion (POR|DEF|MED|DEL), pico (año de su mejor momento), club (club en ese pico), ovr (85–99)`.
 
 **No cambies nombres, posiciones ni OVR.** Si detectás un error factual claro (por ejemplo, un club mal asignado al año),
@@ -475,9 +475,9 @@ Estado y persistencia:
 
 ### 8.1 Tests automáticos (`node --test subasta-futbol/tests/*.test.js`)
 
-- **jugadores:** 200 exactos; ids, nombres y `nombreCarta` únicos; reglas duras de 3.2 (principal derivado a ±2 del OVR,
+- **jugadores:** 220 exactos (200 de campo + 20 arqueros); ids, nombres y `nombreCarta` únicos; reglas duras de 3.2 (principal derivado a ±2 del OVR,
   estadísticas 20–99, `posDetalle` compatible); los atributos derivados coinciden con las fórmulas; las 5 anclas de 3.2 tal cual;
-  categorías con la tabla de 2.3 (18 Leyendas, 24 Cracks, 100 Estrellas, 58 Figuras); 20 POR.
+  categorías con la tabla de 2.3 (18 Leyendas, 24 Cracks, 101 Estrellas, 77 Figuras); 20 POR.
 - **plata:** `formatearPlata(100) = "$1"`, `(150) = "$1,50"`, `(1250) = "$12,50"`, `(2000) = "$20"`.
 - **mercado:** 24 sin repetidos; composición por categoría; mínimos por posición; mismo seed → mismo mercado; seeds distintas → mercados distintos.
 - **subasta:**

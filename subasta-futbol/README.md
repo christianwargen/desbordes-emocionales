@@ -44,12 +44,12 @@ Calibracion del simulador (20000 partidos por escenario)
 | Escenario                                                                               | Resultado              | Objetivo | OK/FALLA |
 | --------------------------------------------------------------------------------------- | ---------------------- | -------- | -------- |
 | Dos equipos identicos                                                                   | gana A 49.7%           | 48%-52%  | OK |
-| Drafts aleatorios: goles/partido (90' + alargue)                                        | 3.71                   | 2.8-4.2  | OK |
-| Drafts aleatorios: % que van al alargue                                                 | 21.4%                  | 12%-28%  | OK |
-| Drafts aleatorios: % que llegan a penales                                               | 2.4%                   | <=6%     | OK |
+| Drafts aleatorios: goles/partido (90' + alargue)                                        | 3.74                   | 2.8-4.2  | OK |
+| Drafts aleatorios: % que van al alargue                                                 | 20.7%                  | 12%-28%  | OK |
+| Drafts aleatorios: % que llegan a penales                                               | 2.3%                   | <=6%     | OK |
 | Diferencia de OVR ~3 (real 3.0)                                                         | gana el mejor 62.6%    | 57%-67%  | OK |
 | Diferencia de OVR ~6 (real 5.8)                                                         | gana el mejor 73.8%    | 68%-80%  | OK |
-| Diferencia de OVR ~10 (real 7.0)                                                        | gana el mejor 82.8%    | 82%-92%  | OK |
+| Diferencia de OVR ~10 (real 7.2)                                                        | gana el mejor 82.6%    | 82%-92%  | OK |
 | Beckenbauer+Maradona+Messi+Pelé vs Ruggeri+Ayala+Bochini+Caniggia                       | gana A 90.4%           | 88%-96%  | OK |
 | Equilibrado (Nesta,Puyol,Gerrard,Raúl) vs todo ataque (Totti,Del Piero,Tostão,Bergkamp) | gana equilibrado 53.4% | 50%-66%  | OK |
 
@@ -202,7 +202,11 @@ no el arquero ni los penales.
   jugadores de campo y los 4 juegan. La previa lo aclara y las métricas muestran ATQ, CRE y DEF.
 - **Empate en los 90': alargue de 30' con gol de oro** (una jugada cada 3', del 91' al 118'). El primer
   gol termina el partido. **Si nadie convierte, penales** contra el mismo arquero. En la calibración,
-  ~21 % de los partidos van al alargue y solo ~2,4 % llegan a penales.
+  ~21 % de los partidos van al alargue y solo ~2,3 % llegan a penales.
+- **20 jugadores de campo sumados** (ids 201–220) para que la subasta siga teniendo 200: Klose, Tevez,
+  Bale, Van Nistelrooy, Villa, Pedernera, Lineker, Šuker, Cavani, Careca, Seedorf, Keane, Deyna,
+  Xabi Alonso, Rui Costa, Giggs, Varane, Bergomi, Vogts y Ashley Cole. La base queda en 220
+  (200 de campo + 20 arqueros).
 - `window.confirm` se reemplazó por una confirmación de dos toques dentro de la página (en algunos
   visores embebidos el diálogo no aparece y el botón quedaba muerto).
 

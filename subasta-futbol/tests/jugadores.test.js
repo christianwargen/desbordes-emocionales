@@ -25,8 +25,9 @@ function principal(j) {
   return j.ata;
 }
 
-test('hay exactamente 200 jugadores', function () {
-  assert.equal(jugadores.length, 200);
+test('hay 220 jugadores: 200 de campo (salen a subasta) y 20 arqueros', function () {
+  assert.equal(jugadores.length, 220);
+  assert.equal(jugadores.filter(function (j) { return j.posicion !== 'POR'; }).length, 200);
 });
 
 test('ids, nombres y nombreCarta son unicos', function () {
@@ -40,7 +41,7 @@ test('ids, nombres y nombreCarta son unicos', function () {
     nombresCarta.add(j.nombreCarta);
     nombres.add(j.nombre);
   });
-  assert.equal(nombres.size, 200);
+  assert.equal(nombres.size, 220);
 });
 
 test('nombreCarta tiene 12 caracteres o menos', function () {
@@ -54,13 +55,13 @@ test('20 arqueros (POR)', function () {
   assert.equal(cantidad, 20);
 });
 
-test('categorias respetan la tabla de OVR (18 Leyenda, 24 Crack, 100 Estrella, 58 Figura)', function () {
+test('categorias respetan la tabla de OVR (18 Leyenda, 24 Crack, 101 Estrella, 77 Figura)', function () {
   var conteo = { Leyenda: 0, Crack: 0, Estrella: 0, Figura: 0 };
   jugadores.forEach(function (j) {
     assert.equal(j.categoria, categoriaPorOvr(j.ovr), j.nombreCarta + ' categoria incorrecta');
     conteo[j.categoria]++;
   });
-  assert.deepEqual(conteo, { Leyenda: 18, Crack: 24, Estrella: 100, Figura: 58 });
+  assert.deepEqual(conteo, { Leyenda: 18, Crack: 24, Estrella: 101, Figura: 77 });
 });
 
 test('posDetalle es compatible con la posicion', function () {

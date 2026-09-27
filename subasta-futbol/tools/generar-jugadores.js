@@ -44,7 +44,7 @@ var ISO_PAIS = {
   Alemania: 'DE', Argentina: 'AR', Brasil: 'BR', Bulgaria: 'BG', Bélgica: 'BE',
   Camerún: 'CM', Chequia: 'CZ', Chile: 'CL', Colombia: 'CO', 'Costa de Marfil': 'CI',
   Croacia: 'HR', Dinamarca: 'DK', Ecuador: 'EC', Egipto: 'EG', Eslovenia: 'SI', España: 'ES',
-  Francia: 'FR', Hungría: 'HU', Italia: 'IT', Liberia: 'LR', México: 'MX',
+  Francia: 'FR', Hungría: 'HU', Irlanda: 'IE', Italia: 'IT', Liberia: 'LR', México: 'MX',
   Noruega: 'NO', Paraguay: 'PY', 'Países Bajos': 'NL', Perú: 'PE', Polonia: 'PL',
   Portugal: 'PT', Rumania: 'RO', Rusia: 'RU', Serbia: 'RS', Suecia: 'SE',
   Ucrania: 'UA', Uruguay: 'UY',
@@ -54,6 +54,7 @@ var BANDERA_ESPECIAL = {
   Inglaterra: '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
   Escocia: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
   'Irlanda del Norte': '🇬🇧',
+  Gales: '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
 };
 
 function bandera(pais) {
@@ -86,7 +87,7 @@ var SIGLA_CLUB = {
   Portuguesa: 'PTG', 'Racing Club': 'RAC', 'Real Madrid': 'RMA', 'River Plate': 'RIV',
   Roma: 'ROM', Santos: 'SAN', 'Spartak Moscú': 'SPM', 'Stade de Reims': 'REI',
   'Stoke City': 'STK', 'São Paulo': 'SAO', 'Tottenham Hotspur': 'TOT',
-  Universitario: 'UNI', Valencia: 'VAL', 'Vélez Sarsfield': 'VSA',
+  Universitario: 'UNI', Valencia: 'VAL', 'Werder Bremen': 'WER', Everton: 'EVE', 'Legia Varsovia': 'LEG', 'Vélez Sarsfield': 'VSA',
   'West Ham United': 'WHU',
 };
 
@@ -489,6 +490,28 @@ var MAPA = {
   197: { posDetalle: 'DC', nombreCarta: 'F. Torres', arquetipo: 'explosivo' },
   198: { posDetalle: 'DC', nombreCarta: 'Spencer', arquetipo: 'killerArea' },
   199: { posDetalle: 'DC', nombreCarta: 'Labruna', arquetipo: 'tecnico' },
+
+  // --- Sumados cuando los arqueros salieron del mercado (para volver a 200 de campo) ---
+  201: { posDetalle: 'DC', nombreCarta: 'Klose', arquetipo: 'killerArea' },
+  202: { posDetalle: 'SD', nombreCarta: 'Tevez', arquetipo: 'completo' },
+  203: { posDetalle: 'ED', nombreCarta: 'Bale', arquetipo: 'extremoVeloz' },
+  204: { posDetalle: 'DC', nombreCarta: 'Nistelrooy', arquetipo: 'killerArea' },
+  205: { posDetalle: 'DC', nombreCarta: 'Villa', arquetipo: 'completo' },
+  206: { posDetalle: 'SD', nombreCarta: 'Pedernera', arquetipo: 'tecnico' },
+  207: { posDetalle: 'DC', nombreCarta: 'Lineker', arquetipo: 'killerArea' },
+  208: { posDetalle: 'DC', nombreCarta: 'Šuker', arquetipo: 'killerArea' },
+  209: { posDetalle: 'DC', nombreCarta: 'Cavani', arquetipo: 'potente' },
+  210: { posDetalle: 'DC', nombreCarta: 'Careca', arquetipo: 'completo' },
+  211: { posDetalle: 'MC', nombreCarta: 'Seedorf', arquetipo: 'boxToBox' },
+  212: { posDetalle: 'MC', nombreCarta: 'Keane', arquetipo: 'boxToBox' },
+  213: { posDetalle: 'MCO', nombreCarta: 'Deyna', arquetipo: 'enganche' },
+  214: { posDetalle: 'MC', nombreCarta: 'Xabi Alonso', arquetipo: 'regista' },
+  215: { posDetalle: 'MCO', nombreCarta: 'Rui Costa', arquetipo: 'enganche' },
+  216: { posDetalle: 'MI', nombreCarta: 'Giggs', arquetipo: 'extremoMed' },
+  217: { posDetalle: 'DFC', nombreCarta: 'Varane', arquetipo: 'completoDef' },
+  218: { posDetalle: 'DFC', nombreCarta: 'Bergomi', arquetipo: 'marcadorDuro' },
+  219: { posDetalle: 'LD', nombreCarta: 'Vogts', arquetipo: 'marcadorDuro' },
+  220: { posDetalle: 'LI', nombreCarta: 'A. Cole', arquetipo: 'lateralRapido' },
 };
 
 // ---------------------------------------------------------------------------
@@ -562,8 +585,9 @@ var POS_DETALLE_VALIDAS = {
 function validar(jugadores) {
   var errores = [];
 
-  if (jugadores.length !== 200) {
-    errores.push('Se esperaban 200 jugadores, hay ' + jugadores.length);
+  // 200 de campo (los que salen a subasta) + 20 arqueros (no salen al mercado).
+  if (jugadores.length !== 220) {
+    errores.push('Se esperaban 220 jugadores, hay ' + jugadores.length);
   }
 
   var idsVistos = {};
@@ -618,7 +642,7 @@ function validar(jugadores) {
     if (j.posicion === 'POR') cantidadPor++;
   });
 
-  var esperado = { Leyenda: 18, Crack: 24, Estrella: 100, Figura: 58 };
+  var esperado = { Leyenda: 18, Crack: 24, Estrella: 101, Figura: 77 };
   Object.keys(esperado).forEach(function (cat) {
     if (porCategoria[cat] !== esperado[cat]) {
       errores.push('cantidad de ' + cat + ' = ' + porCategoria[cat] + ', se esperaban ' + esperado[cat]);
