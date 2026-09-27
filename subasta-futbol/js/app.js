@@ -10,7 +10,8 @@
   var torneoMod = SC.torneo;
   var repartoMod = SC.reparto;
 
-  var CLAVE_STORAGE = 'subasta-cracks:v1';
+  // v2: subasta al azar (el formato del partido cambió; los guardados v1 se ignoran).
+  var CLAVE_STORAGE = 'subasta-cracks:v2';
 
   var JUGADOR_POR_ID = {};
   JUGADORES.forEach(function (j) { JUGADOR_POR_ID[j.id] = j; });
