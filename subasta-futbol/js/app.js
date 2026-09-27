@@ -5,10 +5,10 @@
   var formatearPlata = SC.config.formatearPlata;
   var rngMod = SC.rng;
   var JUGADORES = SC.jugadores;
-  var mercadoMod = SC.mercado;
   var subastaMod = SC.subasta;
   var simMod = SC.simulacion;
   var torneoMod = SC.torneo;
+  var repartoMod = SC.reparto;
 
   var CLAVE_STORAGE = 'subasta-cracks:v1';
 
@@ -17,7 +17,6 @@
   function idAJugador(id) { return JUGADOR_POR_ID[id]; }
 
   var Estado = { torneo: null, pantalla: 'inicio' };
-  var UI = { filtroPos: 'Todos', jugadorSeleccionado: null };
   var animacion = { resultado: null, partido: null, saltado: false, timers: [] };
 
   // ------------------------------------------------------------------
@@ -165,9 +164,22 @@
   }
 
   function actualizarBotonHistorialGlobal() {
-    var btn = document.getElementById('btn-historial-global');
-    if (!btn) return;
-    btn.style.display = (Estado.torneo && Estado.pantalla !== 'inicio') ? '' : 'none';
+    var barra = document.getElementById('barra-global');
+    if (!barra) return;
+    barra.style.display = (Estado.torneo && Estado.pantalla !== 'inicio') ? '' : 'none';
+  }
+
+  // Vuelve todo a cero: borra el torneo guardado y lleva a la pantalla de nombres.
+  function reiniciarTodo() {
+    animacion.saltado = true;
+    animacion.timers.forEach(function (t) { clearTimeout(t); });
+    animacion.timers = [];
+    document.querySelectorAll('.revelacion').forEach(function (el) { el.remove(); });
+    abriendoLote = false;
+    cerrarHistorial();
+    borrarEstadoGuardado();
+    Estado.torneo = null;
+    irA('inicio');
   }
 
   // ------------------------------------------------------------------
@@ -246,9 +258,7 @@
   function renderPanelManager(partido, managerId) {
     var m = partido.managers[managerId];
     var pujaMax = subastaMod.pujaMaxima(partido, managerId);
-    var esTurno = partido.lote ? partido.lote.turno === managerId :
-      (subastaMod.estadoSubasta(partido) === 'nominando' && partido.nominaProximo === managerId) ||
-      (subastaMod.estadoSubasta(partido) === 'compraDirecta' && subastaMod.lugaresLibres(partido, managerId) > 0);
+    var esTurno = !!(partido.lote && partido.lote.turno === managerId);
 
     var html = '<div class="panel-manager__nombre">' + escapeHtml(m.nombre) + '</div>';
     html += '<div class="panel-manager__presupuesto">' + formatearPlata(m.presupuesto) + '</div>';
@@ -262,22 +272,14 @@
 
     var panelEl = document.getElementById('panel-manager-' + managerId);
     panelEl.innerHTML = html;
-    panelEl.classList.toggle('turno', !!esTurno);
+    panelEl.classList.toggle('turno', esTurno);
   }
 
-  function mensajeAdjudicacion(loteInfo, motivoNoAlcanza, managerQueNoAlcanza) {
-    var j = idAJugador(loteInfo.jugadorId);
-    var ganador = nombreManager(loteInfo.ganador);
-    var precio = formatearPlata(loteInfo.precio);
-    if (motivoNoAlcanza) {
-      return 'A ' + nombreManager(managerQueNoAlcanza) + ' no le alcanza — ' + j.nombreCarta + ' es de ' + ganador + ' por ' + precio;
-    }
-    return '¡' + j.nombreCarta + ' es de ' + ganador + ' por ' + precio + '!';
-  }
-
-  function ejecutarAccionSubasta(accionFn, tipoAccion) {
+  function ejecutarAccionSubasta(accionFn) {
     var partido = Estado.torneo.partidoActual;
+    var loteAntes = partido.lote;
     var lotesAntes = partido.lotes.length;
+    var descartadosAntes = partido.descartados.length;
     var nuevo;
     try {
       nuevo = accionFn(partido);
@@ -288,15 +290,21 @@
     Estado.torneo.partidoActual = nuevo;
     if (nuevo.lotes.length > lotesAntes) {
       var loteInfo = nuevo.lotes[nuevo.lotes.length - 1];
-      var motivoNoAlcanza = tipoAccion !== 'pasar';
+      var j = idAJugador(loteInfo.jugadorId);
       var otro = nuevo.managers.filter(function (m) { return m.id !== loteInfo.ganador; })[0].id;
-      mostrarToast(mensajeAdjudicacion(loteInfo, motivoNoAlcanza, otro));
+      // Se cerro despues de una puja sin que el rival pasara: no le alcanzaba.
+      var noAlcanza = loteAntes.turno === loteInfo.ganador && loteAntes.pasaron.indexOf(otro) === -1;
+      mostrarToast(noAlcanza
+        ? 'A ' + nombreManager(otro) + ' no le alcanza — ' + j.nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) + ' por ' + formatearPlata(loteInfo.precio)
+        : '¡' + j.nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) + ' por ' + formatearPlata(loteInfo.precio) + '!');
+    } else if (nuevo.descartados.length > descartadosAntes) {
+      mostrarToast('Nadie quiso a ' + idAJugador(loteAntes.jugadorId).nombreCarta + ': queda afuera');
     }
     guardarEstado();
     renderSubasta();
   }
 
-  // Revelacion de la carta al nominar (P1): bandera -> posicion -> club ->
+  // Revelacion de la carta al salir a subasta: bandera -> posicion -> club ->
   // carta entera con destello. Dura <=1.5s, se saltea con un toque y se
   // omite si el sistema pide prefers-reduced-motion.
   function mostrarRevelacion(jugador, cb) {
@@ -347,98 +355,40 @@
     timers.push(setTimeout(finalizar, 1450));
   }
 
-  function nominarConRevelacion(managerId, jugadorId) {
+  // Saca al azar el proximo jugador del mazo y lo muestra con la revelacion.
+  var abriendoLote = false;
+  function abrirSiguienteLote() {
+    if (abriendoLote || !Estado.torneo || Estado.pantalla !== 'subasta') return;
     var partido = Estado.torneo.partidoActual;
-    var jugador = idAJugador(jugadorId);
-    var lotesAntes = partido.lotes.length;
-    var nuevo;
-    try {
-      nuevo = subastaMod.nominar(partido, managerId, jugadorId);
-    } catch (e) {
-      mostrarToast(e.message);
-      return;
-    }
-    if (nuevo.lotes.length > lotesAntes) {
-      // se cerro solo (al rival no le alcanzaba ni para el $1 inicial)
-      Estado.torneo.partidoActual = nuevo;
-      var loteInfo = nuevo.lotes[nuevo.lotes.length - 1];
-      var otro = nuevo.managers.filter(function (m) { return m.id !== loteInfo.ganador; })[0].id;
-      mostrarToast(mensajeAdjudicacion(loteInfo, true, otro));
-      guardarEstado();
-      renderSubasta();
-      return;
-    }
-    mostrarRevelacion(jugador, function () {
-      Estado.torneo.partidoActual = nuevo;
-      guardarEstado();
-      renderSubasta();
+    if (subastaMod.estadoSubasta(partido) !== 'esperandoLote') return;
+    abriendoLote = true;
+    var nuevo = subastaMod.abrirLote(partido);
+    Estado.torneo.partidoActual = nuevo;
+    guardarEstado();
+    mostrarRevelacion(idAJugador(nuevo.lote.jugadorId), function () {
+      abriendoLote = false;
+      if (Estado.torneo && Estado.pantalla === 'subasta') renderSubasta();
     });
   }
 
-  function botonPuja(monto, max, precioActual, etiqueta, claseExtra) {
-    var deshabilitado = monto > max || monto <= precioActual || monto % CONFIG.INCREMENTO !== 0;
-    return '<button type="button" class="btn ' + claseExtra + '" data-puja-monto="' + monto + '"' + (deshabilitado ? ' disabled' : '') + '>' + etiqueta + '</button>';
+  // Botones de puja del lote en curso: [principal, segundo, tercero, todo].
+  function opcionesPuja(partido) {
+    var lote = partido.lote;
+    var max = subastaMod.pujaMaxima(partido, lote.turno);
+    var min = subastaMod.montoMinimo(partido);
+    var ops = lote.lider === null
+      ? [{ monto: 100, etiqueta: 'Pujar $1' }, { monto: 150, etiqueta: '$1,50' }, { monto: 200, etiqueta: '$2' }]
+      : [{ monto: lote.precio + 50, etiqueta: '+$0,50 → ' + formatearPlata(lote.precio + 50) },
+        { monto: lote.precio + 100, etiqueta: '+$1' }, { monto: lote.precio + 200, etiqueta: '+$2' }];
+    ops.push({ monto: max, etiqueta: 'Todo (' + formatearPlata(max) + ')' });
+    ops.forEach(function (o) { o.habilitado = o.monto >= min && o.monto <= max && o.monto % CONFIG.INCREMENTO === 0; });
+    return ops;
   }
 
-  function renderCentroNominando(partido) {
-    var turno = partido.nominaProximo;
-    var jugadoresMercado = partido.mercado.map(idAJugador);
-
-    var html = '<div class="mercado__nominacion">Nomina: <strong class="m' + (turno + 1) + '">' + escapeHtml(nombreManager(turno)) + '</strong></div>';
-
-    if (UI.jugadorSeleccionado != null && jugadoresMercado.some(function (j) { return j.id === UI.jugadorSeleccionado; })) {
-      var jSel = idAJugador(UI.jugadorSeleccionado);
-      html += '<div class="seleccion-jugador">' + renderCarta(jSel, { tamano: 'grande' }) +
-        '<div class="fila-botones">' +
-        '<button type="button" class="btn btn--principal btn--grande" id="btn-sacar-subasta">Sacar a subasta por $1</button>' +
-        '<button type="button" class="btn btn--fantasma" id="btn-cancelar-seleccion">Volver al mercado</button>' +
-        '</div></div>';
-      document.getElementById('centro-subasta').innerHTML = html;
-      document.getElementById('btn-sacar-subasta').addEventListener('click', function () {
-        var jugadorId = UI.jugadorSeleccionado;
-        UI.jugadorSeleccionado = null;
-        nominarConRevelacion(turno, jugadorId);
-      });
-      document.getElementById('btn-cancelar-seleccion').addEventListener('click', function () {
-        UI.jugadorSeleccionado = null;
-        renderCentroNominando(Estado.torneo.partidoActual);
-      });
-      return;
-    }
-
-    var filtrados = (UI.filtroPos === 'Todos' ? jugadoresMercado : jugadoresMercado.filter(function (j) { return j.posicion === UI.filtroPos; }))
-      .slice().sort(function (a, b) { return b.ovr - a.ovr; });
-
-    html += '<div class="mercado__filtros"><div class="mercado__filtros-pos">';
-    ['Todos', 'POR', 'DEF', 'MED', 'DEL'].forEach(function (p) {
-      html += '<button type="button" class="chip' + (UI.filtroPos === p ? ' activo' : '') + '" data-filtro-pos="' + p + '">' + p + '</button>';
-    });
-    html += '</div><button type="button" class="btn btn--chico" id="btn-azar">🎲 Al azar</button></div>';
-
-    html += '<div class="mercado__grid">';
-    filtrados.forEach(function (j) {
-      html += '<button type="button" class="mercado__jugador" data-jugador-id="' + j.id + '">' + renderCarta(j, { tamano: 'mini' }) + '</button>';
-    });
-    html += '</div>';
-
-    document.getElementById('centro-subasta').innerHTML = html;
-
-    document.querySelectorAll('[data-filtro-pos]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        UI.filtroPos = btn.getAttribute('data-filtro-pos');
-        renderCentroNominando(Estado.torneo.partidoActual);
-      });
-    });
-    document.getElementById('btn-azar').addEventListener('click', function () {
-      var elegido = partido.mercado[Math.floor(Math.random() * partido.mercado.length)];
-      nominarConRevelacion(turno, elegido);
-    });
-    document.querySelectorAll('[data-jugador-id]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        UI.jugadorSeleccionado = Number(btn.getAttribute('data-jugador-id'));
-        renderCentroNominando(Estado.torneo.partidoActual);
-      });
-    });
+  function renderCentroEsperando() {
+    document.getElementById('centro-subasta').innerHTML =
+      '<div class="lote-esperando">Sale el próximo jugador…</div>';
+    setTimeout(abrirSiguienteLote, 250);
   }
 
   function renderCentroLote(partido) {
@@ -446,28 +396,37 @@
     var jugador = idAJugador(lote.jugadorId);
     var turno = lote.turno;
     var pujaMax = subastaMod.pujaMaxima(partido, turno);
-    var opcionMedio = lote.precio + CONFIG.INCREMENTO;
-    var opcionUno = lote.precio + 100;
-    var opcionDos = lote.precio + 200;
+    var sinDueno = lote.lider === null;
 
     var html = '<section class="lote">';
     html += renderCarta(jugador, { tamano: 'grande', ancho: '230px' });
     html += '<div>';
-    html += '<div class="lote__precio">' + formatearPlata(lote.precio) + '</div>';
-    html += '<div class="lote__estado"><span>Va ganando: <strong class="m' + (lote.lider + 1) + '">' + escapeHtml(nombreManager(lote.lider)) + '</strong></span>';
+    html += sinDueno
+      ? '<div class="lote__arranca">Arranca en</div><div class="lote__precio">$1</div>'
+      : '<div class="lote__precio">' + formatearPlata(lote.precio) + '</div>';
+    html += '<div class="lote__estado">';
+    if (sinDueno) {
+      html += lote.pasaron.length
+        ? '<span><strong class="m' + (lote.pasaron[0] + 1) + '">' + escapeHtml(nombreManager(lote.pasaron[0])) + '</strong> pasó</span>'
+        : '<span>Nadie pujó todavía</span>';
+    } else {
+      html += '<span>Va ganando: <strong class="m' + (lote.lider + 1) + '">' + escapeHtml(nombreManager(lote.lider)) + '</strong></span>';
+    }
     html += '<span>Le toca a: <strong class="m' + (turno + 1) + '">' + escapeHtml(nombreManager(turno)) + '</strong> (puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
     html += '<div class="fila-botones">';
-    var etiquetaPrincipal = opcionMedio <= pujaMax ? '+$0,50 → ' + formatearPlata(opcionMedio) : '+$0,50';
-    html += botonPuja(opcionMedio, pujaMax, lote.precio, etiquetaPrincipal, 'btn--principal');
-    html += botonPuja(opcionUno, pujaMax, lote.precio, '+$1', '');
-    html += botonPuja(opcionDos, pujaMax, lote.precio, '+$2', '');
-    html += botonPuja(pujaMax, pujaMax, lote.precio, 'Todo (' + formatearPlata(pujaMax) + ')', '');
+    opcionesPuja(partido).forEach(function (o, i) {
+      html += '<button type="button" class="btn' + (i === 0 ? ' btn--principal' : '') + '" data-puja-monto="' + o.monto + '"' +
+        (o.habilitado ? '' : ' disabled') + '>' + o.etiqueta + '</button>';
+    });
     html += '<button type="button" class="btn btn--pasar" id="btn-pasar">Pasar</button>';
     html += '</div>';
-    html += '<div class="cadena">' + lote.pujas.map(function (p) {
-      return '<span class="m' + (p.manager + 1) + '">' + escapeHtml(nombreManager(p.manager)) + ' ' + formatearPlata(p.monto) + '</span>';
-    }).join(' → ') + '</div>';
-    if (lote.pujas.length > 0) {
+    var cadena = lote.pasaron.map(function (m) {
+      return '<span class="m' + (m + 1) + '">' + escapeHtml(nombreManager(m)) + ' pasó</span>';
+    }).concat(lote.pujas.map(function (pj) {
+      return '<span class="m' + (pj.manager + 1) + '">' + escapeHtml(nombreManager(pj.manager)) + ' ' + formatearPlata(pj.monto) + '</span>';
+    }));
+    if (cadena.length) html += '<div class="cadena">' + cadena.join(' → ') + '</div>';
+    if (lote.pujas.length > 0 || lote.pasaron.length > 0) {
       html += '<button type="button" class="btn btn--fantasma btn--chico btn-deshacer" id="btn-deshacer">↩ Deshacer</button>';
     }
     html += '</div></section>';
@@ -477,70 +436,54 @@
     document.querySelectorAll('[data-puja-monto]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var monto = Number(btn.getAttribute('data-puja-monto'));
-        ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); }, 'pujar');
+        ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); });
       });
     });
-    var btnPasar = document.getElementById('btn-pasar');
-    if (btnPasar) btnPasar.addEventListener('click', function () {
-      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); }, 'pasar');
+    document.getElementById('btn-pasar').addEventListener('click', function () {
+      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); });
     });
     var btnDeshacer = document.getElementById('btn-deshacer');
     if (btnDeshacer) btnDeshacer.addEventListener('click', function () {
-      try {
-        Estado.torneo.partidoActual = subastaMod.deshacer(Estado.torneo.partidoActual);
-        guardarEstado();
-        renderSubasta();
-      } catch (e) {
-        mostrarToast(e.message);
-      }
+      ejecutarAccionSubasta(function (p) { return subastaMod.deshacer(p); });
     });
   }
 
-  function renderCentroCompraDirecta(partido) {
-    var completo = partido.managers.filter(function (m) { return subastaMod.lugaresLibres(partido, m.id) === 0; })[0];
-    var conLibres = partido.managers.filter(function (m) { return subastaMod.lugaresLibres(partido, m.id) > 0; })[0];
-    var jugadoresMercado = partido.mercado.map(idAJugador).slice().sort(function (a, b) { return b.ovr - a.ovr; });
+  // Uno completo sus 4: al otro se le completan al azar, parejo (js/reparto.js).
+  function aplicarReparto() {
+    var partido = Estado.torneo.partidoActual;
+    Estado.torneo.partidoActual = repartoMod.completarPartido(partido, partido.seed + ':reparto');
+    guardarEstado();
+    renderSubasta();
+  }
 
-    var html = '<div class="compra-directa__banner">' + escapeHtml(nombreManager(completo.id)) + ' ya completó. ' +
-      escapeHtml(nombreManager(conLibres.id)) + ' elige ' + subastaMod.lugaresLibres(partido, conLibres.id) + ' más a $1 cada uno.</div>';
-    html += '<div class="mercado__grid">';
-    jugadoresMercado.forEach(function (j) {
-      html += '<button type="button" class="mercado__jugador" data-fichar-id="' + j.id + '">' + renderCarta(j, { tamano: 'mini' }) + '</button>';
-    });
-    html += '</div>';
-    document.getElementById('centro-subasta').innerHTML = html;
-
-    document.querySelectorAll('[data-fichar-id]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var id = Number(btn.getAttribute('data-fichar-id'));
-        try {
-          Estado.torneo.partidoActual = subastaMod.ficharDirecto(Estado.torneo.partidoActual, conLibres.id, id);
-          guardarEstado();
-          renderSubasta();
-        } catch (e) {
-          mostrarToast(e.message);
-        }
+  function renderCentroTerminada(partido) {
+    var html = '<div class="subasta-terminada">';
+    if (partido.reparto.length > 0) {
+      partido.reparto.forEach(function (r) {
+        var rival = partido.managers.filter(function (m) { return m.id !== r.manager; })[0];
+        html += '<div class="reparto__titulo"><strong class="m' + (rival.id + 1) + '">' + escapeHtml(rival.nombre) + '</strong> completó su equipo. ' +
+          'A <strong class="m' + (r.manager + 1) + '">' + escapeHtml(nombreManager(r.manager)) + '</strong> le ' +
+          (r.ids.length === 1 ? 'tocó 1 jugador' : 'tocaron ' + r.ids.length + ' jugadores') + ' al azar, parejos con el equipo de ' + escapeHtml(rival.nombre) + ':</div>';
+        html += '<div class="reparto__cartas">' + r.ids.map(function (id) { return renderCarta(idAJugador(id), { tamano: 'grande', ancho: '150px' }); }).join('') + '</div>';
       });
-    });
-  }
-
-  function renderCentroTerminada() {
-    document.getElementById('centro-subasta').innerHTML =
-      '<div style="text-align:center;padding:40px 0"><p>¡Los dos equipos están completos!</p>' +
-      '<button type="button" class="btn btn--principal btn--grande" id="btn-ir-partido">Ir al partido ⚽</button></div>';
+    } else {
+      html += '<p>¡Los dos equipos están completos!</p>';
+    }
+    html += '<button type="button" class="btn btn--principal btn--grande" id="btn-ir-partido">Ir al partido ⚽</button></div>';
+    document.getElementById('centro-subasta').innerHTML = html;
     document.getElementById('btn-ir-partido').addEventListener('click', function () { irA('previa'); });
   }
 
   function renderSubasta() {
     var torneo = Estado.torneo;
     var partido = torneo.partidoActual;
+    var estado = subastaMod.estadoSubasta(partido);
+    if (estado === 'reparto') { aplicarReparto(); return; }
     renderEncabezado(torneo);
     renderPanelManager(partido, 0);
     renderPanelManager(partido, 1);
-    var estado = subastaMod.estadoSubasta(partido);
-    if (estado === 'nominando') renderCentroNominando(partido);
+    if (estado === 'esperandoLote') renderCentroEsperando();
     else if (estado === 'pujando') renderCentroLote(partido);
-    else if (estado === 'compraDirecta') renderCentroCompraDirecta(partido);
     else renderCentroTerminada(partido);
   }
 
@@ -922,7 +865,8 @@
       html += '<div class="historial-item__detalle">Ganó ' + escapeHtml(nombreManager(h.ganador)) + '</div>';
       html += '<ul class="historial-item__fichajes">';
       h.lotes.forEach(function (l) {
-        html += '<li><span>' + escapeHtml(idAJugador(l.jugadorId).nombreCarta) + ' (' + escapeHtml(nombreManager(l.ganador)) + ')</span>' +
+        html += '<li><span>' + escapeHtml(idAJugador(l.jugadorId).nombreCarta) + ' (' + escapeHtml(nombreManager(l.ganador)) +
+          (l.asignado ? ', al azar' : '') + ')</span>' +
           '<span>' + formatearPlata(l.precio) + '</span></li>';
       });
       html += '</ul></div>';
@@ -958,6 +902,14 @@
       });
     });
     document.getElementById('btn-historial-global').addEventListener('click', abrirHistorial);
+    document.getElementById('btn-reiniciar-global').addEventListener('click', function () {
+      var boton = this;
+      confirmarConDobleToque(boton, 'Tocá de nuevo para reiniciar', function () {
+        boton.dataset.armado = '';
+        boton.textContent = '↺ Reiniciar';
+        reiniciarTodo();
+      });
+    });
     document.getElementById('form-inicio').addEventListener('submit', function (e) {
       e.preventDefault();
       iniciarNuevoTorneo();
@@ -977,17 +929,17 @@
     var partido = Estado.torneo.partidoActual;
     if (!partido || !partido.lote) return;
     var turno = partido.lote.turno;
-    var mapa = turno === 0 ? { q: 'medio', w: 'uno', e: 'dos', a: 'pasar' } : { p: 'medio', o: 'uno', i: 'dos', l: 'pasar' };
+    var mapa = turno === 0 ? { q: 0, w: 1, e: 2, a: 'pasar' } : { p: 0, o: 1, i: 2, l: 'pasar' };
     var accion = mapa[e.key.toLowerCase()];
-    if (!accion) return;
+    if (accion === undefined) return;
     e.preventDefault();
     if (accion === 'pasar') {
-      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); }, 'pasar');
+      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); });
       return;
     }
-    var lote = partido.lote;
-    var monto = accion === 'medio' ? lote.precio + CONFIG.INCREMENTO : accion === 'uno' ? lote.precio + 100 : lote.precio + 200;
-    ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); }, 'pujar');
+    var opcion = opcionesPuja(partido)[accion];
+    if (!opcion.habilitado) return;
+    ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, opcion.monto); });
   });
 
   function arrancar() {

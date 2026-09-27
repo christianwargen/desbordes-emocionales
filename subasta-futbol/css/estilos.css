@@ -99,7 +99,7 @@ button {
 .fila-botones { display: flex; flex-wrap: wrap; gap: 10px; }
 
 /* ---------- Pantallas ---------- */
-.pantalla { display: none; padding: 20px 0 48px; }
+.pantalla { display: none; padding: 56px 0 48px; }
 .pantalla.activa { display: block; }
 
 .pantalla__titulo { font-size: 2rem; margin-bottom: 4px; }
@@ -129,8 +129,13 @@ button {
 .progreso__relleno { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
 .progreso__texto { font-size: 0.78rem; color: var(--texto-suave); }
 
-/* ---------- Botones de utilidad globales (historial, nuevo torneo) ---------- */
-.barra-utilidades { display: flex; justify-content: flex-end; gap: 8px; padding: 8px 0; }
+/* ---------- Botones globales (historial, reiniciar), siempre a mano ---------- */
+.barra-global {
+  position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); right: 10px; z-index: 40;
+  display: flex; gap: 8px;
+}
+.barra-global .btn { background: var(--panel-alto); }
+.btn--reiniciar { border-color: rgba(248, 113, 113, 0.5); }
 
 /* ---------- Pantalla Inicio ---------- */
 .tarjeta {
@@ -287,6 +292,15 @@ details.reglas li { margin-bottom: 6px; }
   .lote__estado, .lote .fila-botones { justify-content: center; }
 }
 .lote__precio { font-family: var(--fuente-num); font-size: 3.6rem; font-weight: 700; line-height: 1; }
+.lote__arranca { font-size: 0.85rem; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; }
+.lote-esperando { text-align: center; padding: 60px 0; font-family: var(--fuente-num); font-size: 1.4rem; color: var(--texto-suave); }
+
+/* Fin de la subasta y reparto al azar */
+.subasta-terminada { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 16px 0; }
+.reparto__titulo { font-family: var(--fuente-num); font-size: 1.25rem; max-width: 52ch; }
+.reparto__titulo strong.m1 { color: var(--m1); }
+.reparto__titulo strong.m2 { color: var(--m2); }
+.reparto__cartas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 .lote__estado { display: flex; gap: 16px; flex-wrap: wrap; margin: 8px 0 16px; font-size: 1rem; }
 .lote__estado strong.m1 { color: var(--m1); }
 .lote__estado strong.m2 { color: var(--m2); }

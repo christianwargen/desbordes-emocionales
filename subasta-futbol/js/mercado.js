@@ -85,5 +85,17 @@
     return elegidos.map(function (j) { return j.id; });
   }
 
-  return { generarMercado: generarMercado };
+  // generarMazo(seed) -> los 200 ids de campo en el orden en que salen a
+  // subasta: primero los 24 del mercado (con la mezcla de categorias y
+  // posiciones de arriba), despues el resto del pool mezclado, por si se
+  // descartan muchos. Mismo seed, mismo mazo.
+  function generarMazo(seed) {
+    var mercado = generarMercado(seed);
+    var resto = jugadoresCampo
+      .filter(function (j) { return mercado.indexOf(j.id) === -1; })
+      .map(function (j) { return j.id; });
+    return mercado.concat(rngMod.mezclar(rngMod.crearRng(seed + ':resto'), resto));
+  }
+
+  return { generarMercado: generarMercado, generarMazo: generarMazo };
 });

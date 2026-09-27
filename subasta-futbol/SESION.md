@@ -112,37 +112,31 @@ Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200 juga
 - El mercado usa el RNG con semilla del partido (sección 7): mismo seed → mismo mercado.
 - Entre partidos no se excluye a nadie: Messi puede volver a salir en el partido siguiente.
 
-### 2.4 Subasta: nominación y pujas por turnos
+### 2.4 Subasta al azar, pujas por turnos y reparto parejo
 
-Mecánica de «nominación alternada» (como un draft de subasta), toda visible en la misma pantalla:
+Nadie elige a quién subastar: después de poner los nombres, el juego arranca solo.
 
-1. **Nominar.** El manager al que le toca elige un futbolista del mercado (o toca «🎲 Al azar») y lo saca a subasta.
-   **La subasta arranca siempre en $1** y el que nomina queda como primer postor con ese $1 (no elige otra apertura).
-   Por eso **todo lote termina en una compra**.
-2. **Pujar o pasar.** El turno pasa al otro manager, que puede:
-   - **Subir** a cualquier monto que sea múltiplo de $0,50, mayor al actual y ≤ su `pujaMaxima`.
-     Botón principal (el más grande): **+$0,50**. Atajos: **+$1**, **+$2** y **«Todo ($X)»** = su puja máxima.
-     Los botones que se pasan del máximo quedan deshabilitados.
-   - **Pasar** → el lote se adjudica al que va ganando, al precio actual.
-   Los turnos se alternan hasta que alguien pasa.
-3. **Cierre automático.** Si al que le toca responder no le alcanza para superar el precio
-   (`pujaMaxima < precioActual + INCREMENTO`) o ya tiene el plantel completo, el lote se cierra solo a favor del que va ganando
-   (la UI lo muestra: «A Juan no le alcanza — Maradona es de Ana por $12,50»).
-4. **Adjudicación.** El ganador paga el precio, el futbolista pasa a su plantel y sale del mercado.
-5. **Siguiente nominación.** Nomina el manager que **no** nominó el lote anterior, si tiene lugares libres;
-   si no, nomina el otro.
-6. **Compra directa.** Cuando un solo manager tiene lugares libres, ya no hay subasta: elige del mercado
-   los que le faltan a **$1 cada uno** (botón «Fichar por $1»).
-7. La subasta termina cuando los dos tienen 4 futbolistas → botón «Ir al partido ⚽».
+1. **Sale un jugador al azar.** Se toma el próximo del **mazo** del partido (los 24 del mercado de 2.3 en orden
+   al azar y, detrás, el resto de los 200 mezclados, por si se descartan muchos). Aparece con la revelación de la carta.
+2. **Arranca en $1, sin dueño.** Le toca primero a quien abre el lote (se alterna lote a lote; en el primer lote del
+   partido abre el que perdió el partido anterior, y en el partido 1 se sortea). Puede **pujar** ($1, $1,50, $2 o «Todo»)
+   o **pasar**.
+3. **Pujas de a $0,50.** Una vez que hay una puja, se alternan: el que no va ganando sube (+$0,50, +$1, +$2, «Todo»)
+   o pasa, y si pasa el lote es del que va ganando. Si al que le toca no le alcanza para superar, se cierra solo.
+4. **Si el primero pasa**, le toca al otro: si puja $1 (o más) se lo lleva en el acto; si también pasa, **el jugador se
+   descarta** (queda afuera de este partido) y sale el siguiente.
+5. **Reparto parejo.** Cuando uno completa sus 4, al otro se le completan los lugares libres **al azar, con un equipo
+   parejo al del rival** (misma fuerza ATQ + CRE + DEF, con ±2 de tolerancia; ver `js/reparto.js`). Cuestan $1 cada uno
+   y aparecen todos juntos. No comprar nada también es una estrategia: te toca un equipo de la misma fuerza que el rival.
+6. Con los dos equipos completos → «Ir al partido ⚽».
 
-Casos borde que el motor tiene que cubrir (y testear):
-- Nadie puede pujar por encima de su `pujaMaxima`, ni fuera de turno, ni un monto ≤ al actual, ni un monto que no sea múltiplo de $0,50.
-- Un manager con $4 y 4 lugares libres tiene puja máxima $1: puede nominar (abre en $1) pero nunca puede superar una puja.
-- Después de ganar un lote al precio máximo permitido, al manager le queda exactamente $1 por lugar libre (invariante: `presupuesto ≥ lugaresLibres × $1` siempre).
-- Si el mercado se quedara sin futbolistas antes de completar planteles (no debería pasar con 24 ≥ 8), completá
-  con futbolistas al azar de los 200 que no estén en ningún plantel del partido.
-- **Deshacer** (prioridad P2): permite revertir la última acción del lote en curso (una puja o la nominación).
-  No deshace lotes ya adjudicados.
+Casos borde que el motor cubre (y testea): pujas fuera de turno, por debajo del mínimo, que no son múltiplo de $0,50 o
+por encima de la puja máxima; invariante `presupuesto ≥ lugaresLibres × $1`; si se acabara el mazo con los dos
+incompletos, el primero se completa al azar y el segundo parejo con el primero. **Deshacer** revierte la última puja o
+el último «paso» del lote en curso.
+
+**Reiniciar:** desde que arranca el torneo hay un botón «↺ Reiniciar» siempre visible (junto a «Historial») que, con
+dos toques, borra todo y vuelve a la pantalla de nombres.
 
 ### 2.5 Partido simulado
 

@@ -43,7 +43,8 @@
     return torneo.seed + '#' + numero + (sufijo ? ':' + sufijo : '');
   }
 
-  function decidirNominaPrimero(torneo) {
+  // Abre el primer lote: en el partido 1 se sortea; despues, el que perdio el anterior.
+  function decidirQuienAbre(torneo) {
     if (torneo.numeroPartido === 1) {
       var rngSorteo = rngMod.crearRng(seedPartido(torneo, 1, 'sorteo'));
       return rngMod.elegir(rngSorteo, torneo.managers.map(function (m) { return m.id; }));
@@ -52,20 +53,19 @@
     return ultimo.perdedor;
   }
 
-  // Arma el mercado y el estado de subasta del proximo partido a jugar.
+  // Arma el mazo (orden al azar en que salen los jugadores) y el estado de
+  // subasta del proximo partido a jugar.
   function prepararSiguientePartido(torneo) {
     if (torneo.terminado) throw new Error('El torneo ya termino');
     var numero = torneo.numeroPartido;
-    var seedMercado = seedPartido(torneo, numero, 'mercado');
-    var idsMercado = mercadoMod.generarMercado(seedMercado);
-    var nominaPrimero = decidirNominaPrimero(torneo);
+    var mazo = mercadoMod.generarMazo(seedPartido(torneo, numero, 'mercado'));
 
     var partido = subastaMod.crearPartido({
       numero: numero,
       managers: torneo.managers.map(function (m) { return { id: m.id, nombre: m.nombre, color: m.color }; }),
-      nominaPrimero: nominaPrimero,
+      abrePrimero: decidirQuienAbre(torneo),
       seed: seedPartido(torneo, numero, 'partido'),
-      mercado: idsMercado,
+      mazo: mazo,
     });
 
     var nuevo = JSON.parse(JSON.stringify(torneo));
@@ -137,6 +137,6 @@
     crearTorneo: crearTorneo,
     prepararSiguientePartido: prepararSiguientePartido,
     registrarResultado: registrarResultado,
-    decidirNominaPrimero: decidirNominaPrimero,
+    decidirQuienAbre: decidirQuienAbre,
   };
 });

@@ -56,14 +56,14 @@ test('fin de torneo "10 partidos": desempate 50-50 juega un partido extra', func
   assert.equal(t.campeon, 1);
 });
 
-test('nomina primero el que perdio el partido anterior', function () {
-  var t = torneoMod.crearTorneo({ modo: 'primeroA100', managers: managers(), seed: 'nomina' });
+test('abre el primer lote el que perdio el partido anterior', function () {
+  var t = torneoMod.crearTorneo({ modo: 'primeroA100', managers: managers(), seed: 'abre' });
   t = torneoMod.prepararSiguientePartido(t);
-  var primerNominador = t.partidoActual.nominaProximo;
-  t = torneoMod.registrarResultado(t, { ganador: primerNominador === 0 ? 1 : 0, goles: [1, 0] });
-  // el perdedor del partido 1 es quien nomino, entonces nomina de nuevo en el 2
+  var primeroEnAbrir = t.partidoActual.abreProximo;
+  t = torneoMod.registrarResultado(t, { ganador: primeroEnAbrir === 0 ? 1 : 0, goles: [1, 0] });
+  // el perdedor del partido 1 es quien abrio, entonces abre de nuevo en el 2
   t = torneoMod.prepararSiguientePartido(t);
-  assert.equal(t.partidoActual.nominaProximo, primerNominador);
+  assert.equal(t.partidoActual.abreProximo, primeroEnAbrir);
 });
 
 test('serializar y deserializar devuelve el mismo estado', function () {

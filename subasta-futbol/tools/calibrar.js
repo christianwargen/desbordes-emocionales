@@ -157,6 +157,34 @@ function agregarFila(nombre, valorTexto, objetivoTexto, ok) {
   agregarFila('Equilibrado (Nesta,Puyol,Gerrard,Raúl) vs todo ataque (Totti,Del Piero,Tostão,Bergkamp)', 'gana equilibrado ' + pct(probs[0]), '50%-66%', ok);
 })();
 
+// 8) Reparto parejo: el que no compra nada recibe 4 al azar parejos con el rival
+(function () {
+  var subasta = require(path.join(__dirname, '..', 'js', 'subasta.js'));
+  var mercadoMod = require(path.join(__dirname, '..', 'js', 'mercado.js'));
+  var repartoMod = require(path.join(__dirname, '..', 'js', 'reparto.js'));
+  var porId = {};
+  jugadores.forEach(function (j) { porId[j.id] = j; });
+  var campo = jugadores.filter(function (j) { return j.posicion !== 'POR'; });
+  var CASOS = 200;
+  var suma = 0;
+  for (var i = 0; i < CASOS; i++) {
+    var seed = 'calib:reparto:' + i;
+    var comprado = rngMod.mezclar(rngMod.crearRng(seed), campo).slice(0, 4).map(function (j) { return j.id; });
+    var p = subasta.crearPartido({
+      numero: 1, abrePrimero: 0, seed: seed, mazo: mercadoMod.generarMazo(seed),
+      managers: [{ id: 0, nombre: 'A', color: '' }, { id: 1, nombre: 'B', color: '' }],
+    });
+    p.managers[0].plantel = comprado;
+    p = repartoMod.completarPartido(p, seed + ':reparto');
+    var equipoComprado = p.managers[0].plantel.map(function (id) { return porId[id]; });
+    var equipoRepartido = p.managers[1].plantel.map(function (id) { return porId[id]; });
+    suma += sim.probabilidadVictoria(equipoRepartido, equipoComprado, Math.round(N / CASOS), seed + ':partido')[0];
+  }
+  var prob = suma / CASOS;
+  var ok = prob >= 0.42 && prob <= 0.58;
+  agregarFila('Reparto parejo al azar vs el equipo que compró el rival', 'gana el repartido ' + pct(prob), '42%-58%', ok);
+})();
+
 var anchoNombre = filas.reduce(function (m, f) { return Math.max(m, f.nombre.length); }, 'Escenario'.length);
 var anchoValor = filas.reduce(function (m, f) { return Math.max(m, f.valor.length); }, 'Resultado'.length);
 var anchoObjetivo = filas.reduce(function (m, f) { return Math.max(m, f.objetivo.length); }, 'Objetivo'.length);

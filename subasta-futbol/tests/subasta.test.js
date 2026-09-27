@@ -4,10 +4,14 @@ var test = require('node:test');
 var assert = require('node:assert/strict');
 var subasta = require('../js/subasta.js');
 var mercadoMod = require('../js/mercado.js');
+var repartoMod = require('../js/reparto.js');
 var rngMod = require('../js/rng.js');
 var configMod = require('../js/config.js');
+var jugadores = require('../js/jugadores.js');
 
 var CONFIG = configMod.CONFIG;
+var POR_ID = {};
+jugadores.forEach(function (j) { POR_ID[j.id] = j; });
 
 function managers() {
   return [
@@ -17,224 +21,174 @@ function managers() {
 }
 
 function partidoNuevo(seed) {
-  var ids = mercadoMod.generarMercado(seed || 'partido-test');
-  return subasta.crearPartido({ numero: 1, managers: managers(), nominaPrimero: 0, seed: seed || 'partido-test', mercado: ids });
+  var mazo = mercadoMod.generarMazo(seed || 'partido-test');
+  return subasta.crearPartido({ numero: 1, managers: managers(), abrePrimero: 0, seed: seed || 'partido-test', mazo: mazo });
 }
 
-test('crearPartido arranca con $20, plantel vacio y el mercado dado', function () {
+test('crearPartido arranca con $20, plantel vacio y un mazo de 200 jugadores de campo', function () {
   var p = partidoNuevo();
   assert.equal(p.managers.length, 2);
   p.managers.forEach(function (m) {
     assert.equal(m.presupuesto, CONFIG.PRESUPUESTO);
     assert.deepEqual(m.plantel, []);
   });
-  assert.equal(p.mercado.length, 24);
-  assert.equal(subasta.estadoSubasta(p), 'nominando');
+  assert.equal(p.mazo.length, 200);
+  assert.equal(new Set(p.mazo).size, 200);
+  assert.ok(p.mazo.every(function (id) { return POR_ID[id].posicion !== 'POR'; }));
+  assert.equal(subasta.estadoSubasta(p), 'esperandoLote');
 });
 
 test('pujaMaxima: ejemplos de la seccion 2.2', function () {
   var p = partidoNuevo();
-  // $9 y 3 lugares libres -> puja maxima $7
   p.managers[0].presupuesto = 900;
   p.managers[0].plantel = ['x']; // 3 lugares libres
   assert.equal(subasta.pujaMaxima(p, 0), 700);
-  // $8,50 y 2 lugares libres -> puja maxima $7,50
   p.managers[0].presupuesto = 850;
   p.managers[0].plantel = ['x', 'y']; // 2 lugares libres
   assert.equal(subasta.pujaMaxima(p, 0), 750);
-  // $4 y 4 lugares libres -> puja maxima $1 (puede nominar, nunca superar)
   p.managers[0].presupuesto = 400;
   p.managers[0].plantel = [];
   assert.equal(subasta.pujaMaxima(p, 0), 100);
-  // plantel completo -> puja maxima 0
   p.managers[0].plantel = ['a', 'b', 'c', 'd'];
   assert.equal(subasta.pujaMaxima(p, 0), 0);
 });
 
-test('nominar abre el lote en $1 con el nominador como lider', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  var p2 = subasta.nominar(p, 0, jugadorId);
-  assert.equal(subasta.estadoSubasta(p2), 'pujando');
-  assert.equal(p2.lote.jugadorId, jugadorId);
-  assert.equal(p2.lote.precio, 100);
-  assert.equal(p2.lote.lider, 0);
-  assert.equal(p2.lote.turno, 1);
-  assert.deepEqual(p2.lote.pujas, [{ manager: 0, monto: 100 }]);
+test('abrirLote saca al azar el proximo del mazo, sin dueño y arrancando en $1', function () {
+  var p = subasta.abrirLote(partidoNuevo());
+  assert.equal(subasta.estadoSubasta(p), 'pujando');
+  assert.equal(p.lote.jugadorId, p.mazo[0]);
+  assert.equal(p.lote.lider, null);
+  assert.equal(p.lote.turno, 0);
+  assert.equal(subasta.montoMinimo(p), 100);
+  assert.equal(p.mazoPos, 1);
 });
 
-test('subir de a $0,50 funciona: 1 -> 1,50 -> 2', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  p = subasta.nominar(p, 0, jugadorId);
-  p = subasta.pujar(p, 1, 150);
-  assert.equal(p.lote.precio, 150);
-  assert.equal(p.lote.lider, 1);
-  p = subasta.pujar(p, 0, 200);
-  assert.equal(p.lote.precio, 200);
+test('pujas de a $0,50: 1 -> 1,50 -> 2 y el que pasa pierde', function () {
+  var p = subasta.abrirLote(partidoNuevo());
+  var jugadorId = p.lote.jugadorId;
+  p = subasta.pujar(p, 0, 100);
   assert.equal(p.lote.lider, 0);
-  assert.equal(p.lote.pujas.length, 3);
+  assert.equal(subasta.montoMinimo(p), 150);
+  p = subasta.pujar(p, 1, 150);
+  p = subasta.pujar(p, 0, 200);
+  p = subasta.pasar(p, 1);
+  assert.equal(p.lote, null);
+  assert.deepEqual(p.managers[0].plantel, [jugadorId]);
+  assert.equal(p.managers[0].presupuesto, 1800);
+  assert.equal(p.lotes[0].precio, 200);
+  assert.equal(p.abreProximo, 1, 'el proximo lote lo abre el otro');
 });
 
-test('nominar, pujar y pasar felices adjudican correctamente', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  p = subasta.nominar(p, 0, jugadorId);
-  p = subasta.pujar(p, 1, 150);
+test('si los dos pasan sin pujar, el jugador se descarta', function () {
+  var p = subasta.abrirLote(partidoNuevo());
+  var jugadorId = p.lote.jugadorId;
   p = subasta.pasar(p, 0);
+  assert.equal(p.lote.turno, 1);
+  p = subasta.pasar(p, 1);
   assert.equal(p.lote, null);
-  assert.equal(p.managers[1].plantel.indexOf(jugadorId) !== -1, true);
-  assert.equal(p.managers[1].presupuesto, CONFIG.PRESUPUESTO - 150);
-  assert.equal(p.mercado.indexOf(jugadorId), -1);
-  assert.equal(p.lotes.length, 1);
-  assert.deepEqual(p.lotes[0], { jugadorId: jugadorId, ganador: 1, precio: 150, pujas: [{ manager: 0, monto: 100 }, { manager: 1, monto: 150 }] });
+  assert.deepEqual(p.descartados, [jugadorId]);
+  assert.equal(p.managers[0].plantel.length + p.managers[1].plantel.length, 0);
+  assert.equal(subasta.estadoSubasta(p), 'esperandoLote');
+});
+
+test('si el primero pasa y el segundo puja, se lo lleva al toque', function () {
+  var p = subasta.abrirLote(partidoNuevo());
+  var jugadorId = p.lote.jugadorId;
+  p = subasta.pasar(p, 0);
+  p = subasta.pujar(p, 1, 100);
+  assert.equal(p.lote, null);
+  assert.deepEqual(p.managers[1].plantel, [jugadorId]);
+  assert.equal(p.managers[1].presupuesto, 1900);
 });
 
 test('todos los casos ilegales tiran error', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  var otroJugadorId = p.mercado[1];
-
-  // nominar fuera de turno
-  assert.throws(function () { subasta.nominar(p, 1, jugadorId); });
-  // nominar un jugador que no esta en el mercado
-  assert.throws(function () { subasta.nominar(p, 0, 999999); });
-
-  var p2 = subasta.nominar(p, 0, jugadorId);
-
-  // pujar fuera de turno
-  assert.throws(function () { subasta.pujar(p2, 0, 150); });
-  // monto no multiplo de 50
-  assert.throws(function () { subasta.pujar(p2, 1, 175); });
-  // monto <= precio actual
-  assert.throws(function () { subasta.pujar(p2, 1, 100); });
-  assert.throws(function () { subasta.pujar(p2, 1, 50); });
-  // monto por encima de la puja maxima
-  assert.throws(function () { subasta.pujar(p2, 1, 999999); });
-  // pasar fuera de turno
-  assert.throws(function () { subasta.pasar(p2, 0); });
-  // nominar mientras hay un lote en curso
-  assert.throws(function () { subasta.nominar(p2, 1, otroJugadorId); });
-  // ficharDirecto fuera de modo compra directa
-  assert.throws(function () { subasta.ficharDirecto(p2, 1, otroJugadorId); });
+  var p0 = partidoNuevo();
+  assert.throws(function () { subasta.pujar(p0, 0, 100); }, /No hay ningun lote/);
+  var p = subasta.abrirLote(p0);
+  assert.throws(function () { subasta.abrirLote(p); }, /No se puede sacar/);
+  assert.throws(function () { subasta.pujar(p, 1, 100); }, /No es el turno/);
+  assert.throws(function () { subasta.pasar(p, 1); }, /No es el turno/);
+  assert.throws(function () { subasta.pujar(p, 0, 50); }, /al menos/);
+  assert.throws(function () { subasta.pujar(p, 0, 120); }, /multiplo/);
+  assert.throws(function () { subasta.pujar(p, 0, 1750); }, /puja maxima/);
+  p = subasta.pujar(p, 0, 100);
+  assert.throws(function () { subasta.pujar(p, 1, 100); }, /al menos/);
 });
 
 test('cierre automatico: al rival no le alcanza para superar', function () {
   var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  // Ana nomina; Juan casi sin plata, no puede subir
-  p.managers[1].presupuesto = 100; // $1, con 4 libres pujaMaxima=100, no supera 100+50
-  var p2 = subasta.nominar(p, 0, jugadorId);
-  // el cierre automatico deberia haber ocurrido de una: no hay lote, Ana se lo lleva a $1
-  assert.equal(p2.lote, null);
-  assert.equal(p2.managers[0].plantel.indexOf(jugadorId) !== -1, true);
-  assert.equal(p2.managers[0].presupuesto, CONFIG.PRESUPUESTO - 100);
+  p.managers[1].presupuesto = 400; // 4 lugares libres -> puja maxima $1
+  p = subasta.abrirLote(p);
+  p = subasta.pujar(p, 0, 100);
+  assert.equal(p.lote, null, 'Juan no puede superar $1, el lote se cierra solo');
+  assert.equal(p.managers[0].plantel.length, 1);
 });
 
-test('cierre automatico: el rival ya completo su plantel', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  var otro = p.mercado[1];
-  p.managers[1].plantel = [p.mercado[10], p.mercado[11], p.mercado[12]]; // 1 lugar libre
-  p.managers[1].presupuesto = 100;
-  var p2 = subasta.nominar(p, 0, jugadorId);
-  assert.equal(p2.lote, null);
-  assert.equal(p2.managers[0].plantel.indexOf(jugadorId) !== -1, true);
-});
-
-test('alternancia de nominacion: nomina el que no nomino el lote anterior', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  p = subasta.nominar(p, 0, jugadorId);
-  p = subasta.pasar(p, 1); // Ana nomino y se lo queda a $1, Juan paso
-  assert.equal(p.nominaProximo, 1);
-});
-
-test('compra directa: cuando un manager completa, el otro ficha a $1', function () {
-  var p = partidoNuevo();
-  p.managers[0].plantel = [p.mercado[0], p.mercado[1], p.mercado[2], p.mercado[3]];
-  p.managers[0].presupuesto = 0;
-  assert.equal(subasta.estadoSubasta(p), 'compraDirecta');
-  var libreId = p.mercado[4];
-  var p2 = subasta.ficharDirecto(p, 1, libreId);
-  assert.equal(p2.managers[1].plantel.indexOf(libreId) !== -1, true);
-  assert.equal(p2.managers[1].presupuesto, CONFIG.PRESUPUESTO - 100);
-  assert.throws(function () { subasta.ficharDirecto(p2, 0, p.mercado[5]); }); // manager 0 ya completo
-});
-
-test('subasta terminada cuando ambos completan plantel', function () {
-  var p = partidoNuevo();
-  p.managers[0].plantel = [p.mercado[0], p.mercado[1], p.mercado[2], p.mercado[3]];
-  p.managers[1].plantel = [p.mercado[4], p.mercado[5], p.mercado[6], p.mercado[7]];
+test('cuando uno completa sus 4, el otro recibe un equipo parejo al azar', function () {
+  var p = partidoNuevo('reparto-flujo');
+  for (var i = 0; i < 4; i++) {
+    p = subasta.abrirLote(p);
+    if (p.lote.turno === 0) { p = subasta.pujar(p, 0, 100); p = subasta.pasar(p, 1); }
+    else { p = subasta.pasar(p, 1); p = subasta.pujar(p, 0, 100); }
+  }
+  assert.equal(p.managers[0].plantel.length, 4);
+  assert.equal(subasta.estadoSubasta(p), 'reparto');
+  p = repartoMod.completarPartido(p, 'reparto-flujo:reparto');
   assert.equal(subasta.estadoSubasta(p), 'terminada');
+  assert.equal(p.managers[1].plantel.length, 4);
+  assert.equal(p.reparto.length, 1);
+  assert.equal(p.reparto[0].manager, 1);
+  assert.equal(p.managers[1].presupuesto, 1600, 'los asignados cuestan $1 cada uno');
+  var todos = p.managers[0].plantel.concat(p.managers[1].plantel);
+  assert.equal(new Set(todos).size, 8, 'nadie repetido');
 });
 
-test('deshacer revierte la ultima puja', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  p = subasta.nominar(p, 0, jugadorId);
+test('deshacer revierte la ultima puja o el ultimo paso', function () {
+  var p = subasta.abrirLote(partidoNuevo());
+  p = subasta.pujar(p, 0, 100);
   p = subasta.pujar(p, 1, 150);
-  var deshecho = subasta.deshacer(p);
-  assert.equal(deshecho.lote.precio, 100);
-  assert.equal(deshecho.lote.lider, 0);
-  assert.equal(deshecho.lote.turno, 1);
-});
-
-test('deshacer sobre la nominacion la anula por completo', function () {
-  var p = partidoNuevo();
-  var jugadorId = p.mercado[0];
-  p = subasta.nominar(p, 0, jugadorId);
-  var deshecho = subasta.deshacer(p);
-  assert.equal(deshecho.lote, null);
+  var d = subasta.deshacer(p);
+  assert.equal(d.lote.precio, 100);
+  assert.equal(d.lote.lider, 0);
+  assert.equal(d.lote.turno, 1);
+  var q = subasta.pasar(subasta.abrirLote(partidoNuevo()), 0);
+  var dq = subasta.deshacer(q);
+  assert.equal(dq.lote.turno, 0);
+  assert.deepEqual(dq.lote.pasaron, []);
 });
 
 test('propiedad: 2000 subastas con acciones legales al azar terminan siempre en 4 y 4', function () {
   for (var s = 0; s < 2000; s++) {
-    var seed = 'prop-' + s;
-    var random = rngMod.crearRng(seed);
-    var ids = mercadoMod.generarMercado(seed);
-    var p = subasta.crearPartido({ numero: 1, managers: managers(), nominaPrimero: rngMod.entero(random, 0, 1), seed: seed, mercado: ids });
-
-    var pasosMax = 500;
-    while (subasta.estadoSubasta(p) !== 'terminada' && pasosMax-- > 0) {
+    var rng = rngMod.crearRng('prop-' + s);
+    var p = partidoNuevo('prop-' + s);
+    var pasos = 0;
+    while (subasta.estadoSubasta(p) !== 'terminada') {
+      assert.ok(pasos++ < 2000, 'seed prop-' + s + ': la subasta no termina');
       var estado = subasta.estadoSubasta(p);
-      if (estado === 'nominando') {
-        var m = p.nominaProximo;
-        var jugadorId = rngMod.elegir(random, p.mercado);
-        p = subasta.nominar(p, m, jugadorId);
-      } else if (estado === 'compraDirecta') {
-        var conLibres = p.managers.filter(function (mm) { return subasta.lugaresLibres(p, mm.id) > 0; })[0];
-        var jugadorId2 = rngMod.elegir(random, p.mercado);
-        p = subasta.ficharDirecto(p, conLibres.id, jugadorId2);
-      } else if (estado === 'pujando') {
+      if (estado === 'esperandoLote') p = subasta.abrirLote(p);
+      else if (estado === 'reparto') p = repartoMod.completarPartido(p, 'prop-' + s + ':reparto');
+      else {
         var turno = p.lote.turno;
+        var minimo = subasta.montoMinimo(p);
         var max = subasta.pujaMaxima(p, turno);
-        var precio = p.lote.precio;
-        var opciones = ['pasar'];
-        [precio + 50, precio + 100, precio + 200, max].forEach(function (monto) {
-          if (monto > precio && monto <= max && monto % 50 === 0) opciones.push(monto);
-        });
-        var accion = rngMod.elegir(random, opciones);
-        p = accion === 'pasar' ? subasta.pasar(p, turno) : subasta.pujar(p, turno, accion);
+        var opciones = [minimo, minimo + 50, minimo + 150, max].filter(function (m) { return m >= minimo && m <= max; });
+        if (opciones.length === 0 || rng() < 0.45) p = subasta.pasar(p, turno);
+        else p = subasta.pujar(p, turno, opciones[Math.floor(rng() * opciones.length)]);
       }
-
-      // invariantes despues de cada accion
-      p.managers.forEach(function (mm) {
-        assert.ok(mm.presupuesto >= 0, 'seed ' + seed + ': presupuesto negativo');
-        assert.equal(mm.presupuesto % 50, 0, 'seed ' + seed + ': presupuesto no multiplo de 50');
-        var libres = subasta.lugaresLibres(p, mm.id);
-        assert.ok(mm.presupuesto >= libres * CONFIG.PRECIO_INICIAL, 'seed ' + seed + ': invariante de presupuesto minimo roto');
+      p.managers.forEach(function (m) {
+        var libres = CONFIG.TAMANO_PLANTEL - m.plantel.length;
+        assert.ok(m.presupuesto % 50 === 0, 'presupuesto no multiplo de 50');
+        assert.ok(m.presupuesto >= libres * CONFIG.PRECIO_INICIAL, 'invariante roto en seed prop-' + s);
       });
     }
-
-    assert.ok(pasosMax > 0, 'seed ' + seed + ': no termino en el limite de pasos');
-    assert.equal(subasta.estadoSubasta(p), 'terminada');
-    p.managers.forEach(function (mm) {
-      assert.equal(mm.plantel.length, 4, 'seed ' + seed + ': plantel final distinto de 4');
-      assert.equal(mm.presupuesto, CONFIG.PRESUPUESTO - (CONFIG.PRESUPUESTO - mm.presupuesto), 'trivial');
+    var todos = [];
+    p.managers.forEach(function (m) {
+      assert.equal(m.plantel.length, 4);
+      var pagado = p.lotes.filter(function (l) { return l.ganador === m.id; }).reduce(function (a, l) { return a + l.precio; }, 0);
+      assert.equal(pagado, CONFIG.PRESUPUESTO - m.presupuesto);
+      todos = todos.concat(m.plantel);
     });
-    var gastoTotal = p.lotes.reduce(function (acc, l) { return acc + l.precio; }, 0);
-    var gastoManagers = p.managers.reduce(function (acc, mm) { return acc + (CONFIG.PRESUPUESTO - mm.presupuesto); }, 0);
-    assert.equal(gastoTotal, gastoManagers, 'seed ' + seed + ': el gasto de los lotes no coincide con lo pagado');
+    assert.equal(new Set(todos).size, 8);
+    assert.ok(todos.every(function (id) { return POR_ID[id].posicion !== 'POR'; }));
   }
 });

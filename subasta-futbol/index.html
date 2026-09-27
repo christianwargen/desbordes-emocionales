@@ -56,9 +56,9 @@
           <summary>¿Cómo se juega?</summary>
           <ul>
             <li>Cada partido arrancás con $20 y un plantel vacío de 4 lugares para jugadores de campo.</li>
-            <li>Se turnan para nominar futbolistas del mercado; la subasta de cada uno arranca en $1 y sube de a $0,50.</li>
+            <li>Los jugadores salen a subasta al azar, de a uno. Arranca en $1 y sube de a $0,50. Podés pasar: si pasan los dos, ese jugador queda afuera.</li>
             <li>Nadie puede pujar por encima de su puja máxima: siempre te va a alcanzar para completar el equipo.</li>
-            <li>Cuando uno completa su plantel y al otro le faltan, ficha directo a $1 cada uno.</li>
+            <li>Cuando uno completa sus 4, al otro se le completan al azar con un equipo parejo al del rival. No comprar también es una estrategia.</li>
             <li>Con los 2 equipos armados se juega un partido simulado según las cartas. El arquero es el mismo para los dos: gana la destreza de los jugadores.</li>
             <li>Si empatan en los 90': alargue con gol de oro. Si nadie la mete, penales.</li>
             <li>Ganar un partido da 10 puntos. Se repite hasta terminar el torneo.</li>
@@ -127,7 +127,10 @@
 
 </div>
 
-<button type="button" id="btn-historial-global" class="btn btn--chico" style="position:fixed;top:calc(10px + env(safe-area-inset-top, 0px));right:10px;z-index:40;display:none">📜 Historial</button>
+<div id="barra-global" class="barra-global" style="display:none">
+  <button type="button" id="btn-historial-global" class="btn btn--chico">📜 Historial</button>
+  <button type="button" id="btn-reiniciar-global" class="btn btn--chico btn--reiniciar">↺ Reiniciar</button>
+</div>
 <div id="historial-cont"></div>
 <div id="toast-cont" aria-live="polite"></div>
 
@@ -138,6 +141,7 @@
 <script src="js/subasta.js"></script>
 <script src="js/simulacion.js"></script>
 <script src="js/torneo.js"></script>
+<script src="js/reparto.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
