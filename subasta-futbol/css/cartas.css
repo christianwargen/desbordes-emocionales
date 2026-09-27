@@ -137,6 +137,10 @@
 .carta--mini .carta__silueta { top: 12cqw; width: 64cqw; height: 64cqw; right: 5cqw; }
 .carta--mini .carta__nombre { top: 85cqw; left: 5cqw; right: 5cqw; font-size: 12.5cqw; letter-spacing: -.01em; border-bottom: 0; }
 
+/* Nombres largos (Rummenigge, Beckenbauer…): letra un poco más chica para que no se corten */
+.carta__nombre--largo { font-size: 9cqw; }
+.carta--mini .carta__nombre--largo { font-size: 10.5cqw; }
+
 /* Lugar vacío del plantel */
 .carta-vacia {
   width: 88px; aspect-ratio: 100 / 140; border: 2px dashed rgba(255, 255, 255, .25); border-radius: 10px 10px 40% 40% / 10px 10px 22% 22%;

@@ -182,6 +182,10 @@ Correcciones en `tools/generar-jugadores.js`:
 - Variación propia por jugador (−4..+4 por estadística, determinística por id): ya no hay dos
   cartas iguales. La estadística principal se sigue resolviendo para quedar a ±2 del OVR.
 - Arquetipo nuevo `pivote` (Busquets, Rodri, Redondo: pase y marca); Kaká pasa a `enganche`.
+- En celular, el lote o el mercado van primero y los paneles de los managers abajo, lado a
+  lado y compactos (antes había que bajar por los dos paneles para poder pujar). El aviso de
+  adjudicación ya no bloquea los botones que tiene debajo, y los nombres largos usan letra
+  más chica para no cortarse.
 - Sin arquero, al arco va el jugador de campo de **menor** OVR (antes, con todos los de campo
   empatados en `arq`, iba el de mayor OVR: el crack terminaba atajando). También en `SESION.md` §5.1.
 - En la carta, el nombre tenía la parte de arriba recortada y no se veían los tildes de las

@@ -191,10 +191,16 @@ details.reglas li { margin-bottom: 6px; }
   align-items: start;
 }
 @media (max-width: 900px) {
-  .subasta-layout { grid-template-columns: 1fr; }
-  .panel-manager { order: 2; }
-  .panel-manager[data-manager="0"] { order: 1; }
-  .centro-subasta { order: 3; }
+  /* En celular lo primero es el lote o el mercado (donde se juega); los dos paneles
+     van abajo, lado a lado y compactos. */
+  .subasta-layout { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .centro-subasta { order: 0; grid-column: 1 / -1; min-height: 0; }
+  .panel-manager { order: 1; padding: 12px; min-width: 0; }
+  .panel-manager[data-manager="1"] { order: 2; }
+  .panel-manager__presupuesto { font-size: 1.8rem; }
+  .panel-manager .plantel { display: grid; grid-template-columns: repeat(2, 62px); gap: 6px; justify-content: center; }
+  .panel-manager .carta--mini { --w: 62px; }
+  .panel-manager .carta-vacia { width: 62px; font-size: 0; }
 }
 
 .panel-manager {
@@ -309,6 +315,7 @@ details.reglas li { margin-bottom: 6px; }
   font-size: 1.05rem;
   box-shadow: var(--sombra);
   z-index: 50;
+  pointer-events: none; /* no bloquea los botones que quedan debajo (Pasar, Deshacer) */
   max-width: calc(100vw - 32px);
   text-align: center;
   animation: toast-in-out 1.5s ease forwards;

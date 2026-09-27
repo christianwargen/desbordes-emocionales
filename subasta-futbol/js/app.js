@@ -90,7 +90,8 @@
     }
     html += '</div>';
     html += '<svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>';
-    html += '<div class="carta__nombre">' + escapeHtml(jugador.nombreCarta) + '</div>';
+    var claseLargo = jugador.nombreCarta.length > 9 ? ' carta__nombre--largo' : '';
+    html += '<div class="carta__nombre' + claseLargo + '">' + escapeHtml(jugador.nombreCarta) + '</div>';
     if (tamano !== 'mini') {
       var esPor = jugador.posicion === 'POR';
       var colA = esPor ? [['est', 'EST'], ['par', 'PAR'], ['saq', 'SAQ']] : [['rit', 'RIT'], ['tir', 'TIR'], ['pas', 'PAS']];
