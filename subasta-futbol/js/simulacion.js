@@ -12,7 +12,7 @@
     jugadas: 18,
     expPosesion: 3, posesionMin: 0.30, posesionMax: 0.70,
     baseRemate: 0.42, pendienteRemate: 90, remateMin: 0.12, remateMax: 0.85,
-    baseGol: 0.36, pendienteGol: 110, golMin: 0.08, golMax: 0.80,
+    baseGol: 0.36, pendienteGol: 85, golMin: 0.08, golMax: 0.80,
     penalBase: 0.75, penalPendiente: 200, penalMin: 0.55, penalMax: 0.92,
   };
 
