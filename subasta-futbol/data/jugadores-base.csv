@@ -1,0 +1,201 @@
+id,nombre,pais,posicion,pico,club,ovr
+1,Lev Yashin,Rusia,POR,1963,Dinamo Moscú,95
+2,Gianluigi Buffon,Italia,POR,2006,Juventus,94
+3,Manuel Neuer,Alemania,POR,2014,Bayern Múnich,93
+4,Iker Casillas,España,POR,2010,Real Madrid,92
+5,Peter Schmeichel,Dinamarca,POR,1999,Manchester United,91
+6,Gordon Banks,Inglaterra,POR,1970,Stoke City,91
+7,Dino Zoff,Italia,POR,1982,Juventus,91
+8,Oliver Kahn,Alemania,POR,2002,Bayern Múnich,90
+9,Sepp Maier,Alemania,POR,1974,Bayern Múnich,90
+10,Thibaut Courtois,Bélgica,POR,2022,Real Madrid,89
+11,Alisson Becker,Brasil,POR,2019,Liverpool,89
+12,Ricardo Zamora,España,POR,1934,Real Madrid,88
+13,Edwin van der Sar,Países Bajos,POR,2008,Manchester United,88
+14,Petr Čech,Chequia,POR,2005,Chelsea,88
+15,Jan Oblak,Eslovenia,POR,2018,Atlético de Madrid,88
+16,Ubaldo Fillol,Argentina,POR,1978,River Plate,87
+17,Dibu Martínez,Argentina,POR,2022,Aston Villa,87
+18,José Luis Chilavert,Paraguay,POR,1998,Vélez Sarsfield,86
+19,Rinat Dasáyev,Rusia,POR,1988,Spartak Moscú,86
+20,Walter Zenga,Italia,POR,1990,Inter,86
+21,Franz Beckenbauer,Alemania,DEF,1972,Bayern Múnich,97
+22,Paolo Maldini,Italia,DEF,1994,Milan,95
+23,Franco Baresi,Italia,DEF,1990,Milan,94
+24,Bobby Moore,Inglaterra,DEF,1966,West Ham United,92
+25,Fabio Cannavaro,Italia,DEF,2006,Juventus,92
+26,Daniel Passarella,Argentina,DEF,1978,River Plate,91
+27,Sergio Ramos,España,DEF,2014,Real Madrid,91
+28,Virgil van Dijk,Países Bajos,DEF,2019,Liverpool,91
+29,Carlos Alberto Torres,Brasil,DEF,1970,Santos,90
+30,Cafu,Brasil,DEF,2002,Roma,90
+31,Roberto Carlos,Brasil,DEF,2002,Real Madrid,90
+32,Elías Figueroa,Chile,DEF,1974,Internacional,90
+33,Giacinto Facchetti,Italia,DEF,1965,Inter,90
+34,Philipp Lahm,Alemania,DEF,2014,Bayern Múnich,90
+35,Nílton Santos,Brasil,DEF,1958,Botafogo,90
+36,Gaetano Scirea,Italia,DEF,1982,Juventus,90
+37,Alessandro Nesta,Italia,DEF,2003,Milan,90
+38,Ruud Krol,Países Bajos,DEF,1974,Ajax,89
+39,Carles Puyol,España,DEF,2010,Barcelona,89
+40,Marcel Desailly,Francia,DEF,1998,Milan,89
+41,Lilian Thuram,Francia,DEF,1998,Parma,89
+42,Paul Breitner,Alemania,DEF,1974,Bayern Múnich,88
+43,Ronald Koeman,Países Bajos,DEF,1992,Barcelona,88
+44,Djalma Santos,Brasil,DEF,1958,Portuguesa,88
+45,Rio Ferdinand,Inglaterra,DEF,2008,Manchester United,88
+46,John Terry,Inglaterra,DEF,2005,Chelsea,88
+47,Javier Zanetti,Argentina,DEF,2010,Inter,88
+48,Thiago Silva,Brasil,DEF,2013,Paris Saint-Germain,88
+49,Dani Alves,Brasil,DEF,2011,Barcelona,88
+50,Gerard Piqué,España,DEF,2011,Barcelona,87
+51,Claudio Gentile,Italia,DEF,1982,Juventus,87
+52,Andreas Brehme,Alemania,DEF,1990,Inter,87
+53,José Santamaría,Uruguay,DEF,1959,Real Madrid,87
+54,Laurent Blanc,Francia,DEF,1998,Olympique de Marsella,87
+55,Fernando Hierro,España,DEF,1998,Real Madrid,87
+56,Nemanja Vidić,Serbia,DEF,2009,Manchester United,87
+57,Jaap Stam,Países Bajos,DEF,1999,Manchester United,87
+58,Mats Hummels,Alemania,DEF,2014,Borussia Dortmund,87
+59,Marcelo,Brasil,DEF,2017,Real Madrid,87
+60,Diego Godín,Uruguay,DEF,2014,Atlético de Madrid,87
+61,Oscar Ruggeri,Argentina,DEF,1986,River Plate,86
+62,Roberto Perfumo,Argentina,DEF,1967,Racing Club,86
+63,Silvio Marzolini,Argentina,DEF,1966,Boca Juniors,86
+64,Rafael Márquez,México,DEF,2006,Barcelona,85
+65,Héctor Chumpitaz,Perú,DEF,1970,Universitario,85
+66,Roberto Ayala,Argentina,DEF,2002,Valencia,85
+67,Diego Maradona,Argentina,MED,1986,Napoli,99
+68,Zinedine Zidane,Francia,MED,1998,Juventus,96
+69,Michel Platini,Francia,MED,1984,Juventus,95
+70,Ronaldinho,Brasil,MED,2005,Barcelona,95
+71,Zico,Brasil,MED,1981,Flamengo,94
+72,Xavi Hernández,España,MED,2011,Barcelona,93
+73,Andrés Iniesta,España,MED,2012,Barcelona,93
+74,Lothar Matthäus,Alemania,MED,1990,Inter,93
+75,Bobby Charlton,Inglaterra,MED,1966,Manchester United,93
+76,Luka Modrić,Croacia,MED,2018,Real Madrid,92
+77,Kaká,Brasil,MED,2007,Milan,92
+78,Ruud Gullit,Países Bajos,MED,1988,Milan,92
+79,Didi,Brasil,MED,1958,Botafogo,91
+80,Frank Rijkaard,Países Bajos,MED,1989,Milan,91
+81,Andrea Pirlo,Italia,MED,2006,Milan,91
+82,Kevin De Bruyne,Bélgica,MED,2020,Manchester City,91
+83,Gianni Rivera,Italia,MED,1969,Milan,91
+84,Sócrates,Brasil,MED,1982,Corinthians,91
+85,Rivelino,Brasil,MED,1970,Corinthians,91
+86,Juan Alberto Schiaffino,Uruguay,MED,1950,Peñarol,91
+87,Luis Figo,Portugal,MED,2000,Real Madrid,91
+88,Zizinho,Brasil,MED,1950,Bangu,90
+89,Johan Neeskens,Países Bajos,MED,1974,Ajax,90
+90,Toni Kroos,Alemania,MED,2017,Real Madrid,90
+91,Steven Gerrard,Inglaterra,MED,2005,Liverpool,90
+92,Pavel Nedvěd,Chequia,MED,2003,Juventus,90
+93,Falcão,Brasil,MED,1982,Roma,90
+94,Rodri,España,MED,2024,Manchester City,90
+95,Luis Suárez Miramontes,España,MED,1960,Barcelona,90
+96,Fritz Walter,Alemania,MED,1954,Kaiserslautern,90
+97,Michael Laudrup,Dinamarca,MED,1992,Barcelona,90
+98,Gérson,Brasil,MED,1970,São Paulo,89
+99,Sandro Mazzola,Italia,MED,1965,Inter,89
+100,Günter Netzer,Alemania,MED,1972,Borussia Mönchengladbach,89
+101,Fernando Redondo,Argentina,MED,2000,Real Madrid,89
+102,Juan Román Riquelme,Argentina,MED,2001,Boca Juniors,89
+103,Enzo Francescoli,Uruguay,MED,1996,River Plate,89
+104,Patrick Vieira,Francia,MED,2004,Arsenal,89
+105,Frank Lampard,Inglaterra,MED,2010,Chelsea,89
+106,Sergio Busquets,España,MED,2011,Barcelona,89
+107,Michael Ballack,Alemania,MED,2002,Bayer Leverkusen,89
+108,Josef Masopust,Chequia,MED,1962,Dukla Praga,89
+109,József Bozsik,Hungría,MED,1954,Honvéd,89
+110,Nándor Hidegkuti,Hungría,MED,1953,MTK Budapest,89
+111,Teófilo Cubillas,Perú,MED,1970,Alianza Lima,88
+112,Carlos Valderrama,Colombia,MED,1990,Montpellier,88
+113,Gheorghe Hagi,Rumania,MED,1994,Brescia,88
+114,Wesley Sneijder,Países Bajos,MED,2010,Inter,88
+115,Bastian Schweinsteiger,Alemania,MED,2013,Bayern Múnich,88
+116,Paul Scholes,Inglaterra,MED,2007,Manchester United,88
+117,David Silva,España,MED,2012,Manchester City,88
+118,Deco,Portugal,MED,2004,Porto,88
+119,Mário Coluna,Portugal,MED,1962,Benfica,88
+120,N'Golo Kanté,Francia,MED,2017,Chelsea,88
+121,Yaya Touré,Costa de Marfil,MED,2014,Manchester City,88
+122,Obdulio Varela,Uruguay,MED,1950,Peñarol,88
+123,Paul Gascoigne,Inglaterra,MED,1990,Tottenham Hotspur,88
+124,David Beckham,Inglaterra,MED,1999,Manchester United,88
+125,Ángel Di María,Argentina,MED,2014,Real Madrid,88
+126,Claude Makélélé,Francia,MED,2003,Real Madrid,87
+127,Juan Sebastián Verón,Argentina,MED,2001,Lazio,87
+128,Ricardo Bochini,Argentina,MED,1984,Independiente,87
+129,Pelé,Brasil,DEL,1970,Santos,99
+130,Lionel Messi,Argentina,DEL,2012,Barcelona,99
+131,Johan Cruyff,Países Bajos,DEL,1974,Barcelona,97
+132,Alfredo Di Stéfano,Argentina,DEL,1957,Real Madrid,97
+133,Ronaldo Nazário,Brasil,DEL,1997,Barcelona,97
+134,Cristiano Ronaldo,Portugal,DEL,2014,Real Madrid,97
+135,Ferenc Puskás,Hungría,DEL,1953,Honvéd,96
+136,Garrincha,Brasil,DEL,1962,Botafogo,95
+137,Eusébio,Portugal,DEL,1966,Benfica,95
+138,Gerd Müller,Alemania,DEL,1972,Bayern Múnich,95
+139,Marco van Basten,Países Bajos,DEL,1989,Milan,95
+140,Romário,Brasil,DEL,1994,Barcelona,94
+141,Roberto Baggio,Italia,DEL,1994,Juventus,94
+142,Thierry Henry,Francia,DEL,2004,Arsenal,93
+143,George Best,Irlanda del Norte,DEL,1968,Manchester United,93
+144,Giuseppe Meazza,Italia,DEL,1934,Inter,93
+145,Kylian Mbappé,Francia,DEL,2022,Paris Saint-Germain,92
+146,Neymar,Brasil,DEL,2015,Barcelona,92
+147,Karl-Heinz Rummenigge,Alemania,DEL,1980,Bayern Múnich,92
+148,Rivaldo,Brasil,DEL,1999,Barcelona,92
+149,Robert Lewandowski,Polonia,DEL,2020,Bayern Múnich,92
+150,Luis Suárez,Uruguay,DEL,2016,Barcelona,91
+151,Karim Benzema,Francia,DEL,2022,Real Madrid,91
+152,Zlatan Ibrahimović,Suecia,DEL,2013,Paris Saint-Germain,91
+153,Gabriel Batistuta,Argentina,DEL,1995,Fiorentina,91
+154,Andriy Shevchenko,Ucrania,DEL,2004,Milan,91
+155,Omar Sívori,Argentina,DEL,1961,Juventus,91
+156,Francisco Gento,España,DEL,1958,Real Madrid,91
+157,László Kubala,España,DEL,1952,Barcelona,91
+158,Leônidas,Brasil,DEL,1938,Flamengo,91
+159,Raymond Kopa,Francia,DEL,1958,Real Madrid,91
+160,Stanley Matthews,Inglaterra,DEL,1953,Blackpool,91
+161,Erling Haaland,Noruega,DEL,2023,Manchester City,91
+162,Jairzinho,Brasil,DEL,1970,Botafogo,91
+163,Sándor Kocsis,Hungría,DEL,1954,Honvéd,91
+164,Dennis Bergkamp,Países Bajos,DEL,1998,Arsenal,90
+165,Mario Kempes,Argentina,DEL,1978,Valencia,90
+166,Hristo Stoichkov,Bulgaria,DEL,1994,Barcelona,90
+167,George Weah,Liberia,DEL,1995,Milan,90
+168,Samuel Eto'o,Camerún,DEL,2006,Barcelona,90
+169,Arjen Robben,Países Bajos,DEL,2013,Bayern Múnich,90
+170,Mohamed Salah,Egipto,DEL,2018,Liverpool,90
+171,Kenny Dalglish,Escocia,DEL,1979,Liverpool,90
+172,Denis Law,Escocia,DEL,1964,Manchester United,90
+173,Just Fontaine,Francia,DEL,1958,Stade de Reims,90
+174,Paolo Rossi,Italia,DEL,1982,Juventus,90
+175,Luigi Riva,Italia,DEL,1970,Cagliari,90
+176,Tostão,Brasil,DEL,1970,Cruzeiro,90
+177,Raúl González,España,DEL,2001,Real Madrid,90
+178,Francesco Totti,Italia,DEL,2007,Roma,90
+179,Alessandro Del Piero,Italia,DEL,1998,Juventus,90
+180,Vinícius Júnior,Brasil,DEL,2024,Real Madrid,90
+181,José Manuel Moreno,Argentina,DEL,1942,River Plate,90
+182,Kevin Keegan,Inglaterra,DEL,1979,Hamburgo,90
+183,Gunnar Nordahl,Suecia,DEL,1950,Milan,90
+184,Oleg Blokhin,Ucrania,DEL,1975,Dinamo Kiev,89
+185,Eden Hazard,Bélgica,DEL,2015,Chelsea,89
+186,Harry Kane,Inglaterra,DEL,2024,Bayern Múnich,89
+187,Didier Drogba,Costa de Marfil,DEL,2010,Chelsea,89
+188,Alan Shearer,Inglaterra,DEL,1996,Blackburn Rovers,89
+189,Wayne Rooney,Inglaterra,DEL,2010,Manchester United,89
+190,Hugo Sánchez,México,DEL,1990,Real Madrid,89
+191,Antoine Griezmann,Francia,DEL,2018,Atlético de Madrid,89
+192,Eric Cantona,Francia,DEL,1996,Manchester United,89
+193,Jürgen Klinsmann,Alemania,DEL,1990,Inter,89
+194,Sergio Agüero,Argentina,DEL,2014,Manchester City,89
+195,Hernán Crespo,Argentina,DEL,2001,Lazio,88
+196,Diego Forlán,Uruguay,DEL,2010,Atlético de Madrid,88
+197,Fernando Torres,España,DEL,2008,Liverpool,88
+198,Alberto Spencer,Ecuador,DEL,1961,Peñarol,88
+199,Ángel Labruna,Argentina,DEL,1945,River Plate,88
+200,Claudio Caniggia,Argentina,DEL,1990,Atalanta,87
