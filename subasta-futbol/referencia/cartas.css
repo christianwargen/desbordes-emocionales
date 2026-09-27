@@ -1,0 +1,148 @@
+/* ==========================================================================
+   Cartas de jugador — estilo inspirado en las cartas de Ultimate Team.
+   Referencia visual del brief (SESION.md §6.2). El juego copia este archivo
+   a css/cartas.css y lo usa tal cual (se puede ajustar, no rediseñar).
+   Todas las medidas internas están en cqw (% del ancho de la carta), así que
+   la misma carta escala a cualquier tamaño cambiando solo --w.
+   Sin marcas ni logos reales: sin palabras FIFA/EA/FUT/ICON, sin escudos.
+   ========================================================================== */
+
+.carta {
+  --w: 240px;
+  /* colores por defecto (Figura = oro común); cada categoría los pisa */
+  --borde: linear-gradient(160deg, #b8923a, #f3dc93 45%, #a47a26);
+  --fondo: linear-gradient(165deg, #f0d88d 0%, #dcbc63 55%, #caa44a 100%);
+  --patron: none;
+  --tinta: #3a2c0a;
+  --tinta-suave: rgba(58, 44, 10, .72);
+  --silueta: rgba(58, 44, 10, .26);
+  --linea: rgba(58, 44, 10, .28);
+
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 100 / 140;
+  container-type: inline-size;
+  font-family: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  color: var(--tinta);
+  isolation: isolate;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .45));
+  user-select: none;
+}
+
+/* Forma de escudo: borde (capa de afuera) + relleno (capa de adentro) */
+.carta::before,
+.carta__relleno,
+.carta::after {
+  content: "";
+  position: absolute;
+  clip-path: polygon(0.0% 10.7%, 0.5% 8.7%, 1.4% 7.1%, 2.8% 5.7%, 4.4% 4.7%, 6.5% 4.0%, 9.0% 3.6%, 14.1% 2.7%, 19.2% 2.0%, 24.4% 1.4%, 29.5% 0.9%, 34.6% 0.5%, 39.8% 0.2%, 44.9% 0.1%, 50.0% 0.0%, 55.1% 0.1%, 60.2% 0.2%, 65.4% 0.5%, 70.5% 0.9%, 75.6% 1.4%, 80.8% 2.0%, 85.9% 2.7%, 91.0% 3.6%, 93.5% 4.0%, 95.6% 4.7%, 97.2% 5.7%, 98.6% 7.1%, 99.5% 8.7%, 100.0% 10.7%, 100.0% 74.3%, 99.6% 76.9%, 98.6% 79.2%, 96.9% 81.4%, 94.7% 83.4%, 92.0% 85.3%, 88.9% 87.0%, 85.5% 88.6%, 81.8% 90.1%, 77.8% 91.5%, 73.7% 92.8%, 69.6% 94.1%, 65.4% 95.3%, 61.3% 96.5%, 57.3% 97.6%, 53.5% 98.8%, 50.0% 100.0%, 46.5% 98.8%, 42.7% 97.6%, 38.7% 96.5%, 34.6% 95.3%, 30.4% 94.1%, 26.3% 92.8%, 22.2% 91.5%, 18.2% 90.1%, 14.5% 88.6%, 11.1% 87.0%, 8.0% 85.3%, 5.3% 83.4%, 3.1% 81.4%, 1.4% 79.2%, 0.4% 76.9%, 0.0% 74.3%);
+}
+.carta::before { inset: 0; background: var(--borde); z-index: -2; }
+.carta__relleno { inset: 2.4cqw; background: var(--patron), var(--fondo); z-index: -1; }
+
+/* ---------- Contenido ---------- */
+.carta__izq {
+  position: absolute; left: 9cqw; top: 15cqw; width: 22cqw;
+  display: flex; flex-direction: column; align-items: center; gap: 1.2cqw;
+}
+.carta__ovr { font-size: 21cqw; font-weight: 700; line-height: .82; letter-spacing: -.02em; }
+.carta__pos { font-size: 8cqw; font-weight: 600; line-height: 1; letter-spacing: .02em; }
+.carta__sep { width: 11cqw; height: .5cqw; background: var(--linea); margin: .6cqw 0; }
+.carta__bandera { font-size: 9cqw; line-height: 1; }
+.carta__club {
+  width: 10.5cqw; height: 12cqw; display: grid; place-items: center;
+  font-size: 3.4cqw; font-weight: 700; letter-spacing: .02em; line-height: 1;
+  color: var(--tinta); background: var(--linea);
+  clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%);
+  padding-bottom: 2cqw;
+}
+.carta__silueta { position: absolute; right: 7cqw; top: 10cqw; width: 60cqw; height: 58cqw; fill: var(--silueta); }
+.carta__nombre {
+  position: absolute; left: 8cqw; right: 8cqw; top: 70cqw;
+  text-align: center; font-size: 11cqw; font-weight: 700; line-height: 1.15;
+  text-transform: uppercase; letter-spacing: .01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  padding-bottom: 2.4cqw; border-bottom: .5cqw solid var(--linea);
+}
+.carta__stats {
+  position: absolute; left: 15cqw; right: 15cqw; top: 86cqw;
+  display: grid; grid-template-columns: 1fr 1fr;
+}
+.carta__col { display: flex; flex-direction: column; gap: 1.4cqw; padding: 0 3cqw; }
+.carta__col + .carta__col { border-left: .5cqw solid var(--linea); }
+.carta__stat { display: flex; align-items: baseline; gap: 2cqw; font-size: 7cqw; line-height: 1; }
+.carta__stat b { font-weight: 700; min-width: 8.5cqw; text-align: right; }
+.carta__stat span { font-weight: 500; color: var(--tinta-suave); }
+.carta__pie {
+  position: absolute; left: 0; right: 0; top: 116cqw; text-align: center;
+  font-size: 3.8cqw; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+/* ---------- Categorías ---------- */
+
+/* Leyenda (95–99): marfil y oro, con brillo que pasa */
+.carta--leyenda {
+  --borde: linear-gradient(160deg, #a8822b, #fff1c1 30%, #c79a36 55%, #fff4cf 80%, #9c7424);
+  --fondo: linear-gradient(170deg, #fffaf0 0%, #f3e6c4 50%, #fbf3dc 100%);
+  --patron: radial-gradient(120% 70% at 50% 0%, rgba(214, 177, 88, .35), transparent 60%);
+  --tinta: #4a3a12;
+  --tinta-suave: rgba(74, 58, 18, .75);
+  --silueta: rgba(160, 124, 46, .30);
+  --linea: rgba(160, 124, 46, .45);
+}
+.carta--leyenda::after {
+  inset: 2.4cqw; z-index: 1; pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, .75) 50%, transparent 65%);
+  background-size: 300% 100%;
+  animation: carta-brillo 3.6s ease-in-out infinite;
+  mix-blend-mode: soft-light;
+}
+@keyframes carta-brillo { 0% { background-position: 120% 0; } 60%, 100% { background-position: -20% 0; } }
+
+/* Crack (92–94): azul noche con oro */
+.carta--crack {
+  --borde: linear-gradient(160deg, #b8903a, #ffe39a 40%, #9a7426);
+  --fondo: linear-gradient(170deg, #1d3f96 0%, #0f2464 55%, #0a1640 100%);
+  --patron: radial-gradient(circle at 20% 30%, rgba(255, 226, 150, .18) 0 .6cqw, transparent .7cqw) 0 0 / 11cqw 11cqw,
+            radial-gradient(90% 60% at 50% 0%, rgba(120, 170, 255, .35), transparent 65%);
+  --tinta: #f6d98a;
+  --tinta-suave: rgba(246, 217, 138, .8);
+  --silueta: rgba(246, 217, 138, .22);
+  --linea: rgba(246, 217, 138, .35);
+}
+
+/* Estrella (89–91): oro brillante con trama */
+.carta--estrella {
+  --borde: linear-gradient(160deg, #9c7422, #ffeaa0 40%, #b88a2c 70%, #ffe8a0);
+  --fondo: linear-gradient(165deg, #fbe7a1 0%, #eac258 45%, #f8df90 70%, #d2a23a 100%);
+  --patron: repeating-linear-gradient(135deg, rgba(255, 255, 255, .16) 0 1.2cqw, transparent 1.2cqw 3.4cqw);
+  --tinta: #3b2a06;
+  --silueta: rgba(59, 42, 6, .24);
+}
+
+/* Figura (≤88): oro común, liso (usa los valores por defecto) */
+.carta--figura {}
+
+/* ---------- Tamaño mini (plantel, grilla del mercado) ---------- */
+.carta--mini { --w: 88px; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .4)); }
+.carta--mini .carta__stats,
+.carta--mini .carta__pie,
+.carta--mini .carta__bandera,
+.carta--mini .carta__club,
+.carta--mini .carta__sep { display: none; }
+.carta--mini .carta__izq { top: 13cqw; left: 8cqw; }
+.carta--mini .carta__ovr { font-size: 26cqw; }
+.carta--mini .carta__pos { font-size: 12cqw; }
+.carta--mini .carta__silueta { top: 12cqw; width: 64cqw; height: 64cqw; right: 5cqw; }
+.carta--mini .carta__nombre { top: 88cqw; left: 5cqw; right: 5cqw; font-size: 12.5cqw; letter-spacing: -.01em; border-bottom: 0; }
+
+/* Lugar vacío del plantel */
+.carta-vacia {
+  width: 88px; aspect-ratio: 100 / 140; border: 2px dashed rgba(255, 255, 255, .25); border-radius: 10px 10px 40% 40% / 10px 10px 22% 22%;
+  display: grid; place-items: center; color: rgba(255, 255, 255, .45); font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carta--leyenda::after { animation: none; }
+}

@@ -16,9 +16,10 @@
 ## 0. Tu rol y cómo trabajar
 
 Vas a construir, de punta a punta, un juego web para **2 personas en la misma pantalla** (hot-seat):
-cada una arma un equipo de **4 futbolistas históricos** comprándolos en **subasta** con **$20**,
-después los equipos juegan un **partido simulado** según los atributos de cada jugador en su mejor momento,
-y el ganador suma **10 puntos**. Se repite (subasta nueva + partido) hasta que alguien llega a **100 puntos**.
+cada una arma un equipo de **4 futbolistas históricos** comprándolos en **subasta** con **$20**
+(cada subasta arranca en **$1** y se sube de a **$0,50**). Los futbolistas se muestran como **cartas estilo Ultimate Team**
+(valoración, posición, bandera y 6 estadísticas). Después los equipos juegan un **partido simulado** según esas estadísticas
+en el mejor momento de cada uno, y el ganador suma **10 puntos**. Se repite (subasta nueva + partido) hasta que alguien llega a **100 puntos**.
 
 Reglas de trabajo:
 
@@ -46,7 +47,10 @@ Reglas de trabajo:
 - Tests con el runner nativo de Node (`node:test` + `node:assert/strict`). Node 22 está disponible.
   Se corren con `node --test subasta-futbol/tests/*.test.js`.
 - Mobile-first y usable en notebook. Sin scroll horizontal a 360 px de ancho.
-- **Sin fotos, escudos ni logos reales.** Avatar = círculo con iniciales + bandera en emoji.
+- **Sin fotos, escudos, logos ni marcas reales.** Las cartas usan silueta genérica, bandera en emoji y un escudo genérico
+  con la sigla del club. En la UI no aparecen las palabras FIFA, EA, FUT, Ultimate Team ni ICON: el estilo es «inspirado en».
+- **La plata se maneja en centavos** (enteros) en todo el motor, para no tener errores de coma flotante:
+  $20 = `2000`, $1 = `100`, $0,50 = `50`. Solo la UI la formatea (sección 2.2).
 - Idioma de la UI: **español rioplatense** («Pujá», «Pasá», «Te toca»). Identificadores del código en español sin tildes
   (`presupuesto`, `pujaMaxima`, `simularPartido`).
 
@@ -75,15 +79,18 @@ Reglas de trabajo:
 
 - Al empezar cada partido, cada manager tiene **$20** y un plantel vacío de **4 lugares**.
   La plata que sobra de un partido **no** se acumula para el siguiente.
-- Montos siempre en **dólares enteros**. La puja mínima es **$1**.
-- **Regla de puja máxima** (clave para que nadie quede sin poder completar el equipo):
+- **Cada subasta arranca en $1 y se sube de a $0,50**: $1 → $1,50 → $2 → $2,50 → … Todo monto es múltiplo de $0,50.
+  Constantes (en centavos): `PRESUPUESTO = 2000`, `PRECIO_INICIAL = 100`, `INCREMENTO = 50`.
+- Formato en pantalla (es-AR): sin decimales si es entero y con coma si no: `$1`, `$1,50`, `$12`, `$12,50`.
+  Una sola función `formatearPlata(centavos)` en `js/config.js`, con test.
+- **Regla de puja máxima** (clave para que nadie quede sin poder completar el equipo; cada lugar vacío necesita al menos $1):
 
   ```
   lugaresLibres(m) = 4 - m.plantel.length
-  pujaMaxima(m)    = lugaresLibres(m) > 0 ? m.presupuesto - (lugaresLibres(m) - 1) * 1 : 0
+  pujaMaxima(m)    = lugaresLibres(m) > 0 ? m.presupuesto - (lugaresLibres(m) - 1) * PRECIO_INICIAL : 0
   ```
 
-  Ejemplo: con $9 y 3 lugares libres, la puja máxima es $7 (hay que guardar $1 para cada uno de los otros 2 lugares).
+  Ejemplos: con $9 y 3 lugares libres, la puja máxima es $7. Con $8,50 y 2 lugares libres, $7,50.
 - No hay posiciones obligatorias. Podés comprar 4 delanteros; la simulación se encarga de castigarlo
   (ver 5.1: alguien va a tener que atajar).
 
@@ -109,16 +116,18 @@ Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200, sin
 
 Mecánica de «nominación alternada» (como un draft de subasta), toda visible en la misma pantalla:
 
-1. **Nominar.** El manager al que le toca elige un futbolista del mercado (o toca «🎲 Al azar») y fija
-   la **apertura**: entre $1 y su `pujaMaxima` (por defecto $1). Abrir es obligatorio: quien nomina
-   queda como primer postor, así que **todo lote termina en una compra**.
+1. **Nominar.** El manager al que le toca elige un futbolista del mercado (o toca «🎲 Al azar») y lo saca a subasta.
+   **La subasta arranca siempre en $1** y el que nomina queda como primer postor con ese $1 (no elige otra apertura).
+   Por eso **todo lote termina en una compra**.
 2. **Pujar o pasar.** El turno pasa al otro manager, que puede:
-   - **Subir** a cualquier monto mayor al actual y ≤ su `pujaMaxima` (botones rápidos +$1, +$2, +$5 y «Todo» = su máximo), o
+   - **Subir** a cualquier monto que sea múltiplo de $0,50, mayor al actual y ≤ su `pujaMaxima`.
+     Botón principal (el más grande): **+$0,50**. Atajos: **+$1**, **+$2** y **«Todo ($X)»** = su puja máxima.
+     Los botones que se pasan del máximo quedan deshabilitados.
    - **Pasar** → el lote se adjudica al que va ganando, al precio actual.
    Los turnos se alternan hasta que alguien pasa.
 3. **Cierre automático.** Si al que le toca responder no le alcanza para superar el precio
-   (`pujaMaxima < precioActual + 1`) o ya tiene el plantel completo, el lote se cierra solo a favor del que va ganando
-   (la UI lo muestra: «A Juan no le alcanza — Maradona es de Ana por $12»).
+   (`pujaMaxima < precioActual + INCREMENTO`) o ya tiene el plantel completo, el lote se cierra solo a favor del que va ganando
+   (la UI lo muestra: «A Juan no le alcanza — Maradona es de Ana por $12,50»).
 4. **Adjudicación.** El ganador paga el precio, el futbolista pasa a su plantel y sale del mercado.
 5. **Siguiente nominación.** Nomina el manager que **no** nominó el lote anterior, si tiene lugares libres;
    si no, nomina el otro.
@@ -127,11 +136,12 @@ Mecánica de «nominación alternada» (como un draft de subasta), toda visible 
 7. La subasta termina cuando los dos tienen 4 futbolistas → botón «Ir al partido ⚽».
 
 Casos borde que el motor tiene que cubrir (y testear):
-- Nadie puede nominar ni pujar por encima de su `pujaMaxima`, ni pujar fuera de turno, ni pujar un monto ≤ al actual.
-- Un manager con $4 y 4 lugares libres solo puede abrir o pujar $1 (y por lo tanto nunca puede superar una puja).
+- Nadie puede pujar por encima de su `pujaMaxima`, ni fuera de turno, ni un monto ≤ al actual, ni un monto que no sea múltiplo de $0,50.
+- Un manager con $4 y 4 lugares libres tiene puja máxima $1: puede nominar (abre en $1) pero nunca puede superar una puja.
+- Después de ganar un lote al precio máximo permitido, al manager le queda exactamente $1 por lugar libre (invariante: `presupuesto ≥ lugaresLibres × $1` siempre).
 - Si el mercado se quedara sin futbolistas antes de completar planteles (no debería pasar con 24 ≥ 8), completá
   con futbolistas al azar de los 200 que no estén en ningún plantel del partido.
-- **Deshacer** (prioridad P2): permite revertir la última acción del lote en curso (una puja o la apertura).
+- **Deshacer** (prioridad P2): permite revertir la última acción del lote en curso (una puja o la nominación).
   No deshace lotes ya adjudicados.
 
 ### 2.5 Partido simulado
@@ -156,38 +166,70 @@ corregilo en el CSV y listalo en el reporte final.
 
 ### 3.2 Qué tenés que generar: `js/jugadores.js`
 
-Un array con los 200 jugadores, cada uno con los campos del CSV más:
+Cada futbolista es una **carta estilo Ultimate Team**: además de los campos del CSV, tiene las **6 estadísticas de carta**,
+una posición detallada, un nombre corto para la carta y la sigla del club. De esas 6 estadísticas se **derivan** los 4
+atributos que usa la simulación, así lo que se ve en la carta es exactamente lo que juega.
 
 ```js
-{ id: 130, nombre: "Lionel Messi", pais: "Argentina", bandera: "🇦🇷", posicion: "DEL",
-  pico: 2012, club: "Barcelona", ovr: 99, categoria: "Leyenda",
-  ata: 99, cre: 97, def: 38, arq: 8 }
+{ id: 130, nombre: "Lionel Messi", nombreCarta: "Messi", pais: "Argentina", bandera: "🇦🇷",
+  posicion: "DEL", posDetalle: "DC", pico: 2012, club: "Barcelona", siglaClub: "BAR",
+  ovr: 99, categoria: "Leyenda",
+  carta: { rit: 94, tir: 99, pas: 92, reg: 99, def: 38, fis: 68 },   // lo que muestra la carta
+  ata: 98, cre: 95, def: 46, arq: 10 }                              // derivado (fórmulas abajo)
 ```
 
-Atributos (enteros 1–99), en su mejor momento:
-- `ata` ataque/definición, `cre` creación/pase/regate, `def` defensa/marca, `arq` arquero.
+**Estadísticas de carta** (enteros 20–99, en su mejor momento):
+- Jugadores de campo: `rit` RIT (ritmo), `tir` TIR (tiro), `pas` PAS (pase), `reg` REG (regate), `def` DEF (defensa), `fis` FÍS (físico).
+- Arqueros: `est` EST (estirada), `par` PAR (paradas), `saq` SAQ (saque), `ref` REF (reflejos), `vel` VEL (velocidad), `col` COL (colocación).
 
-Reglas duras (un test las verifica):
-1. **El atributo principal de su posición es exactamente el OVR:** POR → `arq`, DEF → `def`, MED → `cre`, DEL → `ata`.
-2. Ningún otro atributo supera el OVR.
-3. Jugadores de campo: `arq` entre 5 y 20. Arqueros: `ata` ≤ 45.
-4. `categoria` se deriva del OVR con la tabla de 2.3.
+**Atributos de simulación, derivados** (redondeo a entero; nunca se escriben a mano):
 
-Los atributos secundarios los asignás vos según el perfil real de cada uno. Guía de rangos:
+```
+Jugador de campo:
+  ata = 0.50·TIR + 0.30·REG + 0.20·RIT
+  cre = 0.60·PAS + 0.40·REG
+  def = 0.75·DEF + 0.25·FÍS
+  arq = 10
+Arquero:
+  arq = (EST + PAR + REF + COL) / 4
+  ata = 0.35·SAQ          (solo importa en penales o si ataja otro y él juega de campo)
+  cre = 0.60·SAQ
+  def = 0.50·COL
+```
 
-| Posición | ata | cre | def |
-|----------|-----|-----|-----|
-| POR | 10–30 (Chilavert hasta 45) | 30–70 (Neuer, Alisson y Chilavert altos) | 35–55 |
-| DEF | 35–85 (laterales ofensivos altos: Cafu, Roberto Carlos, Dani Alves, Marcelo, Carlos Alberto, Facchetti, Breitner, Krol) | 50–94 (líberos y salida limpia altos: Beckenbauer, Baresi, Koeman, Scirea) | = OVR |
-| MED | 45–97 (Maradona, Zico, Platini, Kaká, Ronaldinho muy altos) | = OVR | 30–92 (Makélélé, Kanté, Rijkaard, Busquets, Rodri, Vieira altos) |
-| DEL | = OVR | 55–98 (Messi, Cruyff, Pelé, Di Stéfano, Bergkamp, Baggio altos) | 20–55 (Di Stéfano, Rummenigge, Rooney arriba; puros 9 abajo) |
+**Posición detallada** (`posDetalle`, abreviaturas en castellano, compatible con la posición del CSV):
+POR → `POR` · DEF → `DFC`, `LD`, `LI` · MED → `MCD`, `MC`, `MCO`, `MD`, `MI` · DEL → `DC`, `SD`, `ED`, `EI`.
+La que ocupaba en su mejor momento (Cafu `LD`, Roberto Carlos `LI`, Pirlo `MC`, Makélélé `MCD`, Maradona `MCO`, Garrincha `ED`).
 
-Que se sientan distintos: Pirlo no es Makélélé, Gerd Müller no es Cruyff.
+**`nombreCarta`**: como se lo conoce, corto (≤ 12 caracteres) y **único** entre los 200: «Messi», «Maradona», «Pelé»,
+«Ronaldo» (Nazário), «C. Ronaldo», «Suárez» (Luis) y «L. Suárez M.» (Miramontes), «Dibu». **`siglaClub`**: 3 letras
+(RMA, BAR, MUN, MCI, BAY, PSG, JUV, MIL, INT, RIV, BOC, LIV, CHE, ARS, ATM…), definidas en un mapa `club → sigla`.
+
+Reglas duras (un test las verifica para los 200):
+1. **Coherencia con el OVR:** el atributo principal derivado queda a **±2** del OVR del CSV:
+   POR → `arq`; DEF → `def`; MED → `max(cre, def)`; DEL → `ata`.
+2. Todas las estadísticas de carta entre 20 y 99; `posDetalle` compatible; `nombreCarta` único y ≤ 12 caracteres.
+3. `categoria` se deriva del OVR con la tabla de 2.3.
+
+Anclas (ya usadas en la maqueta de referencia, respetalas):
+
+| Jugador | Carta |
+|---------|-------|
+| Messi (DEL 99, DC) | RIT 94 · TIR 99 · PAS 92 · REG 99 · DEF 38 · FÍS 68 |
+| Baresi (DEF 94, DFC) | RIT 80 · TIR 55 · PAS 82 · REG 80 · DEF 96 · FÍS 88 |
+| Riquelme (MED 89, MCO) | RIT 66 · TIR 84 · PAS 90 · REG 88 · DEF 42 · FÍS 75 |
+| Caniggia (DEL 87, DC) | RIT 97 · TIR 84 · PAS 72 · REG 88 · DEF 35 · FÍS 70 |
+| Yashin (POR 95) | EST 96 · PAR 93 · SAQ 80 · REF 97 · VEL 68 · COL 94 |
+
+El resto lo asignás vos según el perfil real de cada uno. Que se sientan distintos: Caniggia vuela (RIT alto),
+Pirlo no es Makélélé, Gerd Müller (TIR altísimo, REG medio) no es Cruyff, Roberto Carlos tiene TIR y RIT de delantero,
+Neuer y Alisson tienen SAQ alto, Chilavert el SAQ más alto de los arqueros.
 
 Banderas: emoji del país. Casos especiales: Inglaterra `🏴󠁧󠁢󠁥󠁮󠁧󠁿`, Escocia `🏴󠁧󠁢󠁳󠁣󠁴󠁿`, Irlanda del Norte `🇬🇧`.
 
-Generá `jugadores.js` con un script (`tools/generar-jugadores.js`) que lea el CSV y un mapa `id → {ata, cre, def, arq}`
-escrito por vos, y valide las reglas antes de escribir el archivo. Commiteá el script y el resultado.
+Generá `jugadores.js` con un script (`tools/generar-jugadores.js`) que lea el CSV y un mapa
+`id → { posDetalle, nombreCarta, carta: {…} }` escrito por vos, calcule los atributos derivados, y **valide las reglas
+antes de escribir el archivo** (si alguno no cumple, que liste cuáles y por cuánto, y corregís el mapa). Commiteá el script y el resultado.
 
 ---
 
@@ -197,18 +239,18 @@ escrito por vos, y valide las reglas antes de escribir el archivo. Commiteá el 
 o tiran un error con mensaje claro si la acción es ilegal. Forma sugerida:
 
 ```js
-crearPartido({ numero, managers, nominaPrimero, seed, mercado })  // presupuestos en 20, planteles vacíos
-lugaresLibres(partido, m) · pujaMaxima(partido, m)
-nominar(partido, m, jugadorId, apertura)
-pujar(partido, m, monto)
+crearPartido({ numero, managers, nominaPrimero, seed, mercado })  // presupuestos en 2000 centavos, planteles vacíos
+lugaresLibres(partido, m) · pujaMaxima(partido, m)                  // en centavos
+nominar(partido, m, jugadorId)                // abre el lote en PRECIO_INICIAL (100) con m como líder
+pujar(partido, m, montoCentavos)              // múltiplo de 50, > precio actual, ≤ pujaMaxima
 pasar(partido, m)
-ficharDirecto(partido, m, jugadorId)          // solo en modo compra directa, precio $1
+ficharDirecto(partido, m, jugadorId)          // solo en modo compra directa, precio 100
 deshacer(partido)                              // P2
 estadoSubasta(partido) -> 'nominando' | 'pujando' | 'compraDirecta' | 'terminada'
 ```
 
 El lote en curso guarda: `jugadorId`, `nominador`, `precio`, `lider`, `turno` y el historial de pujas
-(`[{manager, monto}]`) para mostrarlo en la UI («Ana abrió $1 → Juan $3 → Ana $4»).
+(`[{manager, monto}]`) para mostrarlo en la UI («Ana $1 → Juan $1,50 → Ana $2,50 → Juan $3»).
 Cada lote cerrado se registra en `partido.lotes` (`{jugadorId, ganador, precio, pujas}`).
 
 ---
@@ -219,6 +261,8 @@ Todo en `js/simulacion.js`, con las constantes en un único objeto `CONFIG_SIM` 
 ya probados en un prototipo). Toda la aleatoriedad sale del `rng` que se pasa por parámetro.
 
 ### 5.1 Alineación y métricas de equipo
+
+Los atributos `ata`, `cre`, `def` y `arq` son los **derivados de la carta** (sección 3.2).
 
 - **Arquero** = el del plantel con mayor `arq` (desempate: mayor OVR). Los otros 3 son **jugadores de campo**.
   Si nadie es POR, ataja el de campo con más `arq` (≈ 5–20): el equipo lo sufre muchísimo. La previa lo avisa:
@@ -320,12 +364,16 @@ La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni 
    - Un **panel por manager** (izquierda/derecha en desktop, arriba/abajo en mobile) con: nombre en su color,
      presupuesto grande, «Puja máx. $X», los 4 lugares del plantel (mini-cartas, vacíos punteados)
      y sus métricas ATQ/CRE/DEF/ARQ en barras que se actualizan con cada compra.
-   - **Centro, sin lote:** «Nomina: Ana» + grilla del mercado (filtros Todos/POR/DEF/MED/DEL, orden por OVR),
-     botón «🎲 Al azar». Al tocar una carta: panel con la carta grande, stepper de apertura ($1 por defecto) y «Abrir subasta».
-   - **Centro, con lote:** carta grande del futbolista, precio actual enorme, «Va ganando: Ana», «Le toca a: Juan»,
-     botones +$1 / +$2 / +$5 / Todo ($X) / Pasar (deshabilitados si no alcanza), y la cadena de pujas.
+   - **Centro, sin lote:** «Nomina: Ana» + grilla del mercado con **cartas mini** (filtros Todos/POR/DEF/MED/DEL,
+     orden por OVR), botón «🎲 Al azar». Al tocar una carta: la carta grande completa y el botón «Sacar a subasta por $1».
+   - **Revelación** (P1): al nominar, la carta aparece como en la apertura de un sobre: primero la bandera, después
+     la posición, después el club y al final la carta entera con un destello (más espectacular si es Leyenda).
+     Dura ≤ 1,5 s, se saltea con un toque y se omite con `prefers-reduced-motion`.
+   - **Centro, con lote:** carta grande del futbolista, precio actual enorme, «Va ganando: Ana», «Le toca a: Juan (puja máx. $7)»,
+     botones **+$0,50** (principal, el más grande, muestra a cuánto queda: «+$0,50 → $4») / +$1 / +$2 / Todo ($X) / Pasar
+     (deshabilitados si no alcanza), y la cadena de pujas. Tal cual la maqueta `referencia/cartas.html` (sección «Lote en subasta»).
      Solo el panel del manager de turno tiene los controles activos y resaltado con su color.
-   - Al adjudicar: banner 1,5 s «¡Maradona es de Ana por $12!» y la carta vuela/aparece en su plantel.
+   - Al adjudicar: banner 1,5 s «¡Maradona es de Ana por $12,50!» y la carta vuela/aparece en su plantel.
    - **Compra directa:** banner explicando «Juan ya completó. Ana elige 2 más a $1».
 3. **Previa**: dos columnas con las formaciones (🧤 marca al arquero, aviso si no hay POR), métricas enfrentadas
    y la barra de probabilidad («Ana 63 % · Juan 37 %»). Botón «Jugar partido».
@@ -337,11 +385,26 @@ La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni 
    Botón «Nuevo torneo».
 - **Historial** accesible desde cualquier pantalla (drawer o modal): lista de partidos con resultado y los 4 de cada uno con precio.
 
-### 6.2 Carta de jugador
+### 6.2 Carta de jugador (estilo Ultimate Team)
 
-- Borde/fondo según categoría: **Leyenda** dorado con brillo sutil, **Crack** violeta, **Estrella** azul, **Figura** bronce.
-- OVR grande, posición, avatar de iniciales, bandera, nombre, «1986 · Napoli», y 4 barras cortas ATA/CRE/DEF/ARQ.
-- Versión mini para planteles y grilla.
+**La referencia visual ya existe y es obligatoria:** `subasta-futbol/referencia/cartas.html` + `referencia/cartas.css`.
+Abrila en el navegador antes de empezar la UI. Copiá `cartas.css` a `css/cartas.css` y generá las cartas con **la misma
+estructura HTML** (una función `renderCarta(jugador, { tamano: 'grande' | 'mini' })` en `app.js`). Podés ajustar detalles,
+no rediseñarla.
+
+- Forma de escudo con borde metálico; todo se mide en `cqw`, así que la misma carta escala cambiando `--w`.
+- Arriba a la izquierda, en columna: **OVR** grande, **posición detallada** (`posDetalle`), bandera, escudo genérico con `siglaClub`.
+- Silueta genérica a la derecha (la misma para todos; no hay fotos).
+- **Nombre** (`nombreCarta`) en mayúsculas con una línea debajo.
+- **6 estadísticas** en dos columnas, número en negrita + abreviatura:
+  campo `RIT TIR PAS | REG DEF FÍS`; arqueros `EST PAR SAQ | REF VEL COL`.
+- Pie chico: «2012 · BARCELONA» (año pico y club).
+- Categorías (clases `carta--leyenda`, `--crack`, `--estrella`, `--figura`):
+  **Leyenda** marfil y oro con brillo animado · **Crack** azul noche con detalles dorados ·
+  **Estrella** oro brillante con trama · **Figura** oro liso.
+- **Mini** (`carta--mini`, ~88 px): solo OVR, posición, silueta y nombre. Para el mercado y los planteles.
+  Lugar vacío del plantel: `.carta-vacia` punteada.
+- Accesibilidad: cada carta lleva `aria-label` «Lionel Messi, 99, DC»; la silueta es decorativa (`aria-hidden`).
 
 ### 6.3 Estilo
 
@@ -350,7 +413,7 @@ La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni 
 - Tipografía: una condensada para números y títulos (p. ej. «Barlow Condensed» de Google Fonts, con fallback de sistema
   para que ande offline) y sistema para el resto.
 - Targets táctiles ≥ 44 px. Foco visible. Animaciones cortas y `prefers-reduced-motion` respetado.
-- Atajos de teclado (P2): manager 1 → `Q` +$1, `W` +$2, `E` +$5, `A` pasar; manager 2 → `P` +$1, `O` +$2, `I` +$5, `L` pasar.
+- Atajos de teclado (P2): manager 1 → `Q` +$0,50, `W` +$1, `E` +$2, `A` pasar; manager 2 → `P` +$0,50, `O` +$1, `I` +$2, `L` pasar.
   Solo responden las teclas del manager de turno.
 
 ---
@@ -361,15 +424,18 @@ La idea de diseño: la calidad pesa, pero el azar tiene que dar sorpresas; y ni 
 subasta-futbol/
   index.html              UI (una sola página, pantallas como secciones que se muestran/ocultan)
   css/estilos.css
-  js/config.js            constantes del juego (presupuesto, tamaño de plantel, puntos, mercado, colores)
+  css/cartas.css          copiado de referencia/cartas.css
+  js/config.js            constantes del juego (plata en centavos, tamaño de plantel, puntos, mercado, colores) + formatearPlata
   js/rng.js               RNG con semilla (mulberry32) + helpers: entero, elegir, mezclar, ponderado
-  js/jugadores.js         los 200 con atributos (generado)
+  js/jugadores.js         los 200 con carta + atributos derivados (generado)
   js/mercado.js           generarMercado(seed)
   js/subasta.js           máquina de estados de la subasta (sección 4)
   js/simulacion.js        simularPartido, probabilidadVictoria, metricasEquipo (sección 5)
   js/torneo.js            estado del torneo, puntos, fin por modo, quién nomina, persistencia
   js/app.js               render + eventos (lo único que toca el DOM)
   data/jugadores-base.csv
+  referencia/cartas.html  maqueta visual de las cartas y del lote (ya existe; no se modifica)
+  referencia/cartas.css
   tools/generar-jugadores.js
   tools/calibrar.js
   tests/*.test.js
@@ -408,15 +474,21 @@ Estado y persistencia:
 
 ### 8.1 Tests automáticos (`node --test subasta-futbol/tests/*.test.js`)
 
-- **jugadores:** 200 exactos; ids y nombres únicos; reglas duras de 3.2; categorías con la tabla de 2.3
-  (18 Leyendas, 24 Cracks, 100 Estrellas, 58 Figuras); 20 POR.
+- **jugadores:** 200 exactos; ids, nombres y `nombreCarta` únicos; reglas duras de 3.2 (principal derivado a ±2 del OVR,
+  estadísticas 20–99, `posDetalle` compatible); los atributos derivados coinciden con las fórmulas; las 5 anclas de 3.2 tal cual;
+  categorías con la tabla de 2.3 (18 Leyendas, 24 Cracks, 100 Estrellas, 58 Figuras); 20 POR.
+- **plata:** `formatearPlata(100) = "$1"`, `(150) = "$1,50"`, `(1250) = "$12,50"`, `(2000) = "$20"`.
 - **mercado:** 24 sin repetidos; composición por categoría; mínimos por posición; mismo seed → mismo mercado; seeds distintas → mercados distintos.
 - **subasta:**
   - `pujaMaxima` en los casos de la sección 2.2;
-  - nominar/pujar/pasar felices y todos los ilegales (fuera de turno, monto ≤ actual, sobre el máximo, jugador no disponible);
+  - nominar abre en $1 con el nominador como líder; subir de a $0,50 funciona (1 → 1,50 → 2);
+  - nominar/pujar/pasar felices y todos los ilegales (fuera de turno, monto ≤ actual, sobre el máximo,
+    monto que no es múltiplo de 50, jugador no disponible);
   - cierre automático cuando al rival no le alcanza o tiene el plantel lleno;
   - alternancia de nominación y compra directa;
-  - **propiedad:** 2000 subastas con acciones legales al azar terminan siempre con 4 y 4, presupuestos ≥ 0, y cada manager pagó exactamente `20 − presupuestoFinal`.
+  - **propiedad:** 2000 subastas con acciones legales al azar (mezclando +$0,50, +$1, +$2, Todo y Pasar) terminan siempre con 4 y 4,
+    presupuestos ≥ 0 y múltiplos de 50, el invariante `presupuesto ≥ lugaresLibres × 100` se cumple después de cada acción,
+    y cada manager pagó exactamente `2000 − presupuestoFinal`.
 - **simulacion:** determinismo con seed; `goles` coincide con los eventos de gol; con empate en 90' siempre hay penales y ganador;
   el equipo sin arquero pierde claramente contra el mismo equipo con arquero (≥ 75 % en 2000 partidos).
 - **torneo:** +10 al ganador; fin «Primero a 100»; fin «10 partidos» con desempate en 50–50; nomina primero el perdedor;
@@ -431,22 +503,25 @@ Estado y persistencia:
 Chromium está preinstalado en el entorno (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`; **no corras `playwright install`**).
 Si podés instalar el paquete `playwright` en un directorio temporal fuera del repo (no commitees `node_modules`), escribí un script
 que abra `index.html`, juegue un partido completo haciendo clics (nominar, pujar, pasar, jugar, siguiente) y saque capturas
-a 390×844 y 1280×800 de: inicio, subasta con lote activo, previa, resultado. Revisá las capturas vos mismo antes de dar la fase por cerrada.
+a 390×844 y 1280×800 de: inicio, mercado, subasta con lote activo, previa, resultado. Compará las cartas con las de
+`referencia/cartas.html`. Revisá las capturas vos mismo antes de dar la fase por cerrada.
 Si no se puede instalar, decilo en el reporte y describí qué verificaste a mano.
 
 ---
 
 ## 9. Plan por fases (un commit por fase)
 
-1. **Datos.** `tools/generar-jugadores.js` + `js/jugadores.js` + `js/config.js` + tests de jugadores. → commit «Datos: 200 jugadores con atributos».
+1. **Datos.** `tools/generar-jugadores.js` + `js/jugadores.js` (cartas + atributos derivados) + `js/config.js` (con `formatearPlata`)
+   + tests de jugadores y plata. → commit «Datos: 200 cartas de jugadores».
 2. **Motor.** `rng.js`, `mercado.js`, `subasta.js`, `simulacion.js`, `torneo.js` + sus tests. → commit «Motor: mercado, subasta, simulación y torneo».
 3. **Calibración.** `tools/calibrar.js`, ajuste de `CONFIG_SIM`, salida en README. → commit «Calibración del simulador».
-4. **UI.** `index.html`, `css/estilos.css`, `js/app.js`: las 6 pantallas + historial + persistencia. → commit «UI jugable completa».
+4. **UI.** `index.html`, `css/estilos.css`, `css/cartas.css`, `js/app.js`: las 6 pantallas + cartas + historial + persistencia.
+   → commit «UI jugable completa».
 5. **Verificación y pulido.** Prueba en navegador (8.3), arreglos, responsive, README final, línea en el README raíz.
    → commit «Pulido y verificación» y `git push -u origin claude/football-auction-game-bp4zil`.
 
-Prioridades: todo lo de las secciones 2–7 es **P0** salvo lo marcado **P2** (deshacer, atajos de teclado),
-que se hace solo si lo P0 está completo y verificado.
+Prioridades: todo lo de las secciones 2–7 es **P0** salvo lo marcado **P1** (revelación de la carta al nominar)
+y **P2** (deshacer, atajos de teclado). P1 va después de que lo P0 esté completo y verificado; P2, al final.
 
 ---
 
@@ -455,7 +530,8 @@ que se hace solo si lo P0 está completo y verificado.
 - [ ] Se abre con doble clic en `index.html` y funciona sin conexión (salvo la fuente web, que tiene fallback).
 - [ ] Se puede jugar un torneo entero de principio a fin en «Primero a 100» y en «10 partidos».
 - [ ] Nadie puede quedar sin poder completar su equipo de 4; nadie gasta más de $20 por partido.
-- [ ] Todo lote termina en compra; la compra directa a $1 funciona cuando un manager ya completó.
+- [ ] Todo lote termina en compra; cada subasta arranca en $1 y sube de a $0,50; la compra directa a $1 funciona cuando un manager ya completó.
+- [ ] Las cartas se ven como en `referencia/cartas.html` (grande y mini, las 4 categorías, arqueros con sus 6 estadísticas).
 - [ ] Cada partido muestra previa con probabilidad, relato, resultado con goleadores, figura y tabla actualizada.
 - [ ] Recargar la página en cualquier momento retoma el torneo exactamente donde estaba.
 - [ ] `node --test subasta-futbol/tests/*.test.js` en verde.

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cartas · referencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="cartas.css" />
+<style>
+  /* Estilos de esta página de referencia (no de la carta) */
+  :root {
+    --fondo: #07130f; --panel: #0e2119; --texto: #e8f0ec; --texto-suave: #9fb5aa;
+    --m1: #38BDF8; --m2: #FB923C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: radial-gradient(120% 60% at 50% 0%, #12301f 0%, var(--fondo) 60%);
+    color: var(--texto); font-family: system-ui, sans-serif; line-height: 1.5; min-height: 100vh;
+  }
+  main { max-width: 1120px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-family: "Barlow Condensed", sans-serif; font-size: 2.4rem; margin: 0 0 4px; letter-spacing: .01em; }
+  h2 { font-family: "Barlow Condensed", sans-serif; font-size: 1.5rem; margin: 40px 0 6px; }
+  p { color: var(--texto-suave); margin: 0 0 16px; max-width: 70ch; }
+  .fila { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; }
+  .fila figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  figcaption { font-size: .85rem; color: var(--texto-suave); text-align: center; }
+  code { color: #cfe3d8; background: rgba(255,255,255,.06); padding: 1px 5px; border-radius: 4px; }
+
+  /* Maqueta del lote en subasta */
+  .lote { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: center;
+          background: var(--panel); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 24px; }
+  .lote__precio { font-family: "Barlow Condensed", sans-serif; font-size: 4.5rem; font-weight: 700; line-height: 1; }
+  .lote__estado { display: flex; gap: 18px; flex-wrap: wrap; margin: 10px 0 18px; font-size: 1.05rem; }
+  .lote__estado strong.m1 { color: var(--m1); } .lote__estado strong.m2 { color: var(--m2); }
+  .botones { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { font: 600 1.15rem "Barlow Condensed", sans-serif; min-height: 48px; padding: 0 18px; border-radius: 10px;
+         border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: var(--texto); cursor: pointer; }
+  .btn--principal { background: var(--m2); border-color: var(--m2); color: #1b0d02; font-size: 1.4rem; padding: 0 26px; }
+  .btn--pasar { background: transparent; border-style: dashed; }
+  .btn:disabled { opacity: .35; cursor: not-allowed; }
+  .cadena { margin-top: 16px; font-size: .95rem; color: var(--texto-suave); }
+  .cadena .m1 { color: var(--m1); } .cadena .m2 { color: var(--m2); }
+  .plantel { display: flex; gap: 10px; flex-wrap: wrap; }
+  @media (max-width: 640px) {
+    .lote { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .lote__estado, .botones { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="silueta" viewBox="0 0 100 100">
+    <path d="M50 10c-11 0-19 9-19 21 0 9 4 16 10 20v6c-17 3-30 12-34 24-1 4-2 9-2 14h90c0-5-1-10-2-14-4-12-17-21-34-24v-6c6-4 10-11 10-20 0-12-8-21-19-21z"/>
+  </symbol>
+</svg>
+
+<main>
+  <h1>Cartas de jugador — referencia visual</h1>
+  <p>Maqueta estática para el brief (<code>SESION.md</code> §6.2). Inspirada en las cartas de Ultimate Team:
+     valoración y posición arriba a la izquierda, bandera y escudo genérico debajo, silueta, nombre y seis estadísticas en dos columnas.
+     El juego reutiliza <code>cartas.css</code> y esta misma estructura HTML.</p>
+
+  <h2>Las cuatro categorías</h2>
+  <p>Leyenda 95–99 (marfil y oro, con brillo) · Crack 92–94 (azul noche) · Estrella 89–91 (oro con trama) · Figura ≤88 (oro liso).</p>
+  <div class="fila">
+    <figure>
+      <article class="carta carta--leyenda" style="--w:240px" aria-label="Lionel Messi, 99, DC">
+        <div class="carta__relleno"></div>
+        <div class="carta__izq">
+          <span class="carta__ovr">99</span><span class="carta__pos">DC</span>
+          <span class="carta__sep"></span><span class="carta__bandera">🇦🇷</span>
+          <span class="carta__sep"></span><span class="carta__club">BAR</span>
+        </div>
+        <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+        <div class="carta__nombre">Messi</div>
+        <div class="carta__stats">
+          <div class="carta__col">
+            <div class="carta__stat"><b>94</b><span>RIT</span></div>
+            <div class="carta__stat"><b>99</b><span>TIR</span></div>
+            <div class="carta__stat"><b>92</b><span>PAS</span></div>
+          </div>
+          <div class="carta__col">
+            <div class="carta__stat"><b>99</b><span>REG</span></div>
+            <div class="carta__stat"><b>38</b><span>DEF</span></div>
+            <div class="carta__stat"><b>68</b><span>FÍS</span></div>
+          </div>
+        </div>
+        <div class="carta__pie">2012 · Barcelona</div>
+      </article>
+      <figcaption>Leyenda</figcaption>
+    </figure>
+
+    <figure>
+      <article class="carta carta--crack" style="--w:240px" aria-label="Franco Baresi, 94, DFC">
+        <div class="carta__relleno"></div>
+        <div class="carta__izq">
+          <span class="carta__ovr">94</span><span class="carta__pos">DFC</span>
+          <span class="carta__sep"></span><span class="carta__bandera">🇮🇹</span>
+          <span class="carta__sep"></span><span class="carta__club">MIL</span>
+        </div>
+        <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+        <div class="carta__nombre">Baresi</div>
+        <div class="carta__stats">
+          <div class="carta__col">
+            <div class="carta__stat"><b>80</b><span>RIT</span></div>
+            <div class="carta__stat"><b>55</b><span>TIR</span></div>
+            <div class="carta__stat"><b>82</b><span>PAS</span></div>
+          </div>
+          <div class="carta__col">
+            <div class="carta__stat"><b>80</b><span>REG</span></div>
+            <div class="carta__stat"><b>96</b><span>DEF</span></div>
+            <div class="carta__stat"><b>88</b><span>FÍS</span></div>
+          </div>
+        </div>
+        <div class="carta__pie">1990 · Milan</div>
+      </article>
+      <figcaption>Crack</figcaption>
+    </figure>
+
+    <figure>
+      <article class="carta carta--estrella" style="--w:240px" aria-label="Juan Román Riquelme, 89, MCO">
+        <div class="carta__relleno"></div>
+        <div class="carta__izq">
+          <span class="carta__ovr">89</span><span class="carta__pos">MCO</span>
+          <span class="carta__sep"></span><span class="carta__bandera">🇦🇷</span>
+          <span class="carta__sep"></span><span class="carta__club">BOC</span>
+        </div>
+        <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+        <div class="carta__nombre">Riquelme</div>
+        <div class="carta__stats">
+          <div class="carta__col">
+            <div class="carta__stat"><b>66</b><span>RIT</span></div>
+            <div class="carta__stat"><b>84</b><span>TIR</span></div>
+            <div class="carta__stat"><b>90</b><span>PAS</span></div>
+          </div>
+          <div class="carta__col">
+            <div class="carta__stat"><b>88</b><span>REG</span></div>
+            <div class="carta__stat"><b>42</b><span>DEF</span></div>
+            <div class="carta__stat"><b>75</b><span>FÍS</span></div>
+          </div>
+        </div>
+        <div class="carta__pie">2001 · Boca Juniors</div>
+      </article>
+      <figcaption>Estrella</figcaption>
+    </figure>
+
+    <figure>
+      <article class="carta carta--figura" style="--w:240px" aria-label="Claudio Caniggia, 87, DC">
+        <div class="carta__relleno"></div>
+        <div class="carta__izq">
+          <span class="carta__ovr">87</span><span class="carta__pos">DC</span>
+          <span class="carta__sep"></span><span class="carta__bandera">🇦🇷</span>
+          <span class="carta__sep"></span><span class="carta__club">ATA</span>
+        </div>
+        <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+        <div class="carta__nombre">Caniggia</div>
+        <div class="carta__stats">
+          <div class="carta__col">
+            <div class="carta__stat"><b>97</b><span>RIT</span></div>
+            <div class="carta__stat"><b>84</b><span>TIR</span></div>
+            <div class="carta__stat"><b>72</b><span>PAS</span></div>
+          </div>
+          <div class="carta__col">
+            <div class="carta__stat"><b>88</b><span>REG</span></div>
+            <div class="carta__stat"><b>35</b><span>DEF</span></div>
+            <div class="carta__stat"><b>70</b><span>FÍS</span></div>
+          </div>
+        </div>
+        <div class="carta__pie">1990 · Atalanta</div>
+      </article>
+      <figcaption>Figura</figcaption>
+    </figure>
+  </div>
+
+  <h2>Arquero</h2>
+  <p>Mismo diseño con las estadísticas de arquero: EST (estirada), PAR (paradas), SAQ (saque) · REF (reflejos), VEL (velocidad), COL (colocación).</p>
+  <div class="fila">
+    <figure>
+      <article class="carta carta--leyenda" style="--w:240px" aria-label="Lev Yashin, 95, POR">
+        <div class="carta__relleno"></div>
+        <div class="carta__izq">
+          <span class="carta__ovr">95</span><span class="carta__pos">POR</span>
+          <span class="carta__sep"></span><span class="carta__bandera">🇷🇺</span>
+          <span class="carta__sep"></span><span class="carta__club">DIN</span>
+        </div>
+        <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+        <div class="carta__nombre">Yashin</div>
+        <div class="carta__stats">
+          <div class="carta__col">
+            <div class="carta__stat"><b>96</b><span>EST</span></div>
+            <div class="carta__stat"><b>93</b><span>PAR</span></div>
+            <div class="carta__stat"><b>80</b><span>SAQ</span></div>
+          </div>
+          <div class="carta__col">
+            <div class="carta__stat"><b>97</b><span>REF</span></div>
+            <div class="carta__stat"><b>68</b><span>VEL</span></div>
+            <div class="carta__stat"><b>94</b><span>COL</span></div>
+          </div>
+        </div>
+        <div class="carta__pie">1963 · Dinamo Moscú</div>
+      </article>
+      <figcaption>Leyenda · arquero</figcaption>
+    </figure>
+  </div>
+
+  <h2>Mini (plantel y grilla del mercado)</h2>
+  <p>Solo valoración, posición, silueta y nombre. Los lugares vacíos del plantel van punteados.</p>
+  <div class="plantel">
+    <article class="carta carta--mini carta--leyenda" aria-label="Maradona, 99, MCO">
+      <div class="carta__relleno"></div>
+      <div class="carta__izq"><span class="carta__ovr">99</span><span class="carta__pos">MCO</span></div>
+      <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+      <div class="carta__nombre">Maradona</div>
+    </article>
+    <article class="carta carta--mini carta--crack" aria-label="Neuer, 93, POR">
+      <div class="carta__relleno"></div>
+      <div class="carta__izq"><span class="carta__ovr">93</span><span class="carta__pos">POR</span></div>
+      <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+      <div class="carta__nombre">Neuer</div>
+    </article>
+    <article class="carta carta--mini carta--figura" aria-label="Makélélé, 87, MCD">
+      <div class="carta__relleno"></div>
+      <div class="carta__izq"><span class="carta__ovr">87</span><span class="carta__pos">MCD</span></div>
+      <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+      <div class="carta__nombre">Makélélé</div>
+    </article>
+    <div class="carta-vacia">Vacío</div>
+  </div>
+
+  <h2>Lote en subasta</h2>
+  <p>La subasta arranca en $1 (el que nomina) y se sube de a $0,50. El botón principal es +$0,50; +$1, +$2 y «Todo» son atajos.</p>
+  <section class="lote">
+    <article class="carta carta--estrella" style="--w:230px" aria-label="Juan Román Riquelme, 89, MCO">
+      <div class="carta__relleno"></div>
+      <div class="carta__izq">
+        <span class="carta__ovr">89</span><span class="carta__pos">MCO</span>
+        <span class="carta__sep"></span><span class="carta__bandera">🇦🇷</span>
+        <span class="carta__sep"></span><span class="carta__club">BOC</span>
+      </div>
+      <svg class="carta__silueta" aria-hidden="true"><use href="#silueta"/></svg>
+      <div class="carta__nombre">Riquelme</div>
+      <div class="carta__stats">
+        <div class="carta__col">
+          <div class="carta__stat"><b>66</b><span>RIT</span></div>
+          <div class="carta__stat"><b>84</b><span>TIR</span></div>
+          <div class="carta__stat"><b>90</b><span>PAS</span></div>
+        </div>
+        <div class="carta__col">
+          <div class="carta__stat"><b>88</b><span>REG</span></div>
+          <div class="carta__stat"><b>42</b><span>DEF</span></div>
+          <div class="carta__stat"><b>75</b><span>FÍS</span></div>
+        </div>
+      </div>
+      <div class="carta__pie">2001 · Boca Juniors</div>
+    </article>
+    <div>
+      <div class="lote__precio">$3,50</div>
+      <div class="lote__estado">
+        <span>Va ganando: <strong class="m1">Ana</strong></span>
+        <span>Le toca a: <strong class="m2">Juan</strong> (puja máx. $7)</span>
+      </div>
+      <div class="botones">
+        <button class="btn btn--principal">+$0,50 → $4</button>
+        <button class="btn">+$1</button>
+        <button class="btn">+$2</button>
+        <button class="btn">Todo ($7)</button>
+        <button class="btn btn--pasar">Pasar</button>
+      </div>
+      <div class="cadena"><span class="m1">Ana $1</span> → <span class="m2">Juan $1,50</span> → <span class="m1">Ana $2,50</span> → <span class="m2">Juan $3</span> → <span class="m1">Ana $3,50</span></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
