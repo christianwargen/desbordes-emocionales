@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Subasta de Cracks</title>
+<meta name="description" content="Armá tu equipo de 4 futbolistas históricos en una subasta y jugá el torneo contra otra persona en la misma pantalla." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/cartas.css" />
+<link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="silueta" viewBox="0 0 100 100">
+    <path d="M50 10c-11 0-19 9-19 21 0 9 4 16 10 20v6c-17 3-30 12-34 24-1 4-2 9-2 14h90c0-5-1-10-2-14-4-12-17-21-34-24v-6c6-4 10-11 10-20 0-12-8-21-19-21z"/>
+  </symbol>
+</svg>
+
+<div id="raiz">
+
+  <!-- ==================== 1. INICIO ==================== -->
+  <section class="pantalla" data-pantalla="inicio">
+    <div class="contenedor" style="max-width:640px">
+      <h1 class="pantalla__titulo">⚽ Subasta de Cracks</h1>
+      <p class="pantalla__bajada">Armá un equipo de 4 futbolistas históricos comprándolos en subasta y jugá el partido. Gana el torneo quien llegue primero a 100 puntos.</p>
+
+      <div id="torneo-guardado-cont"></div>
+
+      <form class="tarjeta" id="form-inicio">
+        <div class="form-fila">
+          <label for="nombre-m1">Manager 1 (celeste)</label>
+          <input type="text" id="nombre-m1" maxlength="16" placeholder="Jugador 1" autocomplete="off" />
+        </div>
+        <div class="form-fila">
+          <label for="nombre-m2">Manager 2 (naranja)</label>
+          <input type="text" id="nombre-m2" maxlength="16" placeholder="Jugador 2" autocomplete="off" />
+        </div>
+
+        <div class="form-fila">
+          <label id="lbl-modo">Modo de torneo</label>
+          <div class="modo-selector" role="radiogroup" aria-labelledby="lbl-modo">
+            <label class="modo-opcion seleccionada">
+              <input type="radio" name="modo" value="primeroA100" checked />Primero a 100
+              <div class="modo-opcion__desc">Gana quien llegue primero a 100 puntos (10 victorias). Entre 10 y 19 partidos.</div>
+            </label>
+            <label class="modo-opcion">
+              <input type="radio" name="modo" value="diezPartidos" />10 partidos
+              <div class="modo-opcion__desc">Se juegan 10 partidos fijos; gana quien tenga más puntos. Empate a desempate.</div>
+            </label>
+          </div>
+        </div>
+
+        <details class="reglas">
+          <summary>¿Cómo se juega?</summary>
+          <ul>
+            <li>Cada partido arrancás con $20 y un plantel vacío de 4 lugares.</li>
+            <li>Se turnan para nominar futbolistas del mercado; la subasta de cada uno arranca en $1 y sube de a $0,50.</li>
+            <li>Nadie puede pujar por encima de su puja máxima: siempre te va a alcanzar para completar el equipo.</li>
+            <li>Cuando uno completa su plantel y al otro le faltan, ficha directo a $1 cada uno.</li>
+            <li>Con los 2 equipos armados se juega un partido simulado según las cartas (con penales si hay empate).</li>
+            <li>Ganar un partido da 10 puntos. Se repite hasta terminar el torneo.</li>
+          </ul>
+        </details>
+
+        <div class="fila-botones">
+          <button type="submit" class="btn btn--principal btn--grande">Empezar torneo</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==================== 2. SUBASTA ==================== -->
+  <section class="pantalla" data-pantalla="subasta">
+    <div class="contenedor">
+      <div class="encabezado" id="encabezado-subasta"></div>
+      <div class="subasta-layout">
+        <div class="panel-manager" data-manager="0" id="panel-manager-0"></div>
+        <div class="centro-subasta" id="centro-subasta"></div>
+        <div class="panel-manager" data-manager="1" id="panel-manager-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 3. PREVIA ==================== -->
+  <section class="pantalla" data-pantalla="previa">
+    <div class="contenedor" style="max-width:900px">
+      <h2 class="pantalla__titulo" style="text-align:center">Previa del partido</h2>
+      <div id="previa-contenido"></div>
+      <div class="fila-botones" style="justify-content:center;margin-top:20px">
+        <button type="button" class="btn btn--principal btn--grande" id="btn-jugar-partido">Jugar partido ⚽</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. PARTIDO ==================== -->
+  <section class="pantalla" data-pantalla="partido">
+    <div class="contenedor" style="max-width:700px">
+      <div id="partido-contenido"></div>
+      <div class="fila-botones" style="justify-content:center;margin-top:16px">
+        <button type="button" class="btn btn--fantasma" id="btn-saltar-partido">Saltar al resultado »</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 5. RESULTADO ==================== -->
+  <section class="pantalla" data-pantalla="resultado">
+    <div class="contenedor" style="max-width:900px">
+      <div id="resultado-contenido"></div>
+      <div class="fila-botones" style="justify-content:center;margin-top:20px">
+        <button type="button" class="btn btn--principal btn--grande" id="btn-siguiente-partido">Siguiente partido »</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 6. CAMPEON ==================== -->
+  <section class="pantalla" data-pantalla="campeon">
+    <div class="contenedor" style="max-width:800px">
+      <div id="campeon-contenido"></div>
+      <div class="fila-botones" style="justify-content:center;margin-top:20px">
+        <button type="button" class="btn btn--principal btn--grande" id="btn-nuevo-torneo-campeon">Nuevo torneo</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<button type="button" id="btn-historial-global" class="btn btn--chico" style="position:fixed;top:10px;right:10px;z-index:40;display:none">📜 Historial</button>
+<div id="historial-cont"></div>
+<div id="toast-cont" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/rng.js"></script>
+<script src="js/jugadores.js"></script>
+<script src="js/mercado.js"></script>
+<script src="js/subasta.js"></script>
+<script src="js/simulacion.js"></script>
+<script src="js/torneo.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
