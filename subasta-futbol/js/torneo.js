@@ -81,7 +81,7 @@
     return rngMod.elegir(rng, ids.filter(function (id) { return managerPorId(torneo, id).puntos === minimo; }));
   }
 
-  // Arma la subasta de la proxima fecha (mazo al azar, pases recargados).
+  // Arma la subasta de la proxima fecha (mazo al azar).
   function prepararSiguientePartido(torneo) {
     if (torneo.terminado) throw new Error('El torneo ya termino');
     var numero = torneo.numeroFecha;

@@ -24,13 +24,12 @@ function partidoNuevo(seed, n) {
   return subasta.crearPartido({ numero: 1, managers: managers(n), abrePrimero: 0, seed: seed || 'partido-test', mazo: mazo });
 }
 
-test('crearPartido arranca con $20, plantel vacio, 2 pases y un mazo de 200 jugadores de campo', function () {
+test('crearPartido arranca con $20, plantel vacio y un mazo de 200 jugadores de campo', function () {
   var p = partidoNuevo();
   assert.equal(p.managers.length, 2);
   p.managers.forEach(function (m) {
     assert.equal(m.presupuesto, CONFIG.PRESUPUESTO);
     assert.deepEqual(m.plantel, []);
-    assert.equal(m.pases, 2);
   });
   assert.equal(p.mazo.length, 200);
   assert.equal(new Set(p.mazo).size, 200);
@@ -63,7 +62,7 @@ test('abrirLote saca al azar el proximo del mazo, sin dueño y arrancando en $1'
   assert.equal(p.mazoPos, 1);
 });
 
-test('pujas de a $0,50: 1 -> 1,50 -> 2 y el que pasa pierde', function () {
+test('pujas de a $0,50: 1 -> 1,50 -> 2 y el que no sube pierde', function () {
   var p = subasta.abrirLote(partidoNuevo());
   var jugadorId = p.lote.jugadorId;
   p = subasta.pujar(p, 0, 100);
@@ -79,26 +78,14 @@ test('pujas de a $0,50: 1 -> 1,50 -> 2 y el que pasa pierde', function () {
   assert.equal(p.abreProximo, 1, 'el proximo lote lo abre el otro');
 });
 
-test('si los dos pasan sin pujar, el jugador se descarta', function () {
+test('no se puede pasar: el que abre tiene que pujar y todo jugador que sale se vende', function () {
   var p = subasta.abrirLote(partidoNuevo());
-  var jugadorId = p.lote.jugadorId;
-  p = subasta.pasar(p, 0);
-  assert.equal(p.lote.turno, 1);
+  assert.equal(subasta.puedePasar(p, 0), false);
+  assert.throws(function () { subasta.pasar(p, 0); }, /tenés que abrir/);
+  p = subasta.pujar(p, 0, 100);
+  assert.equal(subasta.puedePasar(p, 1), true, 'con alguien ganando se puede no subir');
   p = subasta.pasar(p, 1);
-  assert.equal(p.lote, null);
-  assert.deepEqual(p.descartados, [jugadorId]);
-  assert.equal(p.managers[0].plantel.length + p.managers[1].plantel.length, 0);
-  assert.equal(subasta.estadoSubasta(p), 'esperandoLote');
-});
-
-test('si el primero pasa y el segundo puja, se lo lleva al toque', function () {
-  var p = subasta.abrirLote(partidoNuevo());
-  var jugadorId = p.lote.jugadorId;
-  p = subasta.pasar(p, 0);
-  p = subasta.pujar(p, 1, 100);
-  assert.equal(p.lote, null);
-  assert.deepEqual(p.managers[1].plantel, [jugadorId]);
-  assert.equal(p.managers[1].presupuesto, 1900);
+  assert.equal(p.lotes.length, 1);
 });
 
 test('todos los casos ilegales tiran error', function () {
@@ -108,6 +95,7 @@ test('todos los casos ilegales tiran error', function () {
   assert.throws(function () { subasta.abrirLote(p); }, /No se puede sacar/);
   assert.throws(function () { subasta.pujar(p, 1, 100); }, /No es el turno/);
   assert.throws(function () { subasta.pasar(p, 1); }, /No es el turno/);
+  assert.throws(function () { subasta.pasar(p, 0); }, /tenés que abrir/);
   assert.throws(function () { subasta.pujar(p, 0, 50); }, /al menos/);
   assert.throws(function () { subasta.pujar(p, 0, 120); }, /multiplo/);
   assert.throws(function () { subasta.pujar(p, 0, 1750); }, /puja maxima/);
@@ -129,7 +117,7 @@ test('cuando uno completa sus 4, el otro recibe un equipo parejo al azar', funct
   for (var i = 0; i < 4; i++) {
     p = subasta.abrirLote(p);
     if (p.lote.turno === 0) { p = subasta.pujar(p, 0, 100); p = subasta.pasar(p, 1); }
-    else { p = subasta.pasar(p, 1); p = subasta.pujar(p, 0, 100); }
+    else { p = subasta.pujar(p, 1, 100); p = subasta.pujar(p, 0, 150); p = subasta.pasar(p, 1); }
   }
   assert.equal(p.managers[0].plantel.length, 4);
   assert.equal(subasta.estadoSubasta(p), 'reparto');
@@ -143,7 +131,7 @@ test('cuando uno completa sus 4, el otro recibe un equipo parejo al azar', funct
   assert.equal(new Set(todos).size, 8, 'nadie repetido');
 });
 
-test('deshacer revierte la ultima puja o el ultimo paso', function () {
+test('deshacer revierte la ultima puja o el ultimo "no subo"', function () {
   var p = subasta.abrirLote(partidoNuevo());
   p = subasta.pujar(p, 0, 100);
   p = subasta.pujar(p, 1, 150);
@@ -151,66 +139,28 @@ test('deshacer revierte la ultima puja o el ultimo paso', function () {
   assert.equal(d.lote.precio, 100);
   assert.equal(d.lote.lider, 0);
   assert.equal(d.lote.turno, 1);
-  var q = subasta.pasar(subasta.abrirLote(partidoNuevo()), 0);
+  // Con 3: Ana abre $1, Juan no sube, deshacer -> le vuelve a tocar a Juan
+  var q = subasta.pujar(subasta.abrirLote(partidoNuevo('deshacer-3', 3)), 0, 100);
+  q = subasta.pasar(q, 1);
+  assert.equal(q.lote.turno, 2);
   var dq = subasta.deshacer(q);
-  assert.equal(dq.lote.turno, 0);
+  assert.equal(dq.lote.turno, 1);
   assert.deepEqual(dq.lote.fuera, []);
 });
 
-test('pasar cuando nadie pujo gasta un pase (2 por partido); sin pases hay que pujar', function () {
-  var p = partidoNuevo('pases');
-  // Lote 1 (abre Ana): pasan los dos -> se descarta. Ana y Juan gastan 1 pase.
-  p = subasta.pasar(subasta.abrirLote(p), 0);
-  p = subasta.pasar(p, 1);
-  // Lote 2 (abre Juan): pasan los dos otra vez. Quedan sin pases.
-  p = subasta.abrirLote(p);
-  assert.equal(p.lote.turno, 1);
-  p = subasta.pasar(p, 1);
-  p = subasta.pasar(p, 0);
-  assert.equal(p.descartados.length, 2);
-  assert.equal(subasta.pasesRestantes(p, 0), 0);
-  assert.equal(subasta.pasesRestantes(p, 1), 0);
-  // Lote 3 (abre Ana): sin pases, tiene que pujar.
-  p = subasta.abrirLote(p);
-  assert.equal(p.lote.turno, 0);
-  assert.equal(subasta.puedePasar(p, 0), false);
-  assert.throws(function () { subasta.pasar(p, 0); }, /No te quedan pases/);
-  p = subasta.pujar(p, 0, 100);
-  // Ya hay alguien ganando: Juan puede no subir aunque no tenga pases.
-  assert.equal(subasta.puedePasar(p, 1), true);
-  p = subasta.pasar(p, 1);
-  assert.equal(p.managers[0].plantel.length, 1);
-});
-
-test('los pases se recargan en cada partido nuevo', function () {
-  var p = partidoNuevo('recarga');
-  p = subasta.pasar(subasta.abrirLote(p), 0);
-  assert.equal(subasta.pasesRestantes(p, 0), 1);
-  var siguiente = partidoNuevo('recarga-2');
-  assert.equal(subasta.pasesRestantes(siguiente, 0), 2);
-});
-
-test('pasar cuando ya hay alguien ganando es libre (no gasta pases)', function () {
-  var p = subasta.abrirLote(partidoNuevo());
-  p = subasta.pujar(p, 0, 100);
-  p = subasta.pasar(p, 1);
-  assert.equal(subasta.pasesRestantes(p, 1), 2);
-});
-
-test('con 3 jugadores el turno rota y el que pasa queda afuera del lote', function () {
+test('con 3 jugadores el turno rota y el que no sube queda afuera del lote', function () {
   var p = subasta.abrirLote(partidoNuevo('tres', 3));
   var jugadorId = p.lote.jugadorId;
-  p = subasta.pasar(p, 0);            // Ana pasa (gasta 1 pase)
-  assert.equal(p.lote.turno, 1);
-  p = subasta.pujar(p, 1, 100);       // Juan $1
-  assert.equal(p.lote.turno, 2, 'le toca a Sol, Ana ya paso');
-  p = subasta.pujar(p, 2, 150);       // Sol $1,50
+  p = subasta.pujar(p, 0, 100);       // Ana abre $1
   assert.equal(p.lote.turno, 1);
   p = subasta.pasar(p, 1);            // Juan no sube
+  assert.equal(p.lote.turno, 2);
+  p = subasta.pujar(p, 2, 150);       // Sol $1,50
+  assert.equal(p.lote.turno, 0, 'le toca a Ana, Juan ya quedo afuera');
+  p = subasta.pasar(p, 0);            // Ana no sube
   assert.equal(p.lote, null);
   assert.deepEqual(p.managers[2].plantel, [jugadorId]);
   assert.equal(p.abreProximo, 1, 'el proximo lote lo abre el siguiente en la ronda');
-  assert.equal(subasta.pasesRestantes(p, 0), 1);
 });
 
 test('con 3 jugadores: cuando uno completa, siguen los otros dos; al ultimo se le reparte', function () {
@@ -238,14 +188,6 @@ test('con 3 jugadores: cuando uno completa, siguen los otros dos; al ultimo se l
   p.managers.forEach(function (m) { assert.equal(m.plantel.length, 4); });
 });
 
-test('deshacer un paso devuelve el pase', function () {
-  var p = subasta.pasar(subasta.abrirLote(partidoNuevo()), 0);
-  assert.equal(subasta.pasesRestantes(p, 0), 1);
-  var d = subasta.deshacer(p);
-  assert.equal(subasta.pasesRestantes(d, 0), 2);
-  assert.equal(d.lote.turno, 0);
-});
-
 test('propiedad: 2000 subastas al azar de 2 a 6 jugadores terminan siempre con todos en 4', function () {
   for (var s = 0; s < 2000; s++) {
     var rng = rngMod.crearRng('prop-' + s);
@@ -264,13 +206,13 @@ test('propiedad: 2000 subastas al azar de 2 a 6 jugadores terminan siempre con t
         var opciones = [minimo, minimo + 50, minimo + 150, max].filter(function (m) { return m >= minimo && m <= max; });
         var quierePasar = opciones.length === 0 || rng() < 0.5;
         if (quierePasar && subasta.puedePasar(p, turno)) p = subasta.pasar(p, turno);
+        else if (!subasta.puedePasar(p, turno) && p.lote.lider !== null) throw new Error('deberia poder no subir');
         else p = subasta.pujar(p, turno, opciones[Math.floor(rng() * opciones.length)]);
       }
       p.managers.forEach(function (m) {
         var libres = CONFIG.TAMANO_PLANTEL - m.plantel.length;
         assert.ok(m.presupuesto % 50 === 0, 'presupuesto no multiplo de 50');
         assert.ok(m.presupuesto >= libres * CONFIG.PRECIO_INICIAL, 'invariante roto en seed prop-' + s);
-        assert.ok(m.pases >= 0 && m.pases <= 2, 'pases fuera de rango');
       });
     }
     var todos = [];

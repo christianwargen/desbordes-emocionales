@@ -221,9 +221,7 @@ details.reglas li { margin-bottom: 6px; }
 
 .panel-manager__nombre { font-family: var(--fuente-num); font-size: 1.3rem; font-weight: 700; color: var(--c); overflow-wrap: anywhere; }
 .panel-manager__presupuesto { font-family: var(--fuente-num); font-size: 2.2rem; font-weight: 700; line-height: 1; margin: 4px 0; color: var(--texto); }
-.panel-manager__pujamax { color: var(--texto-suave); font-size: 0.85rem; }
-.panel-manager__pases { color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 12px; }
-.pases { letter-spacing: 0.15em; color: var(--c); }
+.panel-manager__pujamax { color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 12px; }
 
 .paneles--muchos .panel-manager .plantel { display: grid; grid-template-columns: repeat(2, 62px); gap: 6px; justify-content: center; }
 .paneles--muchos .panel-manager .carta--mini { --w: 62px; }

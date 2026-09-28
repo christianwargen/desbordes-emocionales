@@ -111,27 +111,25 @@ Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200 juga
 - El mercado usa el RNG con semilla del partido (sección 7): mismo seed → mismo mercado.
 - Entre partidos no se excluye a nadie: Messi puede volver a salir en el partido siguiente.
 
-### 2.4 Subasta al azar, pujas por turnos, pases y reparto parejo
+### 2.4 Subasta al azar, sin pases, y reparto parejo
 
 Nadie elige a quién subastar: después de poner los nombres, el juego arranca solo.
 
 1. **Sale un jugador al azar** del **mazo** de la fecha (los 24 del mercado de 2.3 en orden al azar y, detrás, el resto
    de los 200 mezclados). Aparece con la revelación de la carta.
-2. **Arranca en $1, sin dueño.** El turno va rotando entre los managers con lugares libres, empezando por el que abre
-   (se alterna lote a lote). Cada uno **puja** o **pasa**; el que pasa queda afuera de ese lote.
-3. **Pases: 2 por fecha.** Pasar cuando **nadie pujó todavía** gasta un pase. Sin pases, si nadie pujó, hay que pujar
-   (al menos $1). Pasar cuando **ya hay alguien ganando** (no subir) es libre. En cada fecha nueva se recargan los 2 pases.
-4. **Pujas de a $0,50** ($1, $1,50, $2, «Todo» en la apertura; después +$0,50, +$1, +$2, «Todo»). Gana el lote el último
-   que queda sin pasar; si al que le toca no le alcanza para superar, queda afuera solo.
-5. **Si nadie puja**, el jugador se descarta y sale el siguiente.
-6. **Reparto parejo.** Cuando **queda uno solo** con lugares libres, se le completan **al azar con un equipo parejo** a los
+2. **No se puede pasar.** El lote arranca en $1 y el que lo abre (se alterna lote a lote entre los que tienen lugar)
+   **tiene que pujar** ($1, $1,50, $2 o «Todo»). Todo jugador que sale se vende.
+3. **Después el turno va rotando** entre los demás con lugar: cada uno sube (+$0,50, +$1, +$2, «Todo») o dice
+   **«No subo»** y queda afuera de ese jugador. Gana el último que queda; si al que le toca no le alcanza para superar,
+   queda afuera solo.
+4. **Reparto parejo.** Cuando **queda uno solo** con lugares libres, se le completan **al azar con un equipo parejo** a los
    demás (misma fuerza ATQ + CRE + DEF que el promedio de los equipos completos, ±2; `js/reparto.js`). Cuestan $1 cada
    uno y aparecen todos juntos. Con 2 managers, es «cuando uno completa sus 4, al otro se le completa el equipo».
-7. Con todos completos → «Ir al partido ⚽» (2 managers) o «Ir a la fecha ⚽».
+5. Con todos completos → «Ir al partido ⚽» (2 managers) o «Ir a la fecha ⚽».
 
 Casos borde que el motor cubre (y testea): pujas fuera de turno, por debajo del mínimo, que no son múltiplo de $0,50 o
-por encima de la puja máxima; pasar sin pases; invariante `presupuesto ≥ lugaresLibres × $1`. **Deshacer** revierte la
-última puja o el último «paso» del lote en curso (y devuelve el pase).
+por encima de la puja máxima; «No subo» sin que nadie haya pujado; invariante `presupuesto ≥ lugaresLibres × $1`.
+**Deshacer** revierte la última puja o el último «No subo» del lote en curso.
 
 **Reiniciar:** desde que arranca el torneo hay un botón «↺ Reiniciar» siempre visible (junto a «Historial») que, con
 dos toques, borra todo y vuelve a la pantalla de nombres.

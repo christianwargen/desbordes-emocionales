@@ -9,13 +9,12 @@
   'use strict';
 
   // Subasta al azar para 2 a 6 managers. Los jugadores salen de a uno desde
-  // un mazo mezclado. El lote arranca en $1 sin dueño y el turno va rotando:
-  // cada uno puja o pasa. Pasar cuando nadie pujo gasta uno de los pases del
-  // partido (CONFIG.PASES_POR_PARTIDO); pasar cuando ya hay alguien ganando es
-  // libre (es no subir). El que pasa queda afuera de ese lote. Si nadie puja,
-  // el jugador se descarta. Cuando queda un solo manager con lugares libres,
-  // se le completa el plantel al azar con un equipo parejo (js/reparto.js,
-  // aplicado con completarPlantel).
+  // un mazo mezclado. El lote arranca en $1 y el que lo abre TIENE que pujar
+  // (no se puede pasar: todo jugador que sale se vende). Despues el turno va
+  // rotando: cada uno sube o no sube; el que no sube queda afuera de ese lote
+  // y gana el ultimo que queda. Cuando queda un solo manager con lugares
+  // libres, se le completa el plantel al azar con un equipo parejo
+  // (js/reparto.js, aplicado con completarPlantel).
 
   var CONFIG = configMod.CONFIG;
 
@@ -43,7 +42,7 @@
       managers: opts.managers.map(function (m) {
         return {
           id: m.id, nombre: m.nombre, color: m.color,
-          presupuesto: CONFIG.PRESUPUESTO, plantel: [], pases: CONFIG.PASES_POR_PARTIDO,
+          presupuesto: CONFIG.PRESUPUESTO, plantel: [],
         };
       }),
       mazo: opts.mazo.slice(),
@@ -51,7 +50,6 @@
       abreProximo: opts.abrePrimero,
       lote: null,
       lotes: [],
-      descartados: [],
       reparto: [],
     };
   }
@@ -111,16 +109,11 @@
     });
   }
 
-  // Pases que le quedan a un manager en este partido.
-  function pasesRestantes(partido, managerId) {
-    return managerPorId(partido, managerId).pases;
-  }
-
-  // Si el manager de turno puede pasar ahora (cuando nadie pujo, cuesta un pase).
+  // Si el manager de turno puede no subir: solo cuando ya hay alguien ganando.
+  // El que abre el lote tiene que pujar.
   function puedePasar(partido, managerId) {
     var lote = partido.lote;
-    if (!lote || lote.turno !== managerId) return false;
-    return lote.lider !== null || pasesRestantes(partido, managerId) > 0;
+    return !!lote && lote.turno === managerId && lote.lider !== null;
   }
 
   // Saca el proximo jugador del mazo y lo pone en subasta.
@@ -161,25 +154,19 @@
     return cerrarLote(nuevo);
   }
 
-  // Nadie lo quiso: queda afuera de este partido (uso interno, muta `nuevo`).
-  function descartar(nuevo) {
-    nuevo.descartados.push(nuevo.lote.jugadorId);
-    return cerrarLote(nuevo);
-  }
-
   // Despues de una accion: le toca al siguiente activo, o se cierra el lote.
   function avanzar(nuevo, desdeId) {
     var activos = activosLote(nuevo);
-    if (activos.length === 0) return nuevo.lote.lider === null ? descartar(nuevo) : adjudicar(nuevo);
+    if (activos.length === 0) return adjudicar(nuevo);
     nuevo.lote.turno = siguienteEnRonda(nuevo, desdeId, activos);
     return nuevo;
   }
 
-  // Guarda el estado previo del lote (y los pases) para poder deshacer.
+  // Guarda el estado previo del lote para poder deshacer.
   function foto(partido) {
     var lote = clonar(partido.lote);
     delete lote.pila;
-    return { lote: lote, pases: partido.managers.map(function (m) { return m.pases; }) };
+    return { lote: lote };
   }
 
   function pujar(partido, managerId, montoCentavos) {
@@ -203,11 +190,10 @@
     var lote = partido.lote;
     if (!lote) throw new Error('No hay ningun lote en curso');
     if (lote.turno !== managerId) throw new Error('No es el turno de ' + managerId + ' para pasar');
-    if (!puedePasar(partido, managerId)) throw new Error('No te quedan pases: tenés que pujar');
+    if (!puedePasar(partido, managerId)) throw new Error('Nadie pujó todavía: tenés que abrir con al menos $1');
 
     var nuevo = clonar(partido);
     nuevo.lote.pila.push(foto(partido));
-    if (lote.lider === null) managerPorId(nuevo, managerId).pases--;
     nuevo.lote.fuera.push(managerId);
     return avanzar(nuevo, managerId);
   }
@@ -234,8 +220,8 @@
     return nuevo;
   }
 
-  // Deshace la ultima accion (puja o paso) del lote en curso, devolviendo el
-  // pase si lo habia gastado. No deshace lotes ya cerrados.
+  // Deshace la ultima accion (puja o "no subo") del lote en curso. No deshace
+  // lotes ya cerrados.
   function deshacer(partido) {
     var lote = partido.lote;
     if (!lote || lote.pila.length === 0) throw new Error('No hay ninguna accion para deshacer');
@@ -244,7 +230,6 @@
     var pila = nuevo.lote.pila;
     nuevo.lote = anterior.lote;
     nuevo.lote.pila = pila;
-    nuevo.managers.forEach(function (m, i) { m.pases = anterior.pases[i]; });
     return nuevo;
   }
 
@@ -255,7 +240,6 @@
     idsConLugar: idsConLugar,
     estadoSubasta: estadoSubasta,
     montoMinimo: montoMinimo,
-    pasesRestantes: pasesRestantes,
     puedePasar: puedePasar,
     abrirLote: abrirLote,
     pujar: pujar,

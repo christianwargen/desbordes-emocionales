@@ -19,8 +19,6 @@
     PUNTOS_OBJETIVO: 100,
     // Cantidad de fechas (subasta + partido/s) que se elige al empezar.
     FECHAS_POR_DEFECTO: 10, FECHAS_MIN: 1, FECHAS_MAX: 30,
-    // Pases por partido: pasar cuando nadie pujo gasta uno.
-    PASES_POR_PARTIDO: 2,
     MANAGERS_MIN: 2, MANAGERS_MAX: 6,
     MERCADO: {
       tamano: 24,

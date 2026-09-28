@@ -227,8 +227,9 @@ no el arquero ni los penales.
   (el turno rota) y después se juega **todos contra todos** con los equipos armados (con 2, un partido con relato).
   Tabla con puntos, PJ, PG, GF, GC y DG; si arriba quedan empatados, fecha de desempate solo entre ellos.
 - **Cantidad de partidos** (fechas, de 1 a 30) o «Primero a 100», a elección al empezar.
-- **Pases:** pasar cuando nadie pujó gasta un pase; hay 2 por fecha y se recargan en la siguiente. Sin pases, si nadie
-  pujó, hay que pujar. Pasar cuando ya hay alguien ganando (no subir) es libre.
+- **Sin pases:** el que abre cada lote tiene que pujar (al menos $1), así que todo jugador que sale se vende. Después
+  cada uno sube o dice «No subo» (queda afuera de ese jugador). (Hubo una versión con 2 pases por fecha; se sacó para
+  que la elección sea más dramática.)
 - **Reparto parejo:** cuando queda uno solo sin completar, se le completa al azar con la fuerza promedio de los demás.
 - El guardado pasó a `subasta-cracks:v3` (los torneos guardados con el formato anterior se ignoran).
 

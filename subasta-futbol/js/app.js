@@ -286,13 +286,6 @@
     document.getElementById('encabezado-subasta').innerHTML = html;
   }
 
-  function htmlPases(n) {
-    var total = CONFIG.PASES_POR_PARTIDO;
-    var puntos = '';
-    for (var i = 0; i < total; i++) puntos += i < n ? '●' : '○';
-    return '<span class="pases" title="Pases que le quedan en esta fecha" aria-label="' + n + ' pases">' + puntos + '</span>';
-  }
-
   function htmlPanelManager(partido, m) {
     var esTurno = !!(partido.lote && partido.lote.turno === m.id);
     var completo = m.plantel.length >= CONFIG.TAMANO_PLANTEL;
@@ -301,7 +294,6 @@
     html += '<div class="panel-manager__presupuesto">' + formatearPlata(m.presupuesto) + '</div>';
     html += '<div class="panel-manager__pujamax">' +
       (completo ? 'Equipo completo' : 'Puja máx. ' + formatearPlata(subastaMod.pujaMaxima(partido, m.id))) + '</div>';
-    html += '<div class="panel-manager__pases">Pases ' + htmlPases(m.pases) + '</div>';
     html += '<div class="plantel">';
     for (var i = 0; i < CONFIG.TAMANO_PLANTEL; i++) {
       html += m.plantel[i] != null ? renderCarta(idAJugador(m.plantel[i]), { tamano: 'mini' }) : cartaVacia();
@@ -316,7 +308,6 @@
     var partido = Estado.torneo.partidoActual;
     var loteAntes = partido.lote;
     var lotesAntes = partido.lotes.length;
-    var descartadosAntes = partido.descartados.length;
     var nuevo;
     try {
       nuevo = accionFn(partido);
@@ -329,8 +320,6 @@
       var loteInfo = nuevo.lotes[nuevo.lotes.length - 1];
       mostrarToast('¡' + idAJugador(loteInfo.jugadorId).nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) +
         ' por ' + formatearPlata(loteInfo.precio) + '!');
-    } else if (nuevo.descartados.length > descartadosAntes) {
-      mostrarToast('Nadie quiso a ' + idAJugador(loteAntes.jugadorId).nombreCarta + ': queda afuera');
     }
     guardarEstado();
     renderSubasta();
@@ -437,20 +426,20 @@
       ? '<div class="lote__arranca">Arranca en</div><div class="lote__precio">$1</div>'
       : '<div class="lote__precio">' + formatearPlata(lote.precio) + '</div>';
     html += '<div class="lote__estado">';
-    html += sinDueno ? '<span>Nadie pujó todavía</span>' : '<span>Va ganando: ' + nombreConColor(lote.lider) + '</span>';
-    if (lote.fuera.length) html += '<span>Pasaron: ' + lote.fuera.map(nombreConColor).join(', ') + '</span>';
-    html += '<span>Le toca a: ' + nombreConColor(turno) + ' (puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
+    if (sinDueno) {
+      html += '<span>Abre ' + nombreConColor(turno) + ': tiene que pujar (al menos $1, puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
+    } else {
+      html += '<span>Va ganando: ' + nombreConColor(lote.lider) + '</span>';
+      if (lote.fuera.length) html += '<span>No subieron: ' + lote.fuera.map(nombreConColor).join(', ') + '</span>';
+      html += '<span>Le toca a: ' + nombreConColor(turno) + ' (puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
+    }
     html += '<div class="fila-botones">';
     opcionesPuja(partido).forEach(function (o, i) {
       html += '<button type="button" class="btn' + (i === 0 ? ' btn--principal' : '') + '" data-puja-monto="' + o.monto + '"' +
         (o.habilitado ? '' : ' disabled') + '>' + o.etiqueta + '</button>';
     });
-    var puedePasar = subastaMod.puedePasar(partido, turno);
-    var pases = subastaMod.pasesRestantes(partido, turno);
-    var textoPasar = !sinDueno ? 'Pasar' : puedePasar
-      ? 'Pasar (' + (pases === 1 ? 'te queda 1 pase' : 'te quedan ' + pases + ' pases') + ')'
-      : 'Sin pases: tenés que pujar';
-    html += '<button type="button" class="btn btn--pasar" id="btn-pasar"' + (puedePasar ? '' : ' disabled') + '>' + textoPasar + '</button>';
+    // No se puede pasar: el que abre tiene que pujar. Despues, "No subo" deja afuera de este jugador.
+    if (!sinDueno) html += '<button type="button" class="btn btn--pasar" id="btn-no-subo">No subo</button>';
     html += '</div>';
     if (lote.pujas.length) {
       html += '<div class="cadena">' + lote.pujas.map(function (pj) {
@@ -470,7 +459,8 @@
         ejecutarAccionSubasta(function (p) { return subastaMod.pujar(p, turno, monto); });
       });
     });
-    document.getElementById('btn-pasar').addEventListener('click', function () {
+    var btnNoSubo = document.getElementById('btn-no-subo');
+    if (btnNoSubo) btnNoSubo.addEventListener('click', function () {
       ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); });
     });
     var btnDeshacer = document.getElementById('btn-deshacer');
@@ -1055,7 +1045,7 @@
     if (accion === undefined) return;
     e.preventDefault();
     if (accion === 'pasar') {
-      ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); });
+      if (subastaMod.puedePasar(partido, turno)) ejecutarAccionSubasta(function (p) { return subastaMod.pasar(p, turno); });
       return;
     }
     var opcion = opcionesPuja(partido)[accion];
