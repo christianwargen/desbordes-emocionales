@@ -72,3 +72,17 @@ test('si se acaba el mazo con los dos incompletos, se completan los dos', functi
   p = repartoMod.completarPartido(p, 'sin-mazo:reparto');
   assert.equal(subasta.estadoSubasta(p), 'terminada');
 });
+
+test('con 4 jugadores, al ultimo se le reparte parejo con el promedio de los otros 3', function () {
+  var mezcla = rngMod.mezclar(rngMod.crearRng('cuatro'), CAMPO);
+  var equipos = [0, 1, 2].map(function (k) { return mezcla.slice(k * 4, k * 4 + 4).map(function (j) { return j.id; }); });
+  var p = subasta.crearPartido({
+    numero: 1, abrePrimero: 0, seed: 'cuatro', mazo: mercadoMod.generarMazo('cuatro'),
+    managers: ['Ana', 'Juan', 'Sol', 'Leo'].map(function (n, i) { return { id: i, nombre: n, color: '#fff' }; }),
+  });
+  equipos.forEach(function (ids, i) { p.managers[i].plantel = ids; });
+  var objetivo = repartoMod.fuerzaPromedioCompletos(p);
+  p = repartoMod.completarPartido(p, 'cuatro:reparto');
+  assert.equal(p.managers[3].plantel.length, 4);
+  assert.ok(Math.abs(fuerzaDe(p.managers[3].plantel) - objetivo) <= 2);
+});

@@ -115,7 +115,7 @@ button {
   padding: 12px 0 18px;
 }
 .encabezado__numero { font-size: 1.4rem; }
-.encabezado__marcador { display: flex; gap: 18px; align-items: center; font-family: var(--fuente-num); font-size: 1.2rem; }
+.encabezado__marcador { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-family: var(--fuente-num); font-size: 1.15rem; margin-top: 4px; }
 .encabezado__punto { display: flex; align-items: center; gap: 8px; }
 .encabezado__punto .pastilla { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
 
@@ -156,8 +156,21 @@ button {
   padding: 12px 14px;
   min-height: 44px;
 }
-.form-fila input#nombre-m1 { border-color: var(--m1); }
-.form-fila input#nombre-m2 { border-color: var(--m2); }
+.pastilla { width: 12px; height: 12px; border-radius: 50%; display: inline-block; flex: none; }
+
+/* Lista de jugadores del inicio (2 a 6) */
+.lista-managers { display: flex; flex-direction: column; gap: 8px; }
+.fila-manager { display: flex; align-items: center; gap: 10px; }
+.fila-manager input[type="text"] { flex: 1; min-width: 0; }
+#btn-agregar-manager { align-self: flex-start; margin-top: 2px; }
+
+/* Selector de cantidad de partidos */
+.stepper { display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+.stepper input[type="number"] {
+  width: 64px; min-height: 36px; text-align: center; font: 700 1.1rem var(--fuente-num);
+  background: rgba(255, 255, 255, 0.06); color: var(--texto);
+  border: 1px solid rgba(255, 255, 255, 0.16); border-radius: var(--radio-chico);
+}
 
 .modo-selector { display: flex; gap: 10px; flex-wrap: wrap; }
 .modo-opcion {
@@ -191,43 +204,38 @@ details.reglas li { margin-bottom: 6px; }
 }
 
 /* ---------- Pantalla Subasta ---------- */
-.subasta-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr 260px;
-  gap: 16px;
-  align-items: start;
-}
-@media (max-width: 900px) {
-  /* En celular lo primero es el lote o el mercado (donde se juega); los dos paneles
-     van abajo, lado a lado y compactos. */
-  .subasta-layout { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .centro-subasta { order: 0; grid-column: 1 / -1; min-height: 0; }
-  .panel-manager { order: 1; padding: 12px; min-width: 0; }
-  .panel-manager[data-manager="1"] { order: 2; }
-  .panel-manager__presupuesto { font-size: 1.8rem; }
-  .panel-manager .plantel { display: grid; grid-template-columns: repeat(2, 62px); gap: 6px; justify-content: center; }
-  .panel-manager .carta--mini { --w: 62px; }
-  .panel-manager .carta-vacia { width: 62px; font-size: 0; }
-}
+/* Arriba el lote (donde se juega); abajo un panel por jugador. */
+.subasta-layout { display: flex; flex-direction: column; gap: 16px; }
+.paneles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.paneles--muchos { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
 
 .panel-manager {
   background: var(--panel);
   border: 1px solid var(--panel-borde);
   border-radius: var(--radio);
-  padding: 16px;
-  border-top: 4px solid transparent;
+  padding: 14px;
+  border-top: 4px solid var(--c, transparent);
+  min-width: 0;
 }
-.panel-manager[data-manager="0"] { border-top-color: var(--m1); }
-.panel-manager[data-manager="1"] { border-top-color: var(--m2); }
-.panel-manager.turno { box-shadow: 0 0 0 2px currentColor, var(--sombra); }
-.panel-manager[data-manager="0"].turno { color: var(--m1); }
-.panel-manager[data-manager="1"].turno { color: var(--m2); }
+.panel-manager.turno { box-shadow: 0 0 0 2px var(--c), var(--sombra); }
 
-.panel-manager__nombre { font-family: var(--fuente-num); font-size: 1.3rem; font-weight: 700; }
-.panel-manager[data-manager="0"] .panel-manager__nombre { color: var(--m1); }
-.panel-manager[data-manager="1"] .panel-manager__nombre { color: var(--m2); }
-.panel-manager__presupuesto { font-family: var(--fuente-num); font-size: 2.4rem; font-weight: 700; line-height: 1; margin: 4px 0; color: var(--texto); }
-.panel-manager__pujamax { color: var(--texto-suave); font-size: 0.9rem; margin-bottom: 12px; }
+.panel-manager__nombre { font-family: var(--fuente-num); font-size: 1.3rem; font-weight: 700; color: var(--c); overflow-wrap: anywhere; }
+.panel-manager__presupuesto { font-family: var(--fuente-num); font-size: 2.2rem; font-weight: 700; line-height: 1; margin: 4px 0; color: var(--texto); }
+.panel-manager__pujamax { color: var(--texto-suave); font-size: 0.85rem; }
+.panel-manager__pases { color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 12px; }
+.pases { letter-spacing: 0.15em; color: var(--c); }
+
+.paneles--muchos .panel-manager .plantel { display: grid; grid-template-columns: repeat(2, 62px); gap: 6px; justify-content: center; }
+.paneles--muchos .panel-manager .carta--mini { --w: 62px; }
+.paneles--muchos .panel-manager .carta-vacia { width: 62px; font-size: 0; }
+.paneles--muchos .panel-manager__presupuesto { font-size: 1.7rem; }
+@media (max-width: 900px) {
+  .panel-manager { padding: 12px; }
+  .panel-manager__presupuesto { font-size: 1.8rem; }
+  .panel-manager .plantel { display: grid; grid-template-columns: repeat(2, 62px); gap: 6px; justify-content: center; }
+  .panel-manager .carta--mini { --w: 62px; }
+  .panel-manager .carta-vacia { width: 62px; font-size: 0; }
+}
 
 .plantel { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
 
@@ -373,8 +381,13 @@ details.reglas li { margin-bottom: 6px; }
 @media (max-width: 720px) { .previa-layout { grid-template-columns: 1fr; } }
 .previa-equipo { background: var(--panel); border: 1px solid var(--panel-borde); border-radius: var(--radio); padding: 18px; }
 .previa-equipo__nombre { font-size: 1.3rem; margin-bottom: 10px; }
-.previa-equipo[data-manager="0"] .previa-equipo__nombre { color: var(--m1); }
-.previa-equipo[data-manager="1"] .previa-equipo__nombre { color: var(--m2); }
+.previa-equipo { border-top: 4px solid var(--c, transparent); }
+.previa-equipo .previa-equipo__nombre { color: var(--c); }
+.previa-layout--muchos { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.fixture { margin: 18px 0; }
+.fixture h3 { font-size: 1.2rem; margin-bottom: 8px; text-align: center; }
+.fixture ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px 16px; }
+.fixture li span { color: var(--texto-suave); margin: 0 4px; }
 .previa-formacion { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 .previa-formacion > div { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 1.1rem; line-height: 1; }
 .previa-nota { text-align: center; font-size: 0.9rem; margin: 4px 0 0; }
@@ -475,3 +488,23 @@ details.reglas li { margin-bottom: 6px; }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
 }
+
+/* ---------- Fecha con varios partidos, tabla y avisos ---------- */
+.marcador-nombres { display: flex; justify-content: center; align-items: baseline; gap: 12px; font-family: var(--fuente-num); font-size: 1.4rem; }
+.marcador-nombres span { color: var(--texto-suave); font-size: 1rem; }
+.fecha-resultados { list-style: none; margin: 12px auto; padding: 0; max-width: 620px; display: flex; flex-direction: column; gap: 8px; }
+.fila-resultado {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 12px; align-items: center;
+  background: var(--panel); border: 1px solid var(--panel-borde); border-radius: var(--radio-chico); padding: 10px 14px;
+  animation: evento-aparece 0.35s ease;
+}
+.fila-resultado__equipo { overflow-wrap: anywhere; opacity: 0.7; }
+.fila-resultado__equipo.gano { opacity: 1; }
+.fila-resultado__equipo--der { text-align: right; }
+.fila-resultado__marcador { font-family: var(--fuente-num); font-size: 1.3rem; font-weight: 700; text-align: center; white-space: nowrap; }
+.fila-resultado__marcador small { font-size: 0.8rem; color: var(--texto-suave); font-weight: 500; }
+.tabla-scroll { overflow-x: auto; }
+.tabla-torneo th, .tabla-torneo td { font-variant-numeric: tabular-nums; }
+.aviso-desempate { text-align: center; color: #ffe08a; margin: 14px 0 4px; }
+.historial-item__partidos { list-style: none; margin: 4px 0 8px; padding: 0; font-size: 0.85rem; }
+

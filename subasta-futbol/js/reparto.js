@@ -8,9 +8,9 @@
 })(typeof self !== 'undefined' ? self : this, function (rngMod, jugadores, simMod, subastaMod) {
   'use strict';
 
-  // Reparto al azar parejo: cuando un manager completa sus 4, al otro se le
-  // completan los lugares libres con jugadores sorteados, buscando que su
-  // equipo quede igual de fuerte que el del rival. "Fuerza" = ATQ + CRE + DEF
+  // Reparto al azar parejo: cuando queda un solo manager con lugares libres,
+  // se le completan con jugadores sorteados, buscando que su equipo quede igual
+  // de fuerte que el promedio de los equipos ya completos. "Fuerza" = ATQ + CRE + DEF
   // del simulador, que es lo que realmente decide el partido.
 
   var INTENTOS = 600;
@@ -32,20 +32,19 @@
   }
 
   // Elige los ids que completan el plantel de `managerId`. Si se pasa
-  // `equipoObjetivo` (ids), el resultado queda parejo con ese equipo; si no,
+  // `objetivo` (una fuerza), el resultado queda parejo con esa fuerza; si no,
   // es un sorteo simple.
-  function elegirParaCompletar(partido, managerId, equipoObjetivo, rng) {
+  function elegirParaCompletar(partido, managerId, objetivo, rng) {
     var manager = partido.managers.filter(function (m) { return m.id === managerId; })[0];
     var propios = manager.plantel.map(function (id) { return POR_ID[id]; });
     var faltan = subastaMod.lugaresLibres(partido, managerId);
     var ocupados = idsOcupados(partido);
     var pool = CAMPO.filter(function (j) { return ocupados.indexOf(j.id) === -1; });
 
-    if (!equipoObjetivo) {
+    if (objetivo === null || objetivo === undefined) {
       return rngMod.mezclar(rng, pool).slice(0, faltan).map(function (j) { return j.id; });
     }
 
-    var objetivo = fuerza(equipoObjetivo.map(function (id) { return POR_ID[id]; }));
     var buenos = [];
     var mejor = null;
     function evaluar(sorteo) {
@@ -60,27 +59,36 @@
     return elegido.map(function (j) { return j.id; });
   }
 
-  // Completa el partido en estado 'reparto'. Caso normal: uno ya tiene 4 y al
-  // otro se le completa parejo. Si se acabara el mazo con los dos incompletos
-  // (rarisimo), el primero se completa al azar y el segundo parejo con el primero.
+  // Fuerza promedio de los equipos ya completos (el objetivo del reparto).
+  function fuerzaPromedioCompletos(partido) {
+    var completos = partido.managers.filter(function (m) { return subastaMod.lugaresLibres(partido, m.id) === 0; });
+    if (completos.length === 0) return null;
+    var suma = completos.reduce(function (s, m) {
+      return s + fuerza(m.plantel.map(function (id) { return POR_ID[id]; }));
+    }, 0);
+    return suma / completos.length;
+  }
+
+  // Completa el partido en estado 'reparto'. Caso normal: queda uno solo con
+  // lugares libres y se le completa parejo con el promedio de los equipos
+  // completos. Si se acabara el mazo sin nadie completo (rarisimo), el
+  // primero se completa al azar y el resto parejo.
   function completarPartido(partido, seed) {
     if (subastaMod.estadoSubasta(partido) !== 'reparto') throw new Error('No estamos en el reparto al azar');
     var rng = rngMod.crearRng(seed);
     var nuevo = partido;
-    var completo = nuevo.managers.filter(function (m) { return subastaMod.lugaresLibres(nuevo, m.id) === 0; })[0];
-    if (!completo) {
-      var primero = nuevo.managers[0];
+    if (fuerzaPromedioCompletos(nuevo) === null) {
+      var primero = nuevo.managers.filter(function (m) { return subastaMod.lugaresLibres(nuevo, m.id) > 0; })[0];
       nuevo = subastaMod.completarPlantel(nuevo, primero.id, elegirParaCompletar(nuevo, primero.id, null, rng));
-      completo = nuevo.managers[0];
     }
-    nuevo.managers.forEach(function (m) {
-      if (subastaMod.lugaresLibres(nuevo, m.id) > 0) {
-        var objetivo = nuevo.managers.filter(function (x) { return x.id === completo.id; })[0].plantel;
-        nuevo = subastaMod.completarPlantel(nuevo, m.id, elegirParaCompletar(nuevo, m.id, objetivo, rng));
+    var objetivo = fuerzaPromedioCompletos(nuevo);
+    nuevo.managers.map(function (m) { return m.id; }).forEach(function (id) {
+      if (subastaMod.lugaresLibres(nuevo, id) > 0) {
+        nuevo = subastaMod.completarPlantel(nuevo, id, elegirParaCompletar(nuevo, id, objetivo, rng));
       }
     });
     return nuevo;
   }
 
-  return { fuerza: fuerza, elegirParaCompletar: elegirParaCompletar, completarPartido: completarPartido };
+  return { fuerza: fuerza, elegirParaCompletar: elegirParaCompletar, fuerzaPromedioCompletos: fuerzaPromedioCompletos, completarPartido: completarPartido };
 });

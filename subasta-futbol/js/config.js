@@ -17,17 +17,19 @@
     TAMANO_PLANTEL: TAMANO_PLANTEL,
     PUNTOS_POR_VICTORIA: 10,
     PUNTOS_OBJETIVO: 100,
-    PARTIDOS_FIJOS: 10,
+    // Cantidad de fechas (subasta + partido/s) que se elige al empezar.
+    FECHAS_POR_DEFECTO: 10, FECHAS_MIN: 1, FECHAS_MAX: 30,
+    // Pases por partido: pasar cuando nadie pujo gasta uno.
+    PASES_POR_PARTIDO: 2,
+    MANAGERS_MIN: 2, MANAGERS_MAX: 6,
     MERCADO: {
       tamano: 24,
       porCategoria: { Leyenda: 3, Crack: 4, Estrella: 10, Figura: 7 },
       // Sin arqueros: el arquero es el mismo para los dos equipos (ver simulacion.js).
       minPorPosicion: { DEF: 4, MED: 4, DEL: 4 },
     },
-    COLORES: {
-      manager1: '#38BDF8',
-      manager2: '#FB923C',
-    },
+    // Un color por manager, en orden (hasta 6).
+    COLORES: ['#38BDF8', '#FB923C', '#4ADE80', '#C084FC', '#FACC15', '#F472B6'],
   };
 
   // Tabla de categorías por OVR (sección 2.3 / 3.2)

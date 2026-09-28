@@ -60,20 +60,19 @@ Reglas de trabajo:
 
 ### 2.1 Torneo
 
-- 2 managers (así se llama en el código a cada persona que juega, para no confundir con «jugador» = futbolista).
-  Nombres editables al empezar; por defecto «Jugador 1» y «Jugador 2».
-  Colores fijos: manager 1 **celeste** (`#38BDF8`), manager 2 **naranja** (`#FB923C`).
-- El torneo es una sucesión de **partidos**. Cada partido = **mercado nuevo → subasta → partido simulado → puntos**.
-- Ganar un partido da **10 puntos**. No hay empates: si termina igualado en los 90', se juega un **alargue de 30' con gol de oro**; si nadie convierte, **penales** (ver 5.3).
-- **Modo de torneo** (se elige en la pantalla de inicio):
-  - **«Primero a 100»** (por defecto): gana el torneo el primero que llega a 100 puntos (10 victorias).
-    Puede llevar entre 10 y 19 partidos.
-  - **«10 partidos»**: se juegan exactamente 10; gana quien tenga más puntos. Si quedan 50–50,
-    se juega un **partido de desempate** (con su subasta) y quien lo gana es campeón.
-  - Ambas variantes existen porque el pedido original menciona las dos cosas. Guardá las constantes
-    (`PUNTOS_POR_VICTORIA = 10`, `PUNTOS_OBJETIVO = 100`, `PARTIDOS_FIJOS = 10`) en un único objeto de configuración.
-- **Quién nomina primero** en cada partido: en el partido 1 se sortea; desde el partido 2, nomina primero
-  **el que perdió el partido anterior**.
+- **De 2 a 6 managers** (así se llama en el código a cada persona que juega, para no confundir con «jugador» = futbolista).
+  Nombres editables al empezar («+ Agregar jugador» / «✕»); un color fijo por manager, en orden:
+  celeste `#38BDF8`, naranja `#FB923C`, verde `#4ADE80`, violeta `#C084FC`, amarillo `#FACC15`, rosa `#F472B6`.
+- El torneo es una sucesión de **fechas**. Cada fecha = **mazo nuevo → subasta entre todos → partidos → puntos**.
+  Con 2 managers se juega un partido; con más, **todos contra todos** (con 6, 15 partidos por fecha).
+- Cada victoria da **10 puntos**. No hay empates: si un partido termina igualado en los 90', alargue de 30' con gol de oro
+  y, si nadie convierte, penales (ver 5.3). La tabla lleva puntos, PJ, PG, GF, GC y DG.
+- **Duración** (se elige al empezar):
+  - **«Cantidad de partidos»** (por defecto): se elige cuántas fechas se juegan (1 a 30, por defecto 10); gana el de más puntos.
+  - **«Primero a 100»**: termina en la fecha en que alguien llega a 100 puntos; si varios la pasan, gana el de más puntos.
+  - En los dos modos, si arriba quedan empatados en puntos, se juega una **fecha de desempate solo entre los empatados**
+    (y otra, si siguen empatados).
+- **Quién abre el primer lote** de cada fecha: en la fecha 1 se sortea; después, el último de la tabla (si hay empate abajo, sorteo).
 
 ### 2.2 Presupuesto y plantel (se reinicia en cada partido)
 
@@ -112,28 +111,27 @@ Cada partido genera un **mercado** de **24 futbolistas** sacados de los 200 juga
 - El mercado usa el RNG con semilla del partido (sección 7): mismo seed → mismo mercado.
 - Entre partidos no se excluye a nadie: Messi puede volver a salir en el partido siguiente.
 
-### 2.4 Subasta al azar, pujas por turnos y reparto parejo
+### 2.4 Subasta al azar, pujas por turnos, pases y reparto parejo
 
 Nadie elige a quién subastar: después de poner los nombres, el juego arranca solo.
 
-1. **Sale un jugador al azar.** Se toma el próximo del **mazo** del partido (los 24 del mercado de 2.3 en orden
-   al azar y, detrás, el resto de los 200 mezclados, por si se descartan muchos). Aparece con la revelación de la carta.
-2. **Arranca en $1, sin dueño.** Le toca primero a quien abre el lote (se alterna lote a lote; en el primer lote del
-   partido abre el que perdió el partido anterior, y en el partido 1 se sortea). Puede **pujar** ($1, $1,50, $2 o «Todo»)
-   o **pasar**.
-3. **Pujas de a $0,50.** Una vez que hay una puja, se alternan: el que no va ganando sube (+$0,50, +$1, +$2, «Todo»)
-   o pasa, y si pasa el lote es del que va ganando. Si al que le toca no le alcanza para superar, se cierra solo.
-4. **Si el primero pasa**, le toca al otro: si puja $1 (o más) se lo lleva en el acto; si también pasa, **el jugador se
-   descarta** (queda afuera de este partido) y sale el siguiente.
-5. **Reparto parejo.** Cuando uno completa sus 4, al otro se le completan los lugares libres **al azar, con un equipo
-   parejo al del rival** (misma fuerza ATQ + CRE + DEF, con ±2 de tolerancia; ver `js/reparto.js`). Cuestan $1 cada uno
-   y aparecen todos juntos. No comprar nada también es una estrategia: te toca un equipo de la misma fuerza que el rival.
-6. Con los dos equipos completos → «Ir al partido ⚽».
+1. **Sale un jugador al azar** del **mazo** de la fecha (los 24 del mercado de 2.3 en orden al azar y, detrás, el resto
+   de los 200 mezclados). Aparece con la revelación de la carta.
+2. **Arranca en $1, sin dueño.** El turno va rotando entre los managers con lugares libres, empezando por el que abre
+   (se alterna lote a lote). Cada uno **puja** o **pasa**; el que pasa queda afuera de ese lote.
+3. **Pases: 2 por fecha.** Pasar cuando **nadie pujó todavía** gasta un pase. Sin pases, si nadie pujó, hay que pujar
+   (al menos $1). Pasar cuando **ya hay alguien ganando** (no subir) es libre. En cada fecha nueva se recargan los 2 pases.
+4. **Pujas de a $0,50** ($1, $1,50, $2, «Todo» en la apertura; después +$0,50, +$1, +$2, «Todo»). Gana el lote el último
+   que queda sin pasar; si al que le toca no le alcanza para superar, queda afuera solo.
+5. **Si nadie puja**, el jugador se descarta y sale el siguiente.
+6. **Reparto parejo.** Cuando **queda uno solo** con lugares libres, se le completan **al azar con un equipo parejo** a los
+   demás (misma fuerza ATQ + CRE + DEF que el promedio de los equipos completos, ±2; `js/reparto.js`). Cuestan $1 cada
+   uno y aparecen todos juntos. Con 2 managers, es «cuando uno completa sus 4, al otro se le completa el equipo».
+7. Con todos completos → «Ir al partido ⚽» (2 managers) o «Ir a la fecha ⚽».
 
 Casos borde que el motor cubre (y testea): pujas fuera de turno, por debajo del mínimo, que no son múltiplo de $0,50 o
-por encima de la puja máxima; invariante `presupuesto ≥ lugaresLibres × $1`; si se acabara el mazo con los dos
-incompletos, el primero se completa al azar y el segundo parejo con el primero. **Deshacer** revierte la última puja o
-el último «paso» del lote en curso.
+por encima de la puja máxima; pasar sin pases; invariante `presupuesto ≥ lugaresLibres × $1`. **Deshacer** revierte la
+última puja o el último «paso» del lote en curso (y devuelve el pase).
 
 **Reiniciar:** desde que arranca el torneo hay un botón «↺ Reiniciar» siempre visible (junto a «Historial») que, con
 dos toques, borra todo y vuelve a la pantalla de nombres.

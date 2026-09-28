@@ -24,30 +24,32 @@
   <section class="pantalla" data-pantalla="inicio">
     <div class="contenedor" style="max-width:640px">
       <h1 class="pantalla__titulo">⚽ Subasta de Cracks</h1>
-      <p class="pantalla__bajada">Armá un equipo de 4 futbolistas históricos comprándolos en subasta y jugá el partido. Gana el torneo quien llegue primero a 100 puntos.</p>
+      <p class="pantalla__bajada">Armá un equipo de 4 futbolistas históricos comprándolos en subasta y jugá el torneo, de 2 a 6 jugadores en la misma pantalla.</p>
 
       <div id="torneo-guardado-cont"></div>
 
       <form class="tarjeta" id="form-inicio">
         <div class="form-fila">
-          <label for="nombre-m1">Manager 1 (celeste)</label>
-          <input type="text" id="nombre-m1" maxlength="16" placeholder="Jugador 1" autocomplete="off" />
-        </div>
-        <div class="form-fila">
-          <label for="nombre-m2">Manager 2 (naranja)</label>
-          <input type="text" id="nombre-m2" maxlength="16" placeholder="Jugador 2" autocomplete="off" />
+          <label id="lbl-jugadores">Jugadores (de 2 a 6)</label>
+          <div id="lista-managers" class="lista-managers" aria-labelledby="lbl-jugadores"></div>
+          <button type="button" class="btn btn--chico btn--fantasma" id="btn-agregar-manager">+ Agregar jugador</button>
         </div>
 
         <div class="form-fila">
-          <label id="lbl-modo">Modo de torneo</label>
+          <label id="lbl-modo">Duración del torneo</label>
           <div class="modo-selector" role="radiogroup" aria-labelledby="lbl-modo">
             <label class="modo-opcion seleccionada">
-              <input type="radio" name="modo" value="primeroA100" checked />Primero a 100
-              <div class="modo-opcion__desc">Gana quien llegue primero a 100 puntos (10 victorias). Entre 10 y 19 partidos.</div>
+              <input type="radio" name="modo" value="fechas" checked />Cantidad de partidos
+              <div class="modo-opcion__desc">Elegís cuántas fechas se juegan; gana el que más puntos sume.</div>
+              <div class="stepper" role="group" aria-label="Cantidad de partidos">
+                <button type="button" class="btn btn--chico" id="btn-fechas-menos" aria-label="Uno menos">−</button>
+                <input type="number" id="cant-fechas" min="1" max="30" value="10" inputmode="numeric" aria-label="Cantidad de partidos" />
+                <button type="button" class="btn btn--chico" id="btn-fechas-mas" aria-label="Uno más">+</button>
+              </div>
             </label>
             <label class="modo-opcion">
-              <input type="radio" name="modo" value="diezPartidos" />10 partidos
-              <div class="modo-opcion__desc">Se juegan 10 partidos fijos; gana quien tenga más puntos. Empate a desempate.</div>
+              <input type="radio" name="modo" value="primeroA100" />Primero a 100
+              <div class="modo-opcion__desc">Termina en la fecha en que alguien llega a 100 puntos (10 victorias).</div>
             </label>
           </div>
         </div>
@@ -55,13 +57,14 @@
         <details class="reglas">
           <summary>¿Cómo se juega?</summary>
           <ul>
-            <li>Cada partido arrancás con $20 y un plantel vacío de 4 lugares para jugadores de campo.</li>
-            <li>Los jugadores salen a subasta al azar, de a uno. Arranca en $1 y sube de a $0,50. Podés pasar: si pasan los dos, ese jugador queda afuera.</li>
+            <li>Cada fecha arrancás con $20 y un plantel vacío de 4 lugares para jugadores de campo.</li>
+            <li>Los jugadores salen a subasta al azar, de a uno. Arranca en $1 y sube de a $0,50; el turno va rotando.</li>
+            <li>Si nadie pujó todavía, pasar gasta un pase: tenés 2 por fecha. Sin pases, te toca pujar. Cuando ya hay alguien ganando, pasar (no subir) es libre.</li>
             <li>Nadie puede pujar por encima de su puja máxima: siempre te va a alcanzar para completar el equipo.</li>
-            <li>Cuando uno completa sus 4, al otro se le completan al azar con un equipo parejo al del rival. No comprar también es una estrategia.</li>
-            <li>Con los 2 equipos armados se juega un partido simulado según las cartas. El arquero es el mismo para los dos: gana la destreza de los jugadores.</li>
+            <li>Cuando queda uno solo sin completar, se le completa al azar con un equipo parejo a los demás.</li>
+            <li>Después se juega: con 2 jugadores, un partido; con más, todos contra todos. El arquero es el mismo para todos: gana la destreza de los jugadores.</li>
             <li>Si empatan en los 90': alargue con gol de oro. Si nadie la mete, penales.</li>
-            <li>Ganar un partido da 10 puntos. Se repite hasta terminar el torneo.</li>
+            <li>Cada victoria da 10 puntos. Si al final hay empate arriba, se juega una fecha de desempate entre los empatados.</li>
           </ul>
         </details>
 
@@ -77,9 +80,8 @@
     <div class="contenedor">
       <div class="encabezado" id="encabezado-subasta"></div>
       <div class="subasta-layout">
-        <div class="panel-manager" data-manager="0" id="panel-manager-0"></div>
         <div class="centro-subasta" id="centro-subasta"></div>
-        <div class="panel-manager" data-manager="1" id="panel-manager-1"></div>
+        <div class="paneles" id="paneles-managers"></div>
       </div>
     </div>
   </section>
@@ -87,7 +89,7 @@
   <!-- ==================== 3. PREVIA ==================== -->
   <section class="pantalla" data-pantalla="previa">
     <div class="contenedor" style="max-width:900px">
-      <h2 class="pantalla__titulo" style="text-align:center">Previa del partido</h2>
+      <h2 class="pantalla__titulo" style="text-align:center" id="titulo-previa">Previa del partido</h2>
       <div id="previa-contenido"></div>
       <div class="fila-botones" style="justify-content:center;margin-top:20px">
         <button type="button" class="btn btn--principal btn--grande" id="btn-jugar-partido">Jugar partido ⚽</button>

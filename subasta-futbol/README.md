@@ -221,3 +221,14 @@ no el arquero ni los penales.
   al comprado el 49,4 % de las veces.
 - **«↺ Reiniciar»** siempre visible una vez que arranca el torneo: con dos toques borra todo y vuelve al inicio.
 
+## Torneo de 2 a 6 jugadores, cantidad de partidos y pases
+
+- **De 2 a 6 jugadores.** En el inicio se agregan o quitan jugadores; cada uno tiene su color. La subasta es entre todos
+  (el turno rota) y después se juega **todos contra todos** con los equipos armados (con 2, un partido con relato).
+  Tabla con puntos, PJ, PG, GF, GC y DG; si arriba quedan empatados, fecha de desempate solo entre ellos.
+- **Cantidad de partidos** (fechas, de 1 a 30) o «Primero a 100», a elección al empezar.
+- **Pases:** pasar cuando nadie pujó gasta un pase; hay 2 por fecha y se recargan en la siguiente. Sin pases, si nadie
+  pujó, hay que pujar. Pasar cuando ya hay alguien ganando (no subir) es libre.
+- **Reparto parejo:** cuando queda uno solo sin completar, se le completa al azar con la fuerza promedio de los demás.
+- El guardado pasó a `subasta-cracks:v3` (los torneos guardados con el formato anterior se ignoran).
+

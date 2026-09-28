@@ -10,14 +10,16 @@
   var torneoMod = SC.torneo;
   var repartoMod = SC.reparto;
 
-  // v2: subasta al azar (el formato del partido cambió; los guardados v1 se ignoran).
-  var CLAVE_STORAGE = 'subasta-cracks:v2';
+  // v3: torneo de 2 a 6 jugadores (cambió el formato; los guardados anteriores se ignoran).
+  var CLAVE_STORAGE = 'subasta-cracks:v3';
 
   var JUGADOR_POR_ID = {};
   JUGADORES.forEach(function (j) { JUGADOR_POR_ID[j.id] = j; });
   function idAJugador(id) { return JUGADOR_POR_ID[id]; }
 
   var Estado = { torneo: null, pantalla: 'inicio' };
+  // Formulario de inicio: un nombre por jugador (2 a 6).
+  var FormInicio = { nombres: ['', ''] };
   var animacion = { resultado: null, partido: null, saltado: false, timers: [] };
 
   // ------------------------------------------------------------------
@@ -30,9 +32,13 @@
     });
   }
 
-  function nombreManager(id) {
-    var m = Estado.torneo.managers.filter(function (x) { return x.id === id; })[0];
-    return m ? m.nombre : '';
+  function managerDelTorneo(id) {
+    return Estado.torneo.managers.filter(function (x) { return x.id === id; })[0];
+  }
+  function nombreManager(id) { var m = managerDelTorneo(id); return m ? m.nombre : ''; }
+  function colorManager(id) { var m = managerDelTorneo(id); return m ? m.color : 'inherit'; }
+  function nombreConColor(id) {
+    return '<strong style="color:' + colorManager(id) + '">' + escapeHtml(nombreManager(id)) + '</strong>';
   }
 
   function guardarEstado() {
@@ -192,8 +198,8 @@
     var guardado = cargarEstadoGuardado();
     if (guardado && guardado.torneo) {
       var t = guardado.torneo;
-      var texto = 'Continuar torneo (Partido ' + t.numeroPartido + ' · ' + t.managers[0].nombre + ' ' +
-        t.managers[0].puntos + ' – ' + t.managers[1].nombre + ' ' + t.managers[1].puntos + ')';
+      var texto = 'Torneo guardado · Fecha ' + t.numeroFecha + ' · ' +
+        t.managers.map(function (m) { return m.nombre + ' ' + m.puntos; }).join(' · ');
       cont.innerHTML =
         '<div class="torneo-guardado"><span>' + escapeHtml(texto) + '</span>' +
         '<div class="fila-botones">' +
@@ -202,7 +208,7 @@
         '</div></div>';
       document.getElementById('btn-continuar-torneo').addEventListener('click', function () {
         Estado.torneo = t;
-        irA(guardado.pantalla || 'subasta');
+        irA(guardado.pantalla && guardado.pantalla !== 'inicio' ? guardado.pantalla : 'subasta');
       });
       document.getElementById('btn-descartar-torneo').addEventListener('click', function () {
         confirmarConDobleToque(this, 'Tocá de nuevo para borrar el guardado', function () {
@@ -213,20 +219,48 @@
     } else {
       cont.innerHTML = '';
     }
+    renderListaManagers();
+  }
+
+  function renderListaManagers() {
+    var cont = document.getElementById('lista-managers');
+    var n = FormInicio.nombres.length;
+    cont.innerHTML = FormInicio.nombres.map(function (nombre, i) {
+      return '<div class="fila-manager">' +
+        '<span class="pastilla" style="background:' + CONFIG.COLORES[i] + '"></span>' +
+        '<input type="text" id="nombre-m' + (i + 1) + '" maxlength="16" placeholder="Jugador ' + (i + 1) + '" autocomplete="off"' +
+        ' value="' + escapeHtml(nombre) + '" aria-label="Nombre del jugador ' + (i + 1) + '" />' +
+        (n > CONFIG.MANAGERS_MIN
+          ? '<button type="button" class="btn btn--chico btn--fantasma" data-quitar-manager="' + i + '" aria-label="Quitar al jugador ' + (i + 1) + '">✕</button>'
+          : '') +
+        '</div>';
+    }).join('');
+    cont.querySelectorAll('input').forEach(function (input, i) {
+      input.addEventListener('input', function () { FormInicio.nombres[i] = input.value; });
+    });
+    cont.querySelectorAll('[data-quitar-manager]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        FormInicio.nombres.splice(Number(btn.getAttribute('data-quitar-manager')), 1);
+        renderListaManagers();
+      });
+    });
+    document.getElementById('btn-agregar-manager').hidden = n >= CONFIG.MANAGERS_MAX;
+  }
+
+  function cantidadFechas() {
+    var v = Math.round(Number(document.getElementById('cant-fechas').value));
+    if (!isFinite(v) || v === 0) v = CONFIG.FECHAS_POR_DEFECTO;
+    return Math.max(CONFIG.FECHAS_MIN, Math.min(CONFIG.FECHAS_MAX, v));
   }
 
   function iniciarNuevoTorneo() {
-    var nombre1 = document.getElementById('nombre-m1').value.trim() || 'Jugador 1';
-    var nombre2 = document.getElementById('nombre-m2').value.trim() || 'Jugador 2';
+    var managers = FormInicio.nombres.map(function (nombre, i) {
+      return { id: i, nombre: nombre.trim() || ('Jugador ' + (i + 1)), color: CONFIG.COLORES[i] };
+    });
     var modo = document.querySelector('input[name="modo"]:checked').value;
     var seed = 'torneo-' + Date.now() + '-' + Math.floor(Math.random() * 1e9);
-    var managers = [
-      { id: 0, nombre: nombre1, color: CONFIG.COLORES.manager1 },
-      { id: 1, nombre: nombre2, color: CONFIG.COLORES.manager2 },
-    ];
-    var torneo = torneoMod.crearTorneo({ modo: modo, managers: managers, seed: seed });
-    torneo = torneoMod.prepararSiguientePartido(torneo);
-    Estado.torneo = torneo;
+    var torneo = torneoMod.crearTorneo({ modo: modo, fechas: cantidadFechas(), managers: managers, seed: seed });
+    Estado.torneo = torneoMod.prepararSiguientePartido(torneo);
     irA('subasta');
   }
 
@@ -234,46 +268,48 @@
   // Pantalla 2: Subasta
   // ------------------------------------------------------------------
 
+  function textoFecha(torneo) {
+    var n = torneo.numeroFecha;
+    if (torneo.desempate) return 'Fecha ' + n + ' · desempate';
+    if (torneo.config.modo === 'fechas') return 'Fecha ' + n + ' de ' + torneo.config.fechas;
+    return 'Fecha ' + n + ' · hasta 100 puntos';
+  }
+
   function renderEncabezado(torneo) {
-    var modo = torneo.config.modo;
-    var html = '<div><div class="encabezado__numero">Partido ' + torneo.numeroPartido + '</div>';
+    var html = '<div class="encabezado__numero">' + textoFecha(torneo) + '</div>';
     html += '<div class="encabezado__marcador">';
-    torneo.managers.forEach(function (m) {
+    torneoMod.tabla(torneo).forEach(function (m) {
       html += '<span class="encabezado__punto"><span class="pastilla" style="background:' + m.color + '"></span>' +
-        escapeHtml(m.nombre) + ' ' + m.puntos + '</span>';
+        escapeHtml(m.nombre) + ' <b>' + m.puntos + '</b></span>';
     });
-    html += '</div></div>';
-    html += '<div class="progreso">';
-    torneo.managers.forEach(function (m) {
-      var valor, max;
-      if (modo === 'primeroA100') { valor = m.puntos; max = torneo.config.puntosObjetivo; }
-      else { valor = torneo.historial.filter(function (h) { return h.ganador === m.id; }).length; max = torneo.config.partidosFijos; }
-      var pct = Math.max(0, Math.min(100, (valor / max) * 100));
-      html += '<div class="progreso__barra"><div class="progreso__relleno" style="width:' + pct + '%;background:' + m.color + '"></div></div>';
-    });
-    var textoProgreso = modo === 'primeroA100' ? 'hasta 100 puntos' : ('partido ' + Math.min(torneo.historial.length + 1, torneo.config.partidosFijos) + '/' + torneo.config.partidosFijos);
-    html += '<div class="progreso__texto">' + textoProgreso + '</div></div>';
+    html += '</div>';
     document.getElementById('encabezado-subasta').innerHTML = html;
   }
 
-  function renderPanelManager(partido, managerId) {
-    var m = partido.managers[managerId];
-    var pujaMax = subastaMod.pujaMaxima(partido, managerId);
-    var esTurno = !!(partido.lote && partido.lote.turno === managerId);
+  function htmlPases(n) {
+    var total = CONFIG.PASES_POR_PARTIDO;
+    var puntos = '';
+    for (var i = 0; i < total; i++) puntos += i < n ? '●' : '○';
+    return '<span class="pases" title="Pases que le quedan en esta fecha" aria-label="' + n + ' pases">' + puntos + '</span>';
+  }
 
-    var html = '<div class="panel-manager__nombre">' + escapeHtml(m.nombre) + '</div>';
+  function htmlPanelManager(partido, m) {
+    var esTurno = !!(partido.lote && partido.lote.turno === m.id);
+    var completo = m.plantel.length >= CONFIG.TAMANO_PLANTEL;
+    var html = '<div class="panel-manager' + (esTurno ? ' turno' : '') + '" style="--c:' + m.color + '">';
+    html += '<div class="panel-manager__nombre">' + escapeHtml(m.nombre) + '</div>';
     html += '<div class="panel-manager__presupuesto">' + formatearPlata(m.presupuesto) + '</div>';
-    html += '<div class="panel-manager__pujamax">Puja máx. ' + formatearPlata(pujaMax) + '</div>';
+    html += '<div class="panel-manager__pujamax">' +
+      (completo ? 'Equipo completo' : 'Puja máx. ' + formatearPlata(subastaMod.pujaMaxima(partido, m.id))) + '</div>';
+    html += '<div class="panel-manager__pases">Pases ' + htmlPases(m.pases) + '</div>';
     html += '<div class="plantel">';
     for (var i = 0; i < CONFIG.TAMANO_PLANTEL; i++) {
       html += m.plantel[i] != null ? renderCarta(idAJugador(m.plantel[i]), { tamano: 'mini' }) : cartaVacia();
     }
     html += '</div>';
     html += renderMetricas(m.plantel.map(idAJugador));
-
-    var panelEl = document.getElementById('panel-manager-' + managerId);
-    panelEl.innerHTML = html;
-    panelEl.classList.toggle('turno', esTurno);
+    html += '</div>';
+    return html;
   }
 
   function ejecutarAccionSubasta(accionFn) {
@@ -291,13 +327,8 @@
     Estado.torneo.partidoActual = nuevo;
     if (nuevo.lotes.length > lotesAntes) {
       var loteInfo = nuevo.lotes[nuevo.lotes.length - 1];
-      var j = idAJugador(loteInfo.jugadorId);
-      var otro = nuevo.managers.filter(function (m) { return m.id !== loteInfo.ganador; })[0].id;
-      // Se cerro despues de una puja sin que el rival pasara: no le alcanzaba.
-      var noAlcanza = loteAntes.turno === loteInfo.ganador && loteAntes.pasaron.indexOf(otro) === -1;
-      mostrarToast(noAlcanza
-        ? 'A ' + nombreManager(otro) + ' no le alcanza — ' + j.nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) + ' por ' + formatearPlata(loteInfo.precio)
-        : '¡' + j.nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) + ' por ' + formatearPlata(loteInfo.precio) + '!');
+      mostrarToast('¡' + idAJugador(loteInfo.jugadorId).nombreCarta + ' es de ' + nombreManager(loteInfo.ganador) +
+        ' por ' + formatearPlata(loteInfo.precio) + '!');
     } else if (nuevo.descartados.length > descartadosAntes) {
       mostrarToast('Nadie quiso a ' + idAJugador(loteAntes.jugadorId).nombreCarta + ': queda afuera');
     }
@@ -406,28 +437,27 @@
       ? '<div class="lote__arranca">Arranca en</div><div class="lote__precio">$1</div>'
       : '<div class="lote__precio">' + formatearPlata(lote.precio) + '</div>';
     html += '<div class="lote__estado">';
-    if (sinDueno) {
-      html += lote.pasaron.length
-        ? '<span><strong class="m' + (lote.pasaron[0] + 1) + '">' + escapeHtml(nombreManager(lote.pasaron[0])) + '</strong> pasó</span>'
-        : '<span>Nadie pujó todavía</span>';
-    } else {
-      html += '<span>Va ganando: <strong class="m' + (lote.lider + 1) + '">' + escapeHtml(nombreManager(lote.lider)) + '</strong></span>';
-    }
-    html += '<span>Le toca a: <strong class="m' + (turno + 1) + '">' + escapeHtml(nombreManager(turno)) + '</strong> (puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
+    html += sinDueno ? '<span>Nadie pujó todavía</span>' : '<span>Va ganando: ' + nombreConColor(lote.lider) + '</span>';
+    if (lote.fuera.length) html += '<span>Pasaron: ' + lote.fuera.map(nombreConColor).join(', ') + '</span>';
+    html += '<span>Le toca a: ' + nombreConColor(turno) + ' (puja máx. ' + formatearPlata(pujaMax) + ')</span></div>';
     html += '<div class="fila-botones">';
     opcionesPuja(partido).forEach(function (o, i) {
       html += '<button type="button" class="btn' + (i === 0 ? ' btn--principal' : '') + '" data-puja-monto="' + o.monto + '"' +
         (o.habilitado ? '' : ' disabled') + '>' + o.etiqueta + '</button>';
     });
-    html += '<button type="button" class="btn btn--pasar" id="btn-pasar">Pasar</button>';
+    var puedePasar = subastaMod.puedePasar(partido, turno);
+    var pases = subastaMod.pasesRestantes(partido, turno);
+    var textoPasar = !sinDueno ? 'Pasar' : puedePasar
+      ? 'Pasar (' + (pases === 1 ? 'te queda 1 pase' : 'te quedan ' + pases + ' pases') + ')'
+      : 'Sin pases: tenés que pujar';
+    html += '<button type="button" class="btn btn--pasar" id="btn-pasar"' + (puedePasar ? '' : ' disabled') + '>' + textoPasar + '</button>';
     html += '</div>';
-    var cadena = lote.pasaron.map(function (m) {
-      return '<span class="m' + (m + 1) + '">' + escapeHtml(nombreManager(m)) + ' pasó</span>';
-    }).concat(lote.pujas.map(function (pj) {
-      return '<span class="m' + (pj.manager + 1) + '">' + escapeHtml(nombreManager(pj.manager)) + ' ' + formatearPlata(pj.monto) + '</span>';
-    }));
-    if (cadena.length) html += '<div class="cadena">' + cadena.join(' → ') + '</div>';
-    if (lote.pujas.length > 0 || lote.pasaron.length > 0) {
+    if (lote.pujas.length) {
+      html += '<div class="cadena">' + lote.pujas.map(function (pj) {
+        return '<span style="color:' + colorManager(pj.manager) + '">' + escapeHtml(nombreManager(pj.manager)) + ' ' + formatearPlata(pj.monto) + '</span>';
+      }).join(' → ') + '</div>';
+    }
+    if (lote.pila.length > 0) {
       html += '<button type="button" class="btn btn--fantasma btn--chico btn-deshacer" id="btn-deshacer">↩ Deshacer</button>';
     }
     html += '</div></section>';
@@ -449,7 +479,7 @@
     });
   }
 
-  // Uno completo sus 4: al otro se le completan al azar, parejo (js/reparto.js).
+  // Queda uno solo sin completar: se le completa al azar, parejo (js/reparto.js).
   function aplicarReparto() {
     var partido = Estado.torneo.partidoActual;
     Estado.torneo.partidoActual = repartoMod.completarPartido(partido, partido.seed + ':reparto');
@@ -458,19 +488,25 @@
   }
 
   function renderCentroTerminada(partido) {
+    var dos = partido.managers.length === 2;
     var html = '<div class="subasta-terminada">';
     if (partido.reparto.length > 0) {
       partido.reparto.forEach(function (r) {
-        var rival = partido.managers.filter(function (m) { return m.id !== r.manager; })[0];
-        html += '<div class="reparto__titulo"><strong class="m' + (rival.id + 1) + '">' + escapeHtml(rival.nombre) + '</strong> completó su equipo. ' +
-          'A <strong class="m' + (r.manager + 1) + '">' + escapeHtml(nombreManager(r.manager)) + '</strong> le ' +
-          (r.ids.length === 1 ? 'tocó 1 jugador' : 'tocaron ' + r.ids.length + ' jugadores') + ' al azar, parejos con el equipo de ' + escapeHtml(rival.nombre) + ':</div>';
+        var cuantos = r.ids.length === 1 ? 'tocó 1 jugador' : 'tocaron ' + r.ids.length + ' jugadores';
+        if (dos) {
+          var rival = partido.managers.filter(function (m) { return m.id !== r.manager; })[0];
+          html += '<div class="reparto__titulo">' + nombreConColor(rival.id) + ' completó su equipo. A ' + nombreConColor(r.manager) +
+            ' le ' + cuantos + ' al azar, parejos con el equipo de ' + escapeHtml(rival.nombre) + ':</div>';
+        } else {
+          html += '<div class="reparto__titulo">' + nombreConColor(r.manager) + ' quedó último sin completar: le ' + cuantos +
+            ' al azar, parejos con los demás equipos:</div>';
+        }
         html += '<div class="reparto__cartas">' + r.ids.map(function (id) { return renderCarta(idAJugador(id), { tamano: 'grande', ancho: '150px' }); }).join('') + '</div>';
       });
     } else {
-      html += '<p>¡Los dos equipos están completos!</p>';
+      html += '<p>¡Los equipos están completos!</p>';
     }
-    html += '<button type="button" class="btn btn--principal btn--grande" id="btn-ir-partido">Ir al partido ⚽</button></div>';
+    html += '<button type="button" class="btn btn--principal btn--grande" id="btn-ir-partido">' + (dos ? 'Ir al partido ⚽' : 'Ir a la fecha ⚽') + '</button></div>';
     document.getElementById('centro-subasta').innerHTML = html;
     document.getElementById('btn-ir-partido').addEventListener('click', function () { irA('previa'); });
   }
@@ -481,8 +517,9 @@
     var estado = subastaMod.estadoSubasta(partido);
     if (estado === 'reparto') { aplicarReparto(); return; }
     renderEncabezado(torneo);
-    renderPanelManager(partido, 0);
-    renderPanelManager(partido, 1);
+    var paneles = document.getElementById('paneles-managers');
+    paneles.innerHTML = partido.managers.map(function (m) { return htmlPanelManager(partido, m); }).join('');
+    paneles.classList.toggle('paneles--muchos', partido.managers.length > 2);
     if (estado === 'esperandoLote') renderCentroEsperando();
     else if (estado === 'pujando') renderCentroLote(partido);
     else renderCentroTerminada(partido);
@@ -492,35 +529,40 @@
   // Pantalla 3: Previa
   // ------------------------------------------------------------------
 
+  function equipoDe(partido, id) {
+    return partido.managers.filter(function (m) { return m.id === id; })[0].plantel.map(idAJugador);
+  }
+
   function renderPrevia() {
     var torneo = Estado.torneo;
     var partido = torneo.partidoActual;
-    var equipos = partido.managers.map(function (m) { return m.plantel.map(idAJugador); });
-    var metricas = [simMod.metricasEquipo(equipos[0]), simMod.metricasEquipo(equipos[1])];
-    var probs = simMod.probabilidadVictoria(equipos[0], equipos[1], 2000, partido.seed + ':previa');
+    var dos = partido.managers.length === 2;
+    document.getElementById('titulo-previa').textContent = dos ? 'Previa del partido' : (torneo.desempate ? 'Previa del desempate' : 'Previa de la fecha');
+    document.getElementById('btn-jugar-partido').textContent = dos ? 'Jugar partido ⚽' : 'Jugar la fecha ⚽';
 
-    var html = '<div class="previa-layout">';
-    [0, 1].forEach(function (i) {
-      var m = partido.managers[i];
-      html += '<div class="previa-equipo" data-manager="' + i + '"><div class="previa-equipo__nombre">' + escapeHtml(m.nombre) + '</div>';
-      html += '<div class="previa-formacion">';
-      equipos[i].forEach(function (j) {
-        html += '<div style="text-align:center">' + renderCarta(j, { tamano: 'mini' }) + '</div>';
-      });
-      html += '</div>';
-      html += renderMetricas(equipos[i]);
-      html += '</div>';
+    var html = '<div class="previa-layout' + (dos ? '' : ' previa-layout--muchos') + '">';
+    partido.managers.forEach(function (m) {
+      html += '<div class="previa-equipo" style="--c:' + m.color + '"><div class="previa-equipo__nombre">' + escapeHtml(m.nombre) + '</div>';
+      html += '<div class="previa-formacion">' + m.plantel.map(function (id) { return renderCarta(idAJugador(id), { tamano: 'mini' }); }).join('') + '</div>';
+      html += renderMetricas(m.plantel.map(idAJugador)) + '</div>';
     });
     html += '</div>';
 
-    var pA = Math.round(probs[0] * 100);
-    var pB = 100 - pA;
-    html += '<div class="probabilidad-barra">' +
-      '<div class="probabilidad-barra__lado" style="width:' + pA + '%;background:' + partido.managers[0].color + '">' + escapeHtml(partido.managers[0].nombre) + ' ' + pA + '%</div>' +
-      '<div class="probabilidad-barra__lado" style="width:' + pB + '%;background:' + partido.managers[1].color + '">' + escapeHtml(partido.managers[1].nombre) + ' ' + pB + '%</div>' +
-      '</div>';
-
-    html += '<p class="previa-nota">🧤 Los dos equipos le patean al mismo arquero (nivel ' + metricas[0].ARQ + '). ' +
+    if (dos) {
+      var a = partido.managers[0], b = partido.managers[1];
+      var probs = simMod.probabilidadVictoria(equipoDe(partido, a.id), equipoDe(partido, b.id), 2000, partido.seed + ':previa');
+      var pA = Math.round(probs[0] * 100);
+      html += '<div class="probabilidad-barra">' +
+        '<div class="probabilidad-barra__lado" style="width:' + pA + '%;background:' + a.color + '">' + escapeHtml(a.nombre) + ' ' + pA + '%</div>' +
+        '<div class="probabilidad-barra__lado" style="width:' + (100 - pA) + '%;background:' + b.color + '">' + escapeHtml(b.nombre) + ' ' + (100 - pA) + '%</div>' +
+        '</div>';
+    } else {
+      var cruces = torneoMod.crucesDeLaFecha(torneo);
+      html += '<div class="fixture"><h3>Todos contra todos · ' + cruces.length + ' partidos</h3><ul>' +
+        cruces.map(function (c) { return '<li>' + nombreConColor(c[0]) + ' <span>vs</span> ' + nombreConColor(c[1]) + '</li>'; }).join('') +
+        '</ul></div>';
+    }
+    html += '<p class="previa-nota">🧤 Todos le patean al mismo arquero (nivel ' + simMod.CONFIG_SIM.arqueroEstandar + '). ' +
       'Si empatan: alargue con gol de oro y, si nadie la mete, penales.</p>';
 
     document.getElementById('previa-contenido').innerHTML = html;
@@ -585,25 +627,59 @@
     if (el) el.textContent = min + "'";
   }
 
-  function iniciarPantallaPartido() {
-    var partido = Estado.torneo.partidoActual;
-    var equipos = partido.managers.map(function (m) { return m.plantel.map(idAJugador); });
-    var resultado = simMod.simularPartido(equipos[0], equipos[1], rngMod.crearRng(partido.seed + ':simulacion'));
+  // Simula todos los cruces de la fecha (deterministico dado el seed).
+  function simularFecha(torneo) {
+    var partido = torneo.partidoActual;
+    return torneoMod.crucesDeLaFecha(torneo).map(function (c) {
+      var rng = rngMod.crearRng(partido.seed + ':simulacion:' + c[0] + '-' + c[1]);
+      return { a: c[0], b: c[1], resultado: simMod.simularPartido(equipoDe(partido, c[0]), equipoDe(partido, c[1]), rng) };
+    });
+  }
 
-    animacion.resultado = resultado;
-    animacion.partido = partido;
+  function htmlFilaResultado(a, b, res) {
+    var extra = res.penales
+      ? ' <small>(pen. ' + res.penales.resultado[0] + '-' + res.penales.resultado[1] + ')</small>'
+      : (res.alargue && res.alargue.golDeOro ? ' <small>(gol de oro ' + res.alargue.golDeOro + "')</small>" : '');
+    return '<li class="fila-resultado">' +
+      '<span class="fila-resultado__equipo' + (res.ganador === 0 ? ' gano' : '') + '">' + nombreConColor(a) + '</span>' +
+      '<span class="fila-resultado__marcador">' + res.goles[0] + ' - ' + res.goles[1] + extra + '</span>' +
+      '<span class="fila-resultado__equipo fila-resultado__equipo--der' + (res.ganador === 1 ? ' gano' : '') + '">' + nombreConColor(b) + '</span></li>';
+  }
+
+  function iniciarPantallaPartido() {
+    var torneo = Estado.torneo;
+    var partido = torneo.partidoActual;
+    var resultados = simularFecha(torneo);
+
+    animacion.resultados = resultados;
     animacion.saltado = false;
     animacion.timers.forEach(function (t) { clearTimeout(t); });
     animacion.timers = [];
 
     var cont = document.getElementById('partido-contenido');
-    cont.innerHTML =
-      '<div class="marcador-grande"><span id="marcador-a">0</span><span>-</span><span id="marcador-b">0</span></div>' +
-      '<div class="marcador-grande__reloj" id="reloj">0\'</div>' +
-      '<div class="eventos-lista" id="eventos-lista"></div>' +
-      '<div id="penales-cont"></div>';
-
-    animarNoventaMinutos(resultado, partido);
+    if (resultados.length === 1) {
+      var r = resultados[0];
+      animacion.resultado = r.resultado;
+      cont.innerHTML =
+        '<div class="marcador-nombres">' + nombreConColor(r.a) + '<span>vs</span>' + nombreConColor(r.b) + '</div>' +
+        '<div class="marcador-grande"><span id="marcador-a">0</span><span>-</span><span id="marcador-b">0</span></div>' +
+        '<div class="marcador-grande__reloj" id="reloj">0\'</div>' +
+        '<div class="eventos-lista" id="eventos-lista"></div>' +
+        '<div id="penales-cont"></div>';
+      animarNoventaMinutos(r.resultado, partido);
+    } else {
+      animacion.resultado = null;
+      cont.innerHTML = '<h2 class="pantalla__titulo" style="text-align:center">' +
+        (torneo.desempate ? 'Desempate' : 'Fecha ' + torneo.numeroFecha) + '</h2>' +
+        '<ul class="fecha-resultados" id="fecha-resultados"></ul>';
+      resultados.forEach(function (res, i) {
+        animacion.timers.push(setTimeout(function () {
+          if (animacion.saltado) return;
+          document.getElementById('fecha-resultados').insertAdjacentHTML('beforeend', htmlFilaResultado(res.a, res.b, res.resultado));
+        }, 400 + i * 650));
+      });
+      animacion.timers.push(setTimeout(function () { if (!animacion.saltado) finalizarFecha(); }, 400 + resultados.length * 650 + 700));
+    }
   }
 
   // Minuto en que termina el partido: 90, el del gol de oro o 120 si hubo alargue sin goles.
@@ -655,8 +731,8 @@
   }
 
   function continuarConPenalesOFinal(resultado, partido) {
-    if (!resultado.penales) { finalizarPartido(resultado); return; }
-    animarPenales(resultado, function () { finalizarPartido(resultado); });
+    if (!resultado.penales) { finalizarFecha(); return; }
+    animarPenales(resultado, function () { finalizarFecha(); });
   }
 
   function animarPenales(resultado, cb) {
@@ -697,15 +773,21 @@
   }
 
   function saltarAnimacion() {
-    if (animacion.saltado || !animacion.resultado) return;
+    if (animacion.saltado || !animacion.resultados) return;
     animacion.saltado = true;
     animacion.timers.forEach(function (t) { clearTimeout(t); });
     animacion.timers = [];
 
     var resultado = animacion.resultado;
-    var lista = document.getElementById('eventos-lista');
-    if (lista) {
-      lista.innerHTML = '';
+    if (!resultado) {
+      var lista = document.getElementById('fecha-resultados');
+      if (lista) lista.innerHTML = animacion.resultados.map(function (r) { return htmlFilaResultado(r.a, r.b, r.resultado); }).join('');
+      finalizarFecha();
+      return;
+    }
+    var eventos = document.getElementById('eventos-lista');
+    if (eventos) {
+      eventos.innerHTML = '';
       var avisoPuesto = false;
       resultado.eventos.slice().sort(function (a, b) { return a.minuto - b.minuto; }).forEach(function (ev) {
         if (ev.alargue && !avisoPuesto) { agregarAvisoAlargueDom(); avisoPuesto = true; }
@@ -716,12 +798,14 @@
     pintarReloj(minutoFinal(resultado));
     pintarMarcador(resultado.goles);
     pintarPenalesInstantaneo(resultado);
-    finalizarPartido(resultado);
+    finalizarFecha();
   }
 
-  function finalizarPartido(resultado) {
-    if (Estado.pantalla !== 'partido') return; // ya se proceso (evita doble llamada)
-    Estado.torneo = torneoMod.registrarResultado(Estado.torneo, resultado);
+  function finalizarFecha() {
+    if (Estado.pantalla !== 'partido' || !animacion.resultados) return; // evita doble registro
+    var resultados = animacion.resultados;
+    animacion.resultados = null;
+    Estado.torneo = torneoMod.registrarFecha(Estado.torneo, resultados);
     irA('resultado');
   }
 
@@ -730,58 +814,79 @@
   // ------------------------------------------------------------------
 
   function renderTablaTorneo(torneo) {
-    var html = '<table class="tabla-torneo"><thead><tr><th>Manager</th><th>Puntos</th><th>Partidos ganados</th></tr></thead><tbody>';
-    torneo.managers.forEach(function (m) {
-      var victorias = torneo.historial.filter(function (h) { return h.ganador === m.id; }).length;
-      html += '<tr><td style="color:' + m.color + '">' + escapeHtml(m.nombre) + '</td><td>' + m.puntos + '</td><td>' + victorias + '</td></tr>';
+    var html = '<div class="tabla-scroll"><table class="tabla-torneo"><thead><tr>' +
+      '<th>#</th><th>Jugador</th><th>Pts</th><th>PJ</th><th>PG</th><th>GF</th><th>GC</th><th>DG</th></tr></thead><tbody>';
+    torneoMod.tabla(torneo).forEach(function (m, i) {
+      var dg = m.gf - m.gc;
+      html += '<tr><td>' + (i + 1) + '</td><td style="color:' + m.color + '">' + escapeHtml(m.nombre) + '</td><td><b>' + m.puntos + '</b></td>' +
+        '<td>' + m.pj + '</td><td>' + m.pg + '</td><td>' + m.gf + '</td><td>' + m.gc + '</td><td>' + (dg > 0 ? '+' : '') + dg + '</td></tr>';
     });
-    html += '</tbody></table>';
-    return html;
+    return html + '</tbody></table></div>';
+  }
+
+  function htmlGoles(resultado, equipo) {
+    var goles = resultado.eventos.filter(function (e) { return e.tipo === 'gol' && e.equipo === equipo; });
+    if (goles.length === 0) return '<li style="color:var(--texto-suave)">Sin goles</li>';
+    return goles.map(function (e) {
+      return '<li>⚽ ' + e.minuto + "' " + (e.alargue ? '(gol de oro) ' : '') + escapeHtml(idAJugador(e.autor).nombreCarta) +
+        (e.asistencia ? ' (asist. ' + escapeHtml(idAJugador(e.asistencia).nombreCarta) + ')' : '') + '</li>';
+    }).join('');
+  }
+
+  // Figura: el que mas goles hizo en la fecha (desempate: mayor OVR).
+  function figuraDeLaFecha(partidos) {
+    var goles = {};
+    partidos.forEach(function (p) {
+      p.resultado.eventos.forEach(function (e) { if (e.tipo === 'gol') goles[e.autor] = (goles[e.autor] || 0) + 1; });
+    });
+    var ids = Object.keys(goles).map(Number);
+    if (ids.length === 0) return partidos[0].resultado.figura;
+    ids.sort(function (x, y) { return (goles[y] - goles[x]) || (idAJugador(y).ovr - idAJugador(x).ovr); });
+    return ids[0];
   }
 
   function renderResultado() {
     var torneo = Estado.torneo;
     var ultimo = torneo.historial[torneo.historial.length - 1];
-    var resultado = ultimo.resultado;
+    var html = '';
 
-    var html = '<div class="resultado-cabecera">';
-    html += '<div class="resultado-marcador">' + resultado.goles[0] + ' - ' + resultado.goles[1];
-    if (resultado.penales) {
-      html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(pen. ' + resultado.penales.resultado[0] + '-' + resultado.penales.resultado[1] + ')</small>';
-    } else if (resultado.alargue && resultado.alargue.golDeOro) {
-      html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(gol de oro, ' + resultado.alargue.golDeOro + "')</small>";
+    if (ultimo.partidos.length === 1) {
+      var p = ultimo.partidos[0];
+      var resultado = p.resultado;
+      html += '<div class="resultado-cabecera">';
+      html += '<div class="marcador-nombres">' + nombreConColor(p.a) + '<span>vs</span>' + nombreConColor(p.b) + '</div>';
+      html += '<div class="resultado-marcador">' + resultado.goles[0] + ' - ' + resultado.goles[1];
+      if (resultado.penales) {
+        html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(pen. ' + resultado.penales.resultado[0] + '-' + resultado.penales.resultado[1] + ')</small>';
+      } else if (resultado.alargue && resultado.alargue.golDeOro) {
+        html += ' <small style="font-size:1.1rem;color:var(--texto-suave)">(gol de oro, ' + resultado.alargue.golDeOro + "')</small>";
+      }
+      html += '</div><div class="resultado-ganador">Ganó ' + nombreConColor(p.ganador) + ' (+' + torneo.config.puntosPorVictoria + ')</div></div>';
+      html += '<div class="resultado-grid">' +
+        '<div><h3 style="color:' + colorManager(p.a) + '">' + escapeHtml(nombreManager(p.a)) + '</h3><ul class="resultado-goles">' + htmlGoles(resultado, 0) + '</ul></div>' +
+        '<div><h3 style="color:' + colorManager(p.b) + '">' + escapeHtml(nombreManager(p.b)) + '</h3><ul class="resultado-goles">' + htmlGoles(resultado, 1) + '</ul></div></div>';
+      html += '<p style="text-align:center;margin-top:14px">Posesión ' + resultado.estadisticas.posesion[0] + '% - ' + resultado.estadisticas.posesion[1] +
+        '% · Remates ' + resultado.estadisticas.remates[0] + ' - ' + resultado.estadisticas.remates[1] + '</p>';
+    } else {
+      html += '<h2 class="pantalla__titulo" style="text-align:center">' + (ultimo.desempate ? 'Resultados del desempate' : 'Resultados de la fecha ' + ultimo.numero) + '</h2>';
+      html += '<ul class="fecha-resultados">' + ultimo.partidos.map(function (pp) { return htmlFilaResultado(pp.a, pp.b, pp.resultado); }).join('') + '</ul>';
     }
-    html += '</div>';
-    html += '<div class="resultado-ganador">Ganó ' + escapeHtml(nombreManager(ultimo.ganador)) + ' (+' + torneo.config.puntosPorVictoria + ')</div>';
-    html += '</div>';
 
-    html += '<div class="resultado-grid">';
-    [0, 1].forEach(function (i) {
-      html += '<div><h3 style="color:' + torneo.managers[i].color + '">' + escapeHtml(nombreManager(torneo.managers[i].id)) + '</h3><ul class="resultado-goles">';
-      var goles = resultado.eventos.filter(function (e) { return e.tipo === 'gol' && e.equipo === i; });
-      if (goles.length === 0) html += '<li style="color:var(--texto-suave)">Sin goles</li>';
-      goles.forEach(function (e) {
-        html += '<li>⚽ ' + e.minuto + "' " + (e.alargue ? '(gol de oro) ' : '') + escapeHtml(idAJugador(e.autor).nombreCarta) +
-          (e.asistencia ? ' (asist. ' + escapeHtml(idAJugador(e.asistencia).nombreCarta) + ')' : '') + '</li>';
-      });
-      html += '</ul></div>';
-    });
-    html += '</div>';
-
-    html += '<p style="text-align:center;margin-top:14px">Posesión ' + resultado.estadisticas.posesion[0] + '% - ' + resultado.estadisticas.posesion[1] +
-      '% · Remates ' + resultado.estadisticas.remates[0] + ' - ' + resultado.estadisticas.remates[1] + '</p>';
-
-    var figura = idAJugador(resultado.figura);
+    var figura = idAJugador(ultimo.partidos.length === 1 ? ultimo.partidos[0].resultado.figura : figuraDeLaFecha(ultimo.partidos));
     html += '<div class="figura-partido">' + renderCarta(figura, { tamano: 'mini' }) +
-      '<div><div style="color:var(--texto-suave);font-size:.85rem">Figura del partido</div>' +
+      '<div><div style="color:var(--texto-suave);font-size:.85rem">' + (ultimo.partidos.length === 1 ? 'Figura del partido' : 'Figura de la fecha') + '</div>' +
       '<div style="font-family:var(--fuente-num);font-size:1.3rem">' + escapeHtml(figura.nombre) + '</div></div></div>';
 
+    if (torneo.desempate) {
+      html += '<p class="aviso-desempate">Empate arriba entre ' + torneo.desempate.map(nombreConColor).join(' y ') +
+        ': se juega una fecha de desempate entre ellos.</p>';
+    }
     html += renderTablaTorneo(torneo);
 
     document.getElementById('resultado-contenido').innerHTML = html;
-
-    var btnSiguiente = document.getElementById('btn-siguiente-partido');
-    btnSiguiente.textContent = torneo.terminado ? 'Ver campeón »' : 'Siguiente partido »';
+    var dos = torneo.managers.length === 2;
+    document.getElementById('btn-siguiente-partido').textContent = torneo.terminado ? 'Ver campeón »'
+      : torneo.desempate ? 'Jugar el desempate »' : (dos ? 'Siguiente partido »' : 'Siguiente fecha »');
   }
 
   // ------------------------------------------------------------------
@@ -793,8 +898,10 @@
     var masCaro = null;
     var todosLosFichajes = [];
     torneo.historial.forEach(function (h) {
-      h.resultado.eventos.forEach(function (e) {
-        if (e.tipo === 'gol') golesPorJugador[e.autor] = (golesPorJugador[e.autor] || 0) + 1;
+      h.partidos.forEach(function (p) {
+        p.resultado.eventos.forEach(function (e) {
+          if (e.tipo === 'gol') golesPorJugador[e.autor] = (golesPorJugador[e.autor] || 0) + 1;
+        });
       });
       h.lotes.forEach(function (l) {
         todosLosFichajes.push(l);
@@ -827,20 +934,15 @@
   function renderCampeon() {
     var torneo = Estado.torneo;
     var stats = calcularResumenTorneo(torneo);
-
-    var colorCampeon = torneo.managers.filter(function (m) { return m.id === torneo.campeon; })[0].color;
-    var html = '<div class="campeon-trofeo">🏆</div><div class="campeon-nombre" style="color:' + colorCampeon + '">' + escapeHtml(nombreManager(torneo.campeon)) + '</div>';
+    var html = '<div class="campeon-trofeo">🏆</div><div class="campeon-nombre" style="color:' + colorManager(torneo.campeon) + '">' +
+      escapeHtml(nombreManager(torneo.campeon)) + '</div>';
     html += '<div class="campeon-resumen">';
-    html += datoResumen('Partidos jugados', torneo.historial.length);
-    torneo.managers.forEach(function (m) {
-      var victorias = torneo.historial.filter(function (h) { return h.ganador === m.id; }).length;
-      html += datoResumen('Victorias de ' + m.nombre, victorias);
-    });
+    html += datoResumen('Fechas jugadas', torneo.historial.length);
     html += datoResumen('Goleador del torneo', stats.goleador ? idAJugador(stats.goleador.id).nombreCarta + ' (' + stats.goleador.goles + ')' : '—');
     html += datoResumen('Fichaje más caro', stats.masCaro ? idAJugador(stats.masCaro.jugadorId).nombreCarta + ' · ' + formatearPlata(stats.masCaro.precio) : '—');
     html += datoResumen('Ganga del torneo', stats.ganga ? idAJugador(stats.ganga.jugadorId).nombreCarta + ' (' + stats.ganga.golesPorDolar.toFixed(2) + ' goles/$)' : '—');
     html += '</div>';
-
+    html += renderTablaTorneo(torneo);
     document.getElementById('campeon-contenido').innerHTML = html;
   }
 
@@ -859,16 +961,20 @@
     var html = '<div class="historial-fondo" id="historial-fondo"><div class="historial-panel">' +
       '<div class="historial-panel__cabecera"><h2 style="font-size:1.3rem">Historial</h2>' +
       '<button type="button" class="btn btn--chico" id="btn-cerrar-historial">Cerrar ✕</button></div>';
-    if (Estado.torneo.historial.length === 0) html += '<p>Todavía no se jugó ningún partido.</p>';
+    if (Estado.torneo.historial.length === 0) html += '<p>Todavía no se jugó ninguna fecha.</p>';
     Estado.torneo.historial.slice().reverse().forEach(function (h) {
-      html += '<div class="historial-item"><div class="historial-item__cabecera"><span>Partido ' + h.numero + '</span>' +
-        '<span>' + h.resultado.goles[0] + '-' + h.resultado.goles[1] + '</span></div>';
-      html += '<div class="historial-item__detalle">Ganó ' + escapeHtml(nombreManager(h.ganador)) + '</div>';
+      html += '<div class="historial-item"><div class="historial-item__cabecera"><span>Fecha ' + h.numero + (h.desempate ? ' · desempate' : '') + '</span></div>';
+      html += '<ul class="historial-item__partidos">' + h.partidos.map(function (p) {
+        return '<li>' + nombreConColor(p.a) + ' ' + p.resultado.goles[0] + '-' + p.resultado.goles[1] + ' ' + nombreConColor(p.b) +
+          (p.resultado.penales ? ' (pen.)' : '') + ' · ganó ' + escapeHtml(nombreManager(p.ganador)) + '</li>';
+      }).join('') + '</ul>';
       html += '<ul class="historial-item__fichajes">';
-      h.lotes.forEach(function (l) {
-        html += '<li><span>' + escapeHtml(idAJugador(l.jugadorId).nombreCarta) + ' (' + escapeHtml(nombreManager(l.ganador)) +
-          (l.asignado ? ', al azar' : '') + ')</span>' +
-          '<span>' + formatearPlata(l.precio) + '</span></li>';
+      h.participantes.forEach(function (id) {
+        var suyos = h.lotes.filter(function (l) { return l.ganador === id; });
+        html += '<li><span style="color:' + colorManager(id) + '">' + escapeHtml(nombreManager(id)) + '</span><span>' +
+          suyos.map(function (l) {
+            return escapeHtml(idAJugador(l.jugadorId).nombreCarta) + ' ' + formatearPlata(l.precio) + (l.asignado ? ' (azar)' : '');
+          }).join(', ') + '</span></li>';
       });
       html += '</ul></div>';
     });
@@ -919,8 +1025,22 @@
       el.addEventListener('click', function () {
         document.querySelectorAll('.modo-opcion').forEach(function (o) { o.classList.remove('seleccionada'); });
         el.classList.add('seleccionada');
+        el.querySelector('input[type="radio"]').checked = true;
       });
     });
+    document.getElementById('btn-agregar-manager').addEventListener('click', function () {
+      if (FormInicio.nombres.length >= CONFIG.MANAGERS_MAX) return;
+      FormInicio.nombres.push('');
+      renderListaManagers();
+      document.getElementById('nombre-m' + FormInicio.nombres.length).focus();
+    });
+    var inputFechas = document.getElementById('cant-fechas');
+    function moverFechas(delta) {
+      inputFechas.value = Math.max(CONFIG.FECHAS_MIN, Math.min(CONFIG.FECHAS_MAX, cantidadFechas() + delta));
+    }
+    document.getElementById('btn-fechas-menos').addEventListener('click', function () { moverFechas(-1); });
+    document.getElementById('btn-fechas-mas').addEventListener('click', function () { moverFechas(1); });
+    inputFechas.addEventListener('change', function () { inputFechas.value = cantidadFechas(); });
   }
 
   // Atajos de teclado (P2): manager 1 Q/W/E/A, manager 2 P/O/I/L. Solo
